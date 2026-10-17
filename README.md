@@ -114,7 +114,7 @@ The application is deployed and actively running on the public web with secure S
 | **Placement Officer** | `officer` | `officer123` | Data management + Drives + Offers |
 | **Viewer** | `viewer` | `viewer123` | Read-only dashboards and reports |
 
-*(A 1-click quick-login role switcher is available directly on the login screen and navbar for fast evaluation).*
+*(Credentials must be typed into the empty login fields. Demo quick-login buttons have been removed in favor of secure role-based authentication).*
 
 ---
 
