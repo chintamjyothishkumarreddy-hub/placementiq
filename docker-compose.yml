@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  placementiq:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: placementiq_app
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./backend/placementiq.db:/app/backend/placementiq.db

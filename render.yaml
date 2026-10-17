@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: placementiq
+    runtime: docker
+    plan: free
+    region: oregon
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: 1440
+    disk:
+      name: placementiq-data
+      mountPath: /app/backend/data
+      sizeGB: 1
