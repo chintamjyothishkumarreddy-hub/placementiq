@@ -8,7 +8,9 @@ import {
   User,
   Activity,
   X,
-  FileCode
+  FileCode,
+  Sparkles,
+  ShieldAlert
 } from 'lucide-react';
 import api from '../api';
 import { useAuth } from '../context/AuthContext';
@@ -60,38 +62,42 @@ export default function AuditLogsPage() {
   };
 
   const actionStyles = {
-    CREATE: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300',
-    UPDATE: 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300',
-    DELETE: 'bg-rose-100 text-rose-800 dark:bg-rose-950/40 dark:text-rose-300',
-    IMPORT: 'bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300',
-    BULK_UPDATE: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-300',
-    RECALCULATE: 'bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300'
+    CREATE: 'bg-emerald-950/60 text-emerald-300 border border-emerald-500/30',
+    UPDATE: 'bg-cyan-950/60 text-cyan-300 border border-cyan-500/30',
+    DELETE: 'bg-rose-950/60 text-rose-300 border border-rose-500/30',
+    IMPORT: 'bg-purple-950/60 text-purple-300 border border-purple-500/30',
+    BULK_UPDATE: 'bg-indigo-950/60 text-indigo-300 border border-indigo-500/30',
+    RECALCULATE: 'bg-amber-950/60 text-amber-300 border border-amber-500/30'
   };
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      {/* Editorial Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.06] pb-5">
         <div>
-          <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
-            Security & Audit Activity Logs
+          <div className="editorial-kicker">// IMMUTABLE JOURNAL // EVENT AUDITING</div>
+          <h2 className="text-2xl font-editorial italic font-normal text-white tracking-tight flex items-center gap-3">
+            Immutable Security Journal & Event Audit
+            <span className="text-[11px] font-mono not-italic px-2.5 py-0.5 rounded-full bg-cyan-950/60 border border-cyan-500/30 text-cyan-300 font-medium">
+              {total} EVENTS
+            </span>
           </h2>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Immutable system audit trails tracking every administrative mutation, before-and-after diff, and batch import.
+          <p className="text-xs font-sans text-slate-400 mt-0.5">
+            Immutable system audit trails tracking administrative mutations, before-and-after state diffs & pipeline events.
           </p>
         </div>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
+      <div className="intel-card p-4 rounded-2xl border border-white/[0.08] flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
         <form onSubmit={handleSearchSubmit} className="relative flex-1 w-full">
-          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
           <input
             type="text"
-            placeholder="Search by username..."
+            placeholder="Search by operator handle..."
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
+            className="w-full pl-10 pr-4 py-2 bg-slate-950/60 border border-white/[0.08] rounded-xl font-mono text-xs text-slate-200 placeholder:text-slate-600 focus:outline-hidden focus:border-cyan-500/50"
           />
         </form>
 
@@ -102,7 +108,7 @@ export default function AuditLogsPage() {
               setEntityType(e.target.value);
               setPage(1);
             }}
-            className="py-1.5 px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-semibold focus:outline-hidden"
+            className="py-1.5 px-3 bg-slate-900 border border-white/[0.08] rounded-xl font-mono text-xs text-slate-300 focus:outline-hidden focus:border-cyan-500/40 cursor-pointer"
           >
             <option value="All">All Entities</option>
             <option value="Student">Student</option>
@@ -120,7 +126,7 @@ export default function AuditLogsPage() {
               setAction(e.target.value);
               setPage(1);
             }}
-            className="py-1.5 px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-semibold focus:outline-hidden"
+            className="py-1.5 px-3 bg-slate-900 border border-white/[0.08] rounded-xl font-mono text-xs text-slate-300 focus:outline-hidden focus:border-cyan-500/40 cursor-pointer"
           >
             <option value="All">All Actions</option>
             <option value="CREATE">CREATE</option>
@@ -134,56 +140,61 @@ export default function AuditLogsPage() {
       </div>
 
       {/* Audit Logs Table */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs overflow-hidden">
+      <div className="intel-card rounded-2xl border border-white/[0.08] overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-slate-50/80 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-slate-500 font-bold uppercase tracking-wider">
-                <th className="p-3">Timestamp</th>
-                <th className="p-3">Actor (User)</th>
-                <th className="p-3">Action</th>
-                <th className="p-3">Target Entity</th>
-                <th className="p-3">Record ID</th>
-                <th className="p-3">Mutation Summary</th>
-                <th className="p-3 text-right">Inspect</th>
+              <tr className="bg-slate-950/80 border-b border-white/[0.08] text-slate-400 font-mono text-[10px] uppercase tracking-wider">
+                <th className="p-3">TIMESTAMP</th>
+                <th className="p-3">OPERATOR</th>
+                <th className="p-3">ACTION</th>
+                <th className="p-3">ENTITY TARGET</th>
+                <th className="p-3">RECORD ID</th>
+                <th className="p-3">MUTATION LOG</th>
+                <th className="p-3 text-right">INSPECT</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-medium text-slate-700 dark:text-slate-300">
+            <tbody className="divide-y divide-white/[0.04] font-medium text-slate-300">
               {loading ? (
                 <tr>
-                  <td colSpan="7" className="p-12 text-center text-slate-400">Loading audit log events...</td>
+                  <td colSpan="7" className="p-12 text-center text-slate-400 font-mono text-xs">
+                    <div className="inline-block w-6 h-6 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin mb-2" />
+                    <p>// RETRIEVING SECURITY JOURNAL...</p>
+                  </td>
                 </tr>
               ) : logs.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="p-12 text-center text-slate-400">No audit events match filters.</td>
+                  <td colSpan="7" className="p-12 text-center text-slate-500 font-mono text-xs">
+                    // ZERO AUDIT JOURNAL EVENTS MATCH CRITERIA
+                  </td>
                 </tr>
               ) : (
                 logs.map((log) => (
-                  <tr key={log.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40">
-                    <td className="p-3 font-mono text-slate-500">
+                  <tr key={log.id} className="hover:bg-white/[0.02] transition-colors">
+                    <td className="p-3 font-mono text-slate-400 text-[11px]">
                       {new Date(log.timestamp).toLocaleString()}
                     </td>
-                    <td className="p-3 font-bold text-slate-900 dark:text-white">
+                    <td className="p-3 font-mono font-bold text-cyan-300">
                       @{log.username}
                     </td>
                     <td className="p-3">
-                      <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${actionStyles[log.action] || 'bg-slate-100'}`}>
+                      <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider ${actionStyles[log.action] || 'bg-slate-900 text-slate-400'}`}>
                         {log.action}
                       </span>
                     </td>
-                    <td className="p-3 font-semibold text-slate-900 dark:text-slate-100">
+                    <td className="p-3 font-serif font-medium text-white">
                       {log.entity_type}
                     </td>
-                    <td className="p-3 font-mono text-slate-400">
+                    <td className="p-3 font-mono text-slate-400 text-xs">
                       #{log.entity_id || 'N/A'}
                     </td>
-                    <td className="p-3 text-slate-600 dark:text-slate-400 max-w-xs truncate">
+                    <td className="p-3 text-slate-400 font-mono text-[11px] max-w-xs truncate">
                       {log.details || 'No payload recorded'}
                     </td>
                     <td className="p-3 text-right">
                       <button
                         onClick={() => setSelectedLog(log)}
-                        className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                        className="p-1.5 text-slate-400 hover:text-cyan-300 hover:bg-white/[0.05] rounded-lg transition-colors cursor-pointer"
                         title="Inspect full JSON diff"
                       >
                         <Eye className="w-4 h-4" />
@@ -197,7 +208,7 @@ export default function AuditLogsPage() {
         </div>
 
         {/* Pagination */}
-        <div className="px-4 border-t border-slate-200 dark:border-slate-800">
+        <div className="px-4">
           <Pagination
             page={page}
             pages={pages}
@@ -210,30 +221,31 @@ export default function AuditLogsPage() {
 
       {/* INSPECT LOG MODAL */}
       {selectedLog && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in">
-          <div className="w-full max-w-xl bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 p-6 space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
+          <div className="w-full max-w-xl intel-card rounded-3xl shadow-2xl border border-white/[0.12] p-6 space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-                  <FileCode className="w-4 h-4 text-blue-600" />
-                  Audit Log Details & Diff
+                <div className="editorial-kicker">// AUDIT EVENT INSPECTION</div>
+                <h3 className="text-xl font-editorial italic font-normal text-white flex items-center gap-2">
+                  <FileCode className="w-4 h-4 text-cyan-400" />
+                  Mutation Diff & State Snapshot
                 </h3>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs font-mono text-cyan-300/80">
                   {selectedLog.action} on {selectedLog.entity_type} #{selectedLog.entity_id} by @{selectedLog.username}
                 </p>
               </div>
-              <button onClick={() => setSelectedLog(null)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setSelectedLog(null)} className="text-slate-400 hover:text-white cursor-pointer">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 font-mono text-[11px] overflow-x-auto max-h-96 text-slate-800 dark:text-slate-200">
+            <div className="p-4 bg-slate-950/80 rounded-2xl border border-white/[0.08] font-mono text-xs overflow-x-auto max-h-96 text-cyan-300">
               <pre>
                 {(() => {
                   try {
                     return JSON.stringify(JSON.parse(selectedLog.details), null, 2);
                   } catch (e) {
-                    return selectedLog.details || 'No additional details logged.';
+                    return selectedLog.details || 'No additional payload details logged.';
                   }
                 })()}
               </pre>
@@ -243,9 +255,9 @@ export default function AuditLogsPage() {
               <button
                 type="button"
                 onClick={() => setSelectedLog(null)}
-                className="px-4 py-2 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-semibold"
+                className="px-4 py-2 bg-slate-900 border border-white/[0.08] text-slate-300 hover:text-white rounded-xl font-mono text-xs cursor-pointer"
               >
-                Close
+                DISMISS
               </button>
             </div>
           </div>

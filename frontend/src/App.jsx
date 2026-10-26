@@ -59,21 +59,22 @@ function MainApp() {
   const renderActivePage = () => {
     if (!isAuthorized) {
       return (
-        <div className="flex flex-col items-center justify-center min-h-[50vh] text-center p-8 bg-white dark:bg-slate-900 rounded-3xl border border-rose-200 dark:border-rose-900/40 shadow-xs">
-          <div className="w-16 h-16 rounded-2xl bg-rose-50 dark:bg-rose-950/60 flex items-center justify-center text-rose-600 dark:text-rose-400 mb-4 border border-rose-200 dark:border-rose-800">
+        <div className="flex flex-col items-center justify-center min-h-[50vh] text-center p-8 bg-[#0d121f]/80 backdrop-blur-xl rounded-3xl border border-rose-500/30 shadow-[0_0_30px_rgba(244,63,94,0.1)]">
+          <div className="w-16 h-16 rounded-2xl bg-rose-950/40 border border-rose-500/30 flex items-center justify-center text-rose-400 mb-4 shadow-[0_0_15px_rgba(244,63,94,0.2)]">
             <ShieldAlert className="w-8 h-8" />
           </div>
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
-            Access Restricted
+          <span className="editorial-kicker text-rose-400/90 mb-1">SECURITY VIOLATION // RESTRICTED</span>
+          <h2 className="font-editorial text-2xl font-bold text-white mb-2">
+            Access Clearance Denied
           </h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400 max-w-md mb-6">
-            Your current role (<span className="font-semibold text-slate-700 dark:text-slate-300 capitalize">{role.replace('_', ' ')}</span>) does not have authorization to access the <strong>{currentNav?.label || activeTab}</strong> module.
+          <p className="text-sm text-slate-400 max-w-md mb-6 font-sans">
+            Your authenticated role (<span className="font-mono text-cyan-300 capitalize">{role.replace('_', ' ')}</span>) lacks protocol clearance to inspect the <strong className="text-white">{currentNav?.label || activeTab}</strong> module.
           </p>
           <button
             onClick={() => setActiveTab('dashboard')}
-            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-sm transition-colors shadow-xs cursor-pointer"
+            className="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-mono text-xs font-semibold tracking-wider rounded-xl transition-all shadow-[0_0_15px_rgba(6,182,212,0.25)] cursor-pointer"
           >
-            Return to Dashboard
+            RETURN TO COMMAND DASHBOARD
           </button>
         </div>
       );
@@ -112,7 +113,7 @@ function MainApp() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50/60 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col">
+    <div className="min-h-screen bg-[#07090e] text-slate-100 flex flex-col font-sans selection:bg-cyan-500/25 selection:text-cyan-200">
       <Sidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}

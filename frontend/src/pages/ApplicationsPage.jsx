@@ -12,7 +12,8 @@ import {
   Award,
   ChevronRight,
   X,
-  User
+  User,
+  Sparkles
 } from 'lucide-react';
 import api from '../api';
 import { useAuth } from '../context/AuthContext';
@@ -119,18 +120,20 @@ export default function ApplicationsPage() {
     }
   };
 
-  const currentDriveObj = drives.find((d) => d.id === parseInt(selectedDriveId, 10));
-
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      {/* Editorial Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.06] pb-5">
         <div>
-          <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
-            Applications & Recruitment Pipeline Tracker
+          <div className="editorial-kicker">// PIPELINE TELEMETRY // STAGE EVALUATION</div>
+          <h2 className="text-2xl font-editorial italic font-normal text-white tracking-tight flex items-center gap-3">
+            Candidate Pipeline & Stage Telemetry
+            <span className="text-[11px] font-mono not-italic px-2.5 py-0.5 rounded-full bg-cyan-950/60 border border-cyan-500/30 text-cyan-300 font-medium">
+              {applications.length} ENROLLED
+            </span>
           </h2>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Track student interview progression stage-by-stage and record assessment feedback.
+          <p className="text-xs font-sans text-slate-400 mt-0.5">
+            Track student interview progression stage-by-stage and record granular assessment feedback.
           </p>
         </div>
 
@@ -139,7 +142,7 @@ export default function ApplicationsPage() {
           <select
             value={selectedDriveId}
             onChange={(e) => setSelectedDriveId(e.target.value)}
-            className="py-1.5 px-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl font-semibold shadow-2xs focus:outline-hidden"
+            className="py-1.5 px-3 bg-slate-900 border border-white/[0.08] rounded-xl font-mono text-xs text-slate-300 focus:outline-hidden focus:border-cyan-500/40 cursor-pointer"
           >
             <option value="All">All Drives</option>
             {drives.map((d) => (
@@ -150,7 +153,7 @@ export default function ApplicationsPage() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="py-1.5 px-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl font-semibold shadow-2xs focus:outline-hidden"
+            className="py-1.5 px-3 bg-slate-900 border border-white/[0.08] rounded-xl font-mono text-xs text-slate-300 focus:outline-hidden focus:border-cyan-500/40 cursor-pointer"
           >
             <option value="All">All Statuses</option>
             <option value="Applied">Applied</option>
@@ -162,70 +165,71 @@ export default function ApplicationsPage() {
       </div>
 
       {/* Applications Table */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs overflow-hidden">
+      <div className="intel-card rounded-2xl border border-white/[0.08] overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-slate-50/80 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">
-                <th className="p-3">Student Candidate</th>
-                <th className="p-3">Company & Drive</th>
-                <th className="p-3">Target Role</th>
-                <th className="p-3">Current Stage</th>
-                <th className="p-3">Status</th>
-                <th className="p-3">Interview Rounds</th>
-                <th className="p-3 text-right">Actions</th>
+              <tr className="bg-slate-950/80 border-b border-white/[0.08] text-slate-400 font-mono text-[10px] uppercase tracking-wider">
+                <th className="p-3">CANDIDATE DOSSIER</th>
+                <th className="p-3">ENTERPRISE DRIVE</th>
+                <th className="p-3">TARGET ROLE</th>
+                <th className="p-3">CURRENT STAGE</th>
+                <th className="p-3">STATUS</th>
+                <th className="p-3">EVALUATION ROUNDS</th>
+                <th className="p-3 text-right">ACTIONS</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium text-slate-700 dark:text-slate-300">
+            <tbody className="divide-y divide-white/[0.04] font-medium text-slate-300">
               {loading ? (
                 <tr>
-                  <td colSpan="7" className="p-12 text-center text-slate-400">
-                    Loading application pipeline records...
+                  <td colSpan="7" className="p-12 text-center text-slate-400 font-mono text-xs">
+                    <div className="inline-block w-6 h-6 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin mb-2" />
+                    <p>// RETRIEVING PIPELINE RECORDS...</p>
                   </td>
                 </tr>
               ) : applications.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="p-12 text-center text-slate-400">
-                    No student applications matching the selected criteria.
+                  <td colSpan="7" className="p-12 text-center text-slate-500 font-mono text-xs">
+                    // ZERO CANDIDATES ENROLLED IN SELECTED STAGE
                   </td>
                 </tr>
               ) : (
                 applications.map((app) => (
-                  <tr key={app.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
+                  <tr key={app.id} className="hover:bg-white/[0.02] transition-colors">
                     <td className="p-3">
-                      <div className="font-bold text-slate-900 dark:text-white">
+                      <div className="font-serif font-medium text-white">
                         {app.student_name}
                       </div>
-                      <div className="text-[11px] text-slate-400 font-mono">
-                        {app.student_roll} • {app.student_department} (CGPA: {app.student_cgpa})
+                      <div className="text-[11px] text-slate-500 font-mono mt-0.5">
+                        {app.student_roll} • {app.student_department} (CGPA: <span className="text-emerald-400">{app.student_cgpa}</span>)
                       </div>
                     </td>
                     <td className="p-3">
-                      <div className="font-semibold text-slate-800 dark:text-slate-200">
+                      <div className="font-serif font-medium text-slate-200">
                         {app.company_name}
                       </div>
-                      <div className="text-[11px] text-slate-400 truncate max-w-[160px]">
+                      <div className="text-[11px] text-slate-500 font-mono truncate max-w-[160px]">
                         {app.drive_title}
                       </div>
                     </td>
-                    <td className="p-3 font-semibold text-slate-800 dark:text-slate-200">
+                    <td className="p-3 font-mono text-xs text-cyan-300">
                       {app.role_title}
                     </td>
                     <td className="p-3">
-                      <span className="px-2.5 py-1 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 font-bold border border-blue-200 dark:border-blue-900/40">
+                      <span className="px-2.5 py-1 rounded-lg bg-cyan-950/60 text-cyan-300 font-mono text-xs border border-cyan-500/30">
                         {app.current_stage_name}
                       </span>
                     </td>
                     <td className="p-3">
                       <span
-                        className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${
+                        className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider ${
                           app.status === 'Selected'
-                            ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300'
+                            ? 'bg-emerald-950/60 text-emerald-300 border border-emerald-500/30'
                             : app.status === 'In Interview'
-                            ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300'
+                            ? 'bg-purple-950/60 text-purple-300 border border-purple-500/30'
                             : app.status === 'Rejected'
-                            ? 'bg-rose-100 text-rose-800 dark:bg-rose-950/40 dark:text-rose-300'
-                            : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'
+                            ? 'bg-rose-950/60 text-rose-300 border border-rose-500/30'
+                            : 'bg-slate-900 text-slate-400 border border-white/[0.06]'
                         }`}
                       >
                         {app.status}
@@ -234,12 +238,12 @@ export default function ApplicationsPage() {
                     <td className="p-3">
                       <div className="flex flex-col gap-1">
                         {app.rounds?.length === 0 ? (
-                          <span className="text-slate-400 italic">No rounds logged</span>
+                          <span className="text-slate-600 font-mono text-xs italic">// No rounds logged</span>
                         ) : (
                           app.rounds?.map((r, ri) => (
-                            <div key={ri} className="flex items-center gap-1.5 text-[11px]">
-                              <span className={`w-2 h-2 rounded-full ${r.status === 'Cleared' ? 'bg-emerald-500' : 'bg-amber-500'}`} />
-                              <span className="font-semibold text-slate-800 dark:text-slate-200">{r.round_name}:</span>
+                            <div key={ri} className="flex items-center gap-1.5 text-[11px] font-mono">
+                              <span className={`w-1.5 h-1.5 rounded-full ${r.status === 'Cleared' ? 'bg-emerald-400' : 'bg-amber-400'}`} />
+                              <span className="text-slate-200">{r.round_name}:</span>
                               <span className="text-slate-500">{r.status} {r.score ? `(${r.score}/100)` : ''}</span>
                             </div>
                           ))
@@ -251,15 +255,15 @@ export default function ApplicationsPage() {
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => handleOpenStageUpdate(app)}
-                            className="px-2 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg font-semibold text-[11px] transition-colors"
+                            className="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-white/[0.08] rounded-lg font-mono text-[11px] transition-colors cursor-pointer"
                             title="Update Pipeline Stage"
                           >
-                            Advance Stage
+                            ADVANCE
                           </button>
                           <button
                             onClick={() => handleOpenRound(app)}
-                            className="p-1.5 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 hover:bg-blue-100 rounded-lg transition-colors"
-                            title="Record Interview Assessment"
+                            className="p-1.5 bg-cyan-950/50 hover:bg-cyan-900/50 text-cyan-300 border border-cyan-500/30 rounded-lg transition-colors cursor-pointer"
+                            title="Record Assessment"
                           >
                             <Plus className="w-3.5 h-3.5" />
                           </button>
@@ -276,42 +280,43 @@ export default function ApplicationsPage() {
 
       {/* RECORD INTERVIEW ROUND MODAL */}
       {roundModalOpen && activeApp && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in">
-          <div className="w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 p-6 space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
+          <div className="w-full max-w-md intel-card rounded-3xl shadow-2xl border border-white/[0.12] p-6 space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
-                  Record Interview Round Assessment
+                <div className="editorial-kicker">// EVALUATION LOG</div>
+                <h3 className="text-xl font-editorial italic font-normal text-white">
+                  Record Interview Assessment
                 </h3>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs font-mono text-cyan-300/80">
                   {activeApp.student_name} ({activeApp.student_roll})
                 </p>
               </div>
-              <button onClick={() => setRoundModalOpen(false)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setRoundModalOpen(false)} className="text-slate-400 hover:text-white cursor-pointer">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <form onSubmit={handleRoundSubmit} className="space-y-3 text-xs">
+            <form onSubmit={handleRoundSubmit} className="space-y-3 text-xs font-sans">
               <div>
-                <label className="block font-semibold mb-1">Round Name *</label>
+                <label className="block font-mono text-xs text-slate-400 mb-1">Round Name *</label>
                 <input
                   type="text"
                   required
                   value={roundForm.round_name}
                   onChange={(e) => setRoundForm({ ...roundForm, round_name: e.target.value })}
                   placeholder="e.g. Technical Round 1 (DSA & System)"
-                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
+                  className="w-full p-2.5 bg-slate-950/60 border border-white/[0.08] rounded-xl text-slate-200 focus:outline-hidden focus:border-cyan-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-semibold mb-1">Status</label>
+                  <label className="block font-mono text-xs text-slate-400 mb-1">Status</label>
                   <select
                     value={roundForm.status}
                     onChange={(e) => setRoundForm({ ...roundForm, status: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
+                    className="w-full p-2.5 bg-slate-900 border border-white/[0.08] rounded-xl font-mono text-xs text-slate-200 focus:outline-hidden focus:border-cyan-500 cursor-pointer"
                   >
                     <option value="Cleared">Cleared</option>
                     <option value="Failed">Failed</option>
@@ -321,7 +326,7 @@ export default function ApplicationsPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block font-semibold mb-1">Score / Rating (0 - 100)</label>
+                  <label className="block font-mono text-xs text-slate-400 mb-1">Score / Rating (0 - 100)</label>
                   <input
                     type="number"
                     step="0.5"
@@ -329,28 +334,28 @@ export default function ApplicationsPage() {
                     max="100"
                     value={roundForm.score}
                     onChange={(e) => setRoundForm({ ...roundForm, score: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
+                    className="w-full p-2.5 bg-slate-950/60 border border-white/[0.08] rounded-xl font-mono text-xs text-cyan-300 font-semibold focus:outline-hidden focus:border-cyan-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-semibold mb-1">Interviewer Name / Panel</label>
+                <label className="block font-mono text-xs text-slate-400 mb-1">Interviewer Name / Panel</label>
                 <input
                   type="text"
                   value={roundForm.interviewer_name}
                   onChange={(e) => setRoundForm({ ...roundForm, interviewer_name: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
+                  className="w-full p-2.5 bg-slate-950/60 border border-white/[0.08] rounded-xl text-slate-200 focus:outline-hidden focus:border-cyan-500"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold mb-1">Feedback & Observations</label>
+                <label className="block font-mono text-xs text-slate-400 mb-1">Feedback & Observations</label>
                 <textarea
                   rows="3"
                   value={roundForm.feedback}
                   onChange={(e) => setRoundForm({ ...roundForm, feedback: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
+                  className="w-full p-2.5 bg-slate-950/60 border border-white/[0.08] rounded-xl text-slate-200 focus:outline-hidden focus:border-cyan-500"
                 />
               </div>
 
@@ -358,16 +363,16 @@ export default function ApplicationsPage() {
                 <button
                   type="button"
                   onClick={() => setRoundModalOpen(false)}
-                  className="px-4 py-2 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-medium"
+                  className="px-4 py-2 bg-slate-900 border border-white/[0.08] text-slate-400 hover:text-white rounded-xl font-mono text-xs cursor-pointer"
                 >
-                  Cancel
+                  CANCEL
                 </button>
                 <button
                   type="submit"
                   disabled={roundSubmitting}
-                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-xs"
+                  className="px-5 py-2 bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white rounded-xl font-mono text-xs font-semibold shadow-xs cursor-pointer"
                 >
-                  {roundSubmitting ? 'Saving...' : 'Record Round'}
+                  {roundSubmitting ? 'SAVING...' : 'RECORD ROUND'}
                 </button>
               </div>
             </form>
@@ -377,29 +382,30 @@ export default function ApplicationsPage() {
 
       {/* ADVANCE STAGE MODAL */}
       {stageModalOpen && activeApp && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in">
-          <div className="w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 p-6 space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
+          <div className="w-full max-w-md intel-card rounded-3xl shadow-2xl border border-white/[0.12] p-6 space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
-                  Update Candidate Pipeline Stage
+                <div className="editorial-kicker">// PIPELINE PROGRESSION</div>
+                <h3 className="text-xl font-editorial italic font-normal text-white">
+                  Advance Candidate Stage
                 </h3>
-                <p className="text-xs text-slate-400">
-                  {activeApp.student_name} - {activeApp.company_name}
+                <p className="text-xs font-mono text-cyan-300/80">
+                  {activeApp.student_name} — {activeApp.company_name}
                 </p>
               </div>
-              <button onClick={() => setStageModalOpen(false)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setStageModalOpen(false)} className="text-slate-400 hover:text-white cursor-pointer">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <form onSubmit={handleStageSubmit} className="space-y-3 text-xs">
+            <form onSubmit={handleStageSubmit} className="space-y-3 text-xs font-sans">
               <div>
-                <label className="block font-semibold mb-1">Recruitment Stage</label>
+                <label className="block font-mono text-xs text-slate-400 mb-1">Recruitment Stage</label>
                 <select
                   value={targetStageId}
                   onChange={(e) => setTargetStageId(e.target.value)}
-                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
+                  className="w-full p-2.5 bg-slate-900 border border-white/[0.08] rounded-xl font-mono text-xs text-slate-200 focus:outline-hidden focus:border-cyan-500 cursor-pointer"
                 >
                   <option value="">Select Stage</option>
                   {drives.find((d) => d.id === activeApp.drive_id)?.stages?.map((s) => (
@@ -409,11 +415,11 @@ export default function ApplicationsPage() {
               </div>
 
               <div>
-                <label className="block font-semibold mb-1">Overall Application Status</label>
+                <label className="block font-mono text-xs text-slate-400 mb-1">Application Pipeline Status</label>
                 <select
                   value={appStatusUpdate}
                   onChange={(e) => setAppStatusUpdate(e.target.value)}
-                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
+                  className="w-full p-2.5 bg-slate-900 border border-white/[0.08] rounded-xl font-mono text-xs text-slate-200 focus:outline-hidden focus:border-cyan-500 cursor-pointer"
                 >
                   <option value="Applied">Applied</option>
                   <option value="Under Review">Under Review</option>
@@ -428,15 +434,15 @@ export default function ApplicationsPage() {
                 <button
                   type="button"
                   onClick={() => setStageModalOpen(false)}
-                  className="px-4 py-2 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-medium"
+                  className="px-4 py-2 bg-slate-900 border border-white/[0.08] text-slate-400 hover:text-white rounded-xl font-mono text-xs cursor-pointer"
                 >
-                  Cancel
+                  CANCEL
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-xs"
+                  className="px-5 py-2 bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white rounded-xl font-mono text-xs font-semibold shadow-xs cursor-pointer"
                 >
-                  Save Progression
+                  SAVE PROGRESSION
                 </button>
               </div>
             </form>

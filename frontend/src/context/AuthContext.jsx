@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   });
   const [loading, setLoading] = useState(true);
   const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem('placementiq_theme') === 'dark';
+    return localStorage.getItem('placementiq_theme') !== 'light';
   });
   const [toast, setToast] = useState(null);
 

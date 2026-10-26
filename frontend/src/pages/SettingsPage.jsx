@@ -9,7 +9,8 @@ import {
   BarChart,
   Sliders,
   Calendar,
-  Layers
+  Layers,
+  Sparkles
 } from 'lucide-react';
 import api from '../api';
 import { useAuth } from '../context/AuthContext';
@@ -58,7 +59,7 @@ export default function SettingsPage() {
     setSaving(true);
     try {
       await api.post('/settings/bulk-update', formValues);
-      showToast('System configuration & analytics settings saved successfully!', 'success');
+      showToast('System configuration & algorithmic parameters committed successfully!', 'success');
       fetchSettings();
     } catch (err) {
       showToast('Failed to save settings', 'error');
@@ -69,110 +70,111 @@ export default function SettingsPage() {
 
   return (
     <div className="space-y-6 max-w-4xl">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      {/* Editorial Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.06] pb-5">
         <div>
-          <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
-            System & Analytics Configuration
+          <div className="editorial-kicker">// PARAMETER SPECIFICATIONS // ALGORITHMIC CONFIGURATION</div>
+          <h2 className="text-2xl font-editorial italic font-normal text-white tracking-tight flex items-center gap-3">
+            System Parameters & Computation Policies
           </h2>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Customize calculation methods, reporting academic years, compensation units, and system-wide behavior.
+          <p className="text-xs font-sans text-slate-400 mt-0.5">
+            Configure computation methodologies, academic cohorts, currency tokens, and automated evaluation cascades.
           </p>
         </div>
 
         <button
           onClick={handleSave}
           disabled={saving}
-          className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-semibold rounded-xl shadow-xs transition-all flex items-center gap-2 cursor-pointer self-start sm:self-auto disabled:opacity-50"
+          className="px-5 py-2.5 bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white text-xs font-mono font-medium rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.25)] transition-all flex items-center gap-2 cursor-pointer self-start sm:self-auto disabled:opacity-50"
         >
           {saving ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Save className="w-4 h-4" />}
-          <span>Save System Settings</span>
+          <span>COMMIT CONFIGURATION</span>
         </button>
       </div>
 
-      <form onSubmit={handleSave} className="space-y-6 text-xs">
+      <form onSubmit={handleSave} className="space-y-6 text-xs font-sans">
         {/* Section 1: Analytics & Placement Rate Calculations */}
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xs space-y-4">
-          <div className="flex items-center gap-2.5 pb-2 border-b border-slate-100 dark:border-slate-800">
-            <BarChart className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white">
-              Placement Rate & Formula Preferences
+        <div className="intel-card p-6 rounded-3xl border border-white/[0.08] space-y-4">
+          <div className="flex items-center gap-2.5 pb-2 border-b border-white/[0.06]">
+            <BarChart className="w-4 h-4 text-cyan-400" />
+            <h3 className="text-sm font-serif font-medium text-white">
+              Placement Conversion & Formula Methodologies
             </h3>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block font-semibold mb-1 text-slate-700 dark:text-slate-300">
-                Primary Placement Percentage Calculation
+              <label className="block font-mono text-xs text-slate-400 mb-1">
+                Primary Conversion Calculation
               </label>
               <select
                 value={formValues.placement_rate_method}
                 onChange={(e) => setFormValues({ ...formValues, placement_rate_method: e.target.value })}
-                className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
+                className="w-full p-2.5 bg-slate-900 border border-white/[0.08] rounded-xl font-mono text-xs text-slate-200 focus:outline-hidden focus:border-cyan-500 cursor-pointer"
               >
                 <option value="eligible_only">
-                  Placed / Eligible Students (Recommended by Industry)
+                  Placed / Eligible Candidates (Industry Compliance Standard)
                 </option>
                 <option value="total_registered">
-                  Placed / Total Registered Students
+                  Placed / Total Enrolled Cohort
                 </option>
               </select>
-              <p className="text-[11px] text-slate-400 mt-1">
-                Determines the headline placement percentage shown on the dashboard and official summaries.
+              <p className="text-[11px] font-mono text-slate-500 mt-1">
+                // Governs headline placement metrics across executive dashboards and statutory reports.
               </p>
             </div>
 
             <div>
-              <label className="block font-semibold mb-1 text-slate-700 dark:text-slate-300">
-                Offer Status Counted as "Placed"
+              <label className="block font-mono text-xs text-slate-400 mb-1">
+                Offer Acceptance Criterion for "Placed" Status
               </label>
               <select
                 value={formValues.placement_offer_criteria ? formValues.placement_offer_criteria[0] : 'Accepted'}
                 onChange={(e) => setFormValues({ ...formValues, placement_offer_criteria: [e.target.value] })}
-                className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
+                className="w-full p-2.5 bg-slate-900 border border-white/[0.08] rounded-xl font-mono text-xs text-slate-200 focus:outline-hidden focus:border-cyan-500 cursor-pointer"
               >
-                <option value="Accepted">Accepted Offers Only (Strict Placement)</option>
-                <option value="Offered">All Extended Offers (Offers + Accepted)</option>
+                <option value="Accepted">Accepted Letters Only (Strict Verified Placement)</option>
+                <option value="Offered">All Extended Letters (Offer Issued or Accepted)</option>
               </select>
-              <p className="text-[11px] text-slate-400 mt-1">
-                Whether students who received an offer but haven't signed yet are marked as placed.
+              <p className="text-[11px] font-mono text-slate-500 mt-1">
+                // Defines whether candidates with pending offer decisions are accounted as placed.
               </p>
             </div>
           </div>
         </div>
 
         {/* Section 2: Currency & Salary Display Units */}
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xs space-y-4">
-          <div className="flex items-center gap-2.5 pb-2 border-b border-slate-100 dark:border-slate-800">
-            <DollarSign className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white">
-              Compensation & Currency Settings
+        <div className="intel-card p-6 rounded-3xl border border-white/[0.08] space-y-4">
+          <div className="flex items-center gap-2.5 pb-2 border-b border-white/[0.06]">
+            <DollarSign className="w-4 h-4 text-emerald-400" />
+            <h3 className="text-sm font-serif font-medium text-white">
+              Compensation & Currency Tokens
             </h3>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block font-semibold mb-1 text-slate-700 dark:text-slate-300">
-                Default Currency Symbol
+              <label className="block font-mono text-xs text-slate-400 mb-1">
+                Default Currency Glyph
               </label>
               <input
                 type="text"
                 value={formValues.currency_symbol}
                 onChange={(e) => setFormValues({ ...formValues, currency_symbol: e.target.value })}
-                className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
+                className="w-full p-2.5 bg-slate-950/60 border border-white/[0.08] rounded-xl font-mono text-xs text-emerald-400 font-bold focus:outline-hidden focus:border-cyan-500"
               />
             </div>
 
             <div>
-              <label className="block font-semibold mb-1 text-slate-700 dark:text-slate-300">
-                Default Salary Package Unit
+              <label className="block font-mono text-xs text-slate-400 mb-1">
+                Default Compensation Ledger Unit
               </label>
               <select
                 value={formValues.salary_display_unit}
                 onChange={(e) => setFormValues({ ...formValues, salary_display_unit: e.target.value })}
-                className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
+                className="w-full p-2.5 bg-slate-900 border border-white/[0.08] rounded-xl font-mono text-xs text-slate-200 focus:outline-hidden focus:border-cyan-500 cursor-pointer"
               >
-                <option value="LPA">LPA (Lakhs Per Annum - Indian Standard)</option>
+                <option value="LPA">LPA (Lakhs Per Annum — Indian Standard)</option>
                 <option value="USD">USD ($)</option>
                 <option value="K">Thousands (K)</option>
               </select>
@@ -181,43 +183,43 @@ export default function SettingsPage() {
         </div>
 
         {/* Section 3: Eligibility & Cutoff Evaluation Strategy */}
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xs space-y-4">
-          <div className="flex items-center gap-2.5 pb-2 border-b border-slate-100 dark:border-slate-800">
-            <Sliders className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white">
-              Rules Engine Evaluation Strategy
+        <div className="intel-card p-6 rounded-3xl border border-white/[0.08] space-y-4">
+          <div className="flex items-center gap-2.5 pb-2 border-b border-white/[0.06]">
+            <Sliders className="w-4 h-4 text-purple-400" />
+            <h3 className="text-sm font-serif font-medium text-white">
+              Policy Evaluation Architecture
             </h3>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block font-semibold mb-1 text-slate-700 dark:text-slate-300">
-                Rule Evaluation Mode
+              <label className="block font-mono text-xs text-slate-400 mb-1">
+                Rule Evaluation Strategy
               </label>
               <select
                 value={formValues.eligibility_rule_mode}
                 onChange={(e) => setFormValues({ ...formValues, eligibility_rule_mode: e.target.value })}
-                className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
+                className="w-full p-2.5 bg-slate-900 border border-white/[0.08] rounded-xl font-mono text-xs text-slate-200 focus:outline-hidden focus:border-cyan-500 cursor-pointer"
               >
                 <option value="global_priority">
-                  Global Rules + Department Overrides (Recommended)
+                  Global Rules + Department Overrides (Recommended Cascade)
                 </option>
                 <option value="company_strict">
-                  Company-Specific Strict Mode
+                  Company-Specific Strict Isolation Mode
                 </option>
               </select>
             </div>
 
-            <div className="flex items-center gap-2 pt-5">
+            <div className="flex items-center gap-2 pt-5 font-mono text-xs text-slate-300">
               <input
                 type="checkbox"
                 id="autoRecalc"
                 checked={formValues.auto_recalculate_eligibility}
                 onChange={(e) => setFormValues({ ...formValues, auto_recalculate_eligibility: e.target.checked })}
-                className="w-4 h-4 rounded text-blue-600 focus:ring-0"
+                className="w-4 h-4 rounded-md accent-cyan-500 cursor-pointer"
               />
-              <label htmlFor="autoRecalc" className="font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
-                Automatically recalculate all students on rule mutations
+              <label htmlFor="autoRecalc" className="cursor-pointer">
+                Automatically re-evaluate all candidate records on policy mutation
               </label>
             </div>
           </div>

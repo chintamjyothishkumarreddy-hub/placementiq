@@ -12,7 +12,10 @@ import {
   Filter,
   Layers,
   ArrowUpRight,
-  ShieldAlert
+  ShieldAlert,
+  Sparkles,
+  Activity,
+  Compass
 } from 'lucide-react';
 import {
   BarChart,
@@ -29,6 +32,20 @@ import {
   AreaChart,
   Area
 } from 'recharts';
+import {
+  Users as UsersIcon,
+  CheckCircle as CheckCircleIcon,
+  Briefcase as BriefcaseIcon,
+  Award as AwardIcon,
+  TrendingUp as TrendingUpIcon,
+  DollarSign as DollarSignIcon,
+  Building as BuildingIcon,
+  Calendar as CalendarIcon,
+  RefreshCw as RefreshCwIcon,
+  Filter as FilterIcon,
+  Layers as LayersIcon,
+  ShieldAlert as ShieldAlertIcon
+} from 'lucide-react';
 import api from '../api';
 import { useAuth } from '../context/AuthContext';
 
@@ -57,9 +74,9 @@ export default function DashboardPage({ onNavigate }) {
 
       const res = await api.get('/dashboard/stats', { params });
       setData(res.data);
-      if (isManual) showToast('Dashboard data refreshed from database', 'info');
+      if (isManual) showToast('Intelligence telemetry refreshed from core database', 'info');
     } catch (err) {
-      showToast('Failed to load dashboard metrics', 'error');
+      showToast('Telemetry acquisition failed', 'error');
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -72,9 +89,19 @@ export default function DashboardPage({ onNavigate }) {
 
   if (loading && !data) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-3">
-        <div className="w-10 h-10 border-3 border-blue-600 border-t-transparent rounded-full animate-spin" />
-        <p className="text-sm text-slate-500 font-medium">Calculating database metrics...</p>
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+        <div className="relative">
+          <div className="w-12 h-12 border-2 border-cyan-500/20 border-t-cyan-400 rounded-full animate-spin" />
+          <div className="absolute inset-0 rounded-full blur-md bg-cyan-500/20" />
+        </div>
+        <div className="text-center">
+          <span className="editorial-kicker text-[10px] text-cyan-400 block mb-1">
+            INITIALIZING CORE TELEMETRY
+          </span>
+          <p className="font-editorial italic text-slate-300 text-sm">
+            Calculating cohort placement intelligence models...
+          </p>
+        </div>
       </div>
     );
   }
@@ -83,170 +110,195 @@ export default function DashboardPage({ onNavigate }) {
 
   const statCards = [
     {
-      label: 'Total Registered',
+      label: 'Registered Cohort',
       value: kpis?.total_registered ?? 0,
-      sub: 'All registered students',
-      icon: Users,
-      color: 'blue'
+      sub: 'Total candidates enrolled',
+      icon: UsersIcon,
+      accent: 'border-t-cyan-500/80',
+      badge: 'COHORT',
+      glow: 'shadow-[0_0_15px_rgba(6,182,212,0.15)]'
     },
     {
-      label: 'Eligible Students',
+      label: 'Eligible Candidates',
       value: kpis?.total_eligible ?? 0,
-      sub: `${Math.round(((kpis?.total_eligible || 0) / (kpis?.total_registered || 1)) * 100)}% of registered`,
-      icon: CheckCircle,
-      color: 'emerald'
+      sub: `${Math.round(((kpis?.total_eligible || 0) / (kpis?.total_registered || 1)) * 100)}% compliance rate`,
+      icon: CheckCircleIcon,
+      accent: 'border-t-emerald-500/80',
+      badge: 'QUALIFIED',
+      glow: 'shadow-[0_0_15px_rgba(16,185,129,0.15)]'
     },
     {
       label: 'Placed Students',
       value: kpis?.total_placed ?? 0,
-      sub: 'Unique students with offers',
-      icon: Award,
-      color: 'indigo'
+      sub: 'Unique verified selections',
+      icon: AwardIcon,
+      accent: 'border-t-indigo-500/80',
+      badge: 'ACCEPTED',
+      glow: 'shadow-[0_0_15px_rgba(99,102,241,0.15)]'
     },
     {
       label: 'Unplaced Eligible',
       value: kpis?.unplaced_eligible ?? 0,
-      sub: 'Eligible awaiting placement',
-      icon: ShieldAlert,
-      color: 'amber'
+      sub: 'High-priority pipeline target',
+      icon: ShieldAlertIcon,
+      accent: 'border-t-amber-500/80',
+      badge: 'PENDING',
+      glow: 'shadow-[0_0_15px_rgba(245,158,11,0.15)]'
     },
     {
       label: 'Placement % (Eligible)',
       value: `${kpis?.placement_rate_eligible ?? 0}%`,
-      sub: 'Rate among eligible',
-      icon: TrendingUp,
-      color: 'teal'
+      sub: 'Success among eligible',
+      icon: TrendingUpIcon,
+      accent: 'border-t-teal-500/80',
+      badge: 'EFFICIENCY',
+      glow: 'shadow-[0_0_15px_rgba(20,184,166,0.15)]'
     },
     {
-      label: 'Placement % (Total)',
+      label: 'Placement % (Cohort)',
       value: `${kpis?.placement_rate_total ?? 0}%`,
-      sub: 'Rate among all students',
-      icon: Layers,
-      color: 'sky'
+      sub: 'Across all registered',
+      icon: LayersIcon,
+      accent: 'border-t-sky-500/80',
+      badge: 'OVERALL',
+      glow: 'shadow-[0_0_15px_rgba(14,165,233,0.15)]'
     },
     {
-      label: 'Highest Package',
+      label: 'Peak Package (CTC)',
       value: `₹${kpis?.highest_salary ?? 0} LPA`,
-      sub: 'Peak campus offer',
-      icon: DollarSign,
-      color: 'purple'
+      sub: 'Maximum campus offer',
+      icon: DollarSignIcon,
+      accent: 'border-t-purple-500/80',
+      badge: 'APEX',
+      glow: 'shadow-[0_0_15px_rgba(168,85,247,0.15)]'
     },
     {
-      label: 'Average Package',
+      label: 'Average Placed CTC',
       value: `₹${kpis?.average_salary ?? 0} LPA`,
-      sub: 'Mean placed salary',
-      icon: DollarSign,
-      color: 'violet'
+      sub: 'Mean remuneration package',
+      icon: DollarSignIcon,
+      accent: 'border-t-violet-500/80',
+      badge: 'MEAN',
+      glow: 'shadow-[0_0_15px_rgba(139,92,246,0.15)]'
     },
     {
-      label: 'Median Package',
+      label: 'Median Placed CTC',
       value: `₹${kpis?.median_salary ?? 0} LPA`,
-      sub: 'Median placed CTC',
-      icon: DollarSign,
-      color: 'fuchsia'
+      sub: 'Middle remuneration value',
+      icon: DollarSignIcon,
+      accent: 'border-t-fuchsia-500/80',
+      badge: 'MEDIAN',
+      glow: 'shadow-[0_0_15px_rgba(217,70,239,0.15)]'
     },
     {
-      label: 'Total Job Offers',
+      label: 'Total Offer Letters',
       value: kpis?.total_offers ?? 0,
-      sub: `Across ${kpis?.total_companies ?? 0} companies`,
-      icon: Briefcase,
-      color: 'cyan'
+      sub: `Across ${kpis?.total_companies ?? 0} enterprises`,
+      icon: BriefcaseIcon,
+      accent: 'border-t-cyan-500/80',
+      badge: 'LETTERS',
+      glow: 'shadow-[0_0_15px_rgba(6,182,212,0.15)]'
     },
     {
-      label: 'Participating Companies',
+      label: 'Hiring Partners',
       value: kpis?.total_companies ?? 0,
-      sub: 'Recruiters on record',
-      icon: Building,
-      color: 'rose'
+      sub: 'Active recruiting corporations',
+      icon: BuildingIcon,
+      accent: 'border-t-rose-500/80',
+      badge: 'PARTNERS',
+      glow: 'shadow-[0_0_15px_rgba(244,63,94,0.15)]'
     },
     {
       label: 'Active Drives',
       value: kpis?.active_drives ?? 0,
-      sub: 'Upcoming or In Progress',
-      icon: Calendar,
-      color: 'orange'
+      sub: 'Scheduled & in recruitment',
+      icon: CalendarIcon,
+      accent: 'border-t-orange-500/80',
+      badge: 'LIVE PIPELINE',
+      glow: 'shadow-[0_0_15px_rgba(249,115,22,0.15)]'
     }
   ];
 
-  const colorStyles = {
-    blue: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20',
-    emerald: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20',
-    indigo: 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20',
-    amber: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20',
-    teal: 'bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/20',
-    sky: 'bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/20',
-    purple: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20',
-    violet: 'bg-violet-500/10 text-violet-600 dark:text-violet-400 border-violet-500/20',
-    fuchsia: 'bg-fuchsia-500/10 text-fuchsia-600 dark:text-fuchsia-400 border-fuchsia-500/20',
-    cyan: 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20',
-    rose: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20',
-    orange: 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/20'
-  };
-
   return (
-    <div className="space-y-6">
-      {/* Role-Specific Hero Header */}
-      <div className={`p-5 sm:p-6 rounded-3xl border shadow-2xs transition-all ${
+    <div className="space-y-7 animate-fade-in font-sans">
+      {/* Editorial Masthead Hero Header */}
+      <div className={`p-6 sm:p-8 rounded-3xl intel-card border relative overflow-hidden transition-all ${
         role === 'admin'
-          ? 'bg-gradient-to-r from-purple-500/10 via-indigo-500/5 to-transparent dark:from-purple-950/40 dark:via-indigo-950/20 dark:to-transparent border-purple-200 dark:border-purple-800/50'
+          ? 'border-purple-500/30'
           : role === 'placement_officer'
-          ? 'bg-gradient-to-r from-blue-500/10 via-sky-500/5 to-transparent dark:from-blue-950/40 dark:via-sky-950/20 dark:to-transparent border-blue-200 dark:border-blue-800/50'
-          : 'bg-gradient-to-r from-slate-200/50 via-slate-100/30 to-transparent dark:from-slate-900/60 dark:via-slate-800/30 dark:to-transparent border-slate-200 dark:border-slate-800'
+          ? 'border-cyan-500/30'
+          : 'border-slate-700/60'
       }`}>
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold tracking-wide uppercase border ${
-                role === 'admin'
-                  ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/60 dark:text-purple-300 border-purple-300 dark:border-purple-700'
-                  : role === 'placement_officer'
-                  ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/60 dark:text-blue-300 border-blue-300 dark:border-blue-700'
-                  : 'bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border-slate-300 dark:border-slate-700'
-              }`}>
-                {role === 'admin' ? 'Administrator' : role === 'placement_officer' ? 'Placement Officer' : 'Viewer (Read-Only)'}
+        {/* Subtle decorative glow */}
+        <div className={`absolute top-0 right-0 w-80 h-80 rounded-full blur-3xl pointer-events-none opacity-20 ${
+          role === 'admin' ? 'bg-purple-600' : role === 'placement_officer' ? 'bg-cyan-500' : 'bg-slate-500'
+        }`} />
+
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-3 mb-2.5">
+              <span className="editorial-kicker text-[10px] text-cyan-400">
+                <span className="phosphor-dot phosphor-dot-cyan"></span>
+                <span>DOSSIER NO. 2026 // PLACEMENT INTELLIGENCE ARCHIVE</span>
               </span>
-              <span className="text-xs text-slate-400 font-medium">
-                • Authenticated as <strong>{user?.full_name || user?.username}</strong>
+              <span className="text-slate-600 font-mono text-xs">|</span>
+              <span className={`px-2.5 py-0.5 rounded-md text-[10px] font-mono uppercase tracking-widest font-semibold border ${
+                role === 'admin'
+                  ? 'bg-purple-950/60 text-purple-300 border-purple-500/40'
+                  : role === 'placement_officer'
+                  ? 'bg-cyan-950/60 text-cyan-300 border-cyan-500/40'
+                  : 'bg-slate-900/80 text-slate-300 border-slate-700'
+              }`}>
+                {role === 'admin' ? 'LVL-4 // ADMINISTRATOR' : role === 'placement_officer' ? 'LVL-3 // PLACEMENT OFFICER' : 'LVL-1 // INSTITUTIONAL VIEWER'}
               </span>
             </div>
 
-            <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
-              {role === 'admin'
-                ? 'Administrator Dashboard & System Control'
-                : role === 'placement_officer'
-                ? 'Placement Officer Operations Dashboard'
-                : 'Campus Placement Overview & Analytics Dashboard'}
+            <h1 className="font-editorial text-2xl sm:text-3xl lg:text-4xl font-medium tracking-tight text-white leading-tight">
+              {role === 'admin' ? (
+                <>
+                  Institutional Placement <span className="italic text-cyan-400">Intelligence</span> &amp; Governance Command
+                </>
+              ) : role === 'placement_officer' ? (
+                <>
+                  Recruitment Operations &amp; Candidate <span className="italic text-cyan-400">Pipeline</span> Terminal
+                </>
+              ) : (
+                <>
+                  Institutional Recruitment <span className="italic text-cyan-400">Dossier</span> &amp; Analytical Ledger
+                </>
+              )}
             </h1>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1 max-w-2xl">
+
+            <p className="font-editorial italic text-slate-300 text-sm sm:text-base mt-2 leading-relaxed">
               {role === 'admin'
-                ? 'Full administrative control active. You can manage system users, configure dynamic CGPA cutoffs & eligibility rules, import/export datasets, inspect audit logs, and oversee campus placement operations.'
+                ? 'Full system sovereignty active. Direct authorization over staff credentials, dynamic eligibility algorithms, institutional cutoffs, and audit registers.'
                 : role === 'placement_officer'
-                ? 'Placement operations authorized. Manage recruitment drives, update candidate interview stages, record job offers, track company eligibility, and generate placement reports.'
-                : 'Read-only access enabled. You can monitor institutional placement metrics, evaluate department performance, inspect placed student distributions, and review analytics.'}
+                ? 'Operational management active. Orchestrating campus recruitment drives, validating interview pipelines, recording corporate CTC packages, and generating analytical exports.'
+                : 'Executive overview protocol. Inspecting real-time institutional metrics, department benchmark distributions, and verified recruiter records in read-only telemetry.'}
             </p>
           </div>
 
-          {/* Quick Actions based on role */}
-          <div className="flex flex-wrap items-center gap-2 shrink-0">
+          {/* Quick Actions / Role Controls */}
+          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
             {role === 'admin' && (
               <>
                 <button
                   onClick={() => onNavigate && onNavigate('users')}
-                  className="px-3.5 py-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
+                  className="px-4 py-2 bg-white/[0.04] hover:bg-white/[0.08] text-slate-200 hover:text-white border border-white/[0.1] hover:border-purple-500/40 rounded-xl text-xs font-mono font-medium tracking-wider transition-all cursor-pointer"
                 >
-                  Manage Users
+                  MANAGE USERS
                 </button>
                 <button
                   onClick={() => onNavigate && onNavigate('rules')}
-                  className="px-3.5 py-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
+                  className="px-4 py-2 bg-white/[0.04] hover:bg-white/[0.08] text-slate-200 hover:text-white border border-white/[0.1] hover:border-cyan-500/40 rounded-xl text-xs font-mono font-medium tracking-wider transition-all cursor-pointer"
                 >
-                  Eligibility Rules
+                  CUTOFF RULES
                 </button>
                 <button
                   onClick={() => onNavigate && onNavigate('settings')}
-                  className="px-3.5 py-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
+                  className="px-4 py-2 bg-gradient-to-r from-purple-600/30 to-indigo-600/30 hover:from-purple-600/40 hover:to-indigo-600/40 text-purple-200 border border-purple-500/40 rounded-xl text-xs font-mono font-medium tracking-wider transition-all cursor-pointer shadow-[0_0_15px_rgba(168,85,247,0.15)]"
                 >
-                  System Settings
+                  SYSTEM SETTINGS
                 </button>
               </>
             )}
@@ -254,21 +306,21 @@ export default function DashboardPage({ onNavigate }) {
               <>
                 <button
                   onClick={() => onNavigate && onNavigate('drives')}
-                  className="px-3.5 py-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
+                  className="px-4 py-2 bg-white/[0.04] hover:bg-white/[0.08] text-slate-200 hover:text-white border border-white/[0.1] hover:border-cyan-500/40 rounded-xl text-xs font-mono font-medium tracking-wider transition-all cursor-pointer"
                 >
-                  Manage Drives
+                  SCHEDULE DRIVE
                 </button>
                 <button
                   onClick={() => onNavigate && onNavigate('students')}
-                  className="px-3.5 py-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
+                  className="px-4 py-2 bg-white/[0.04] hover:bg-white/[0.08] text-slate-200 hover:text-white border border-white/[0.1] hover:border-cyan-500/40 rounded-xl text-xs font-mono font-medium tracking-wider transition-all cursor-pointer"
                 >
-                  Student Records
+                  STUDENT REGISTER
                 </button>
                 <button
                   onClick={() => onNavigate && onNavigate('offers')}
-                  className="px-3.5 py-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
+                  className="px-4 py-2 bg-gradient-to-r from-cyan-600/30 to-blue-600/30 hover:from-cyan-600/40 hover:to-blue-600/40 text-cyan-200 border border-cyan-500/40 rounded-xl text-xs font-mono font-medium tracking-wider transition-all cursor-pointer shadow-[0_0_15px_rgba(6,182,212,0.15)]"
                 >
-                  Job Offers
+                  OFFERS LEDGER
                 </button>
               </>
             )}
@@ -276,18 +328,18 @@ export default function DashboardPage({ onNavigate }) {
               <>
                 <button
                   onClick={() => onNavigate && onNavigate('analytics')}
-                  className="px-3.5 py-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
+                  className="px-4 py-2 bg-white/[0.04] hover:bg-white/[0.08] text-slate-200 hover:text-white border border-white/[0.1] hover:border-cyan-500/40 rounded-xl text-xs font-mono font-medium tracking-wider transition-all cursor-pointer"
                 >
-                  Full Analytics
+                  FULL ANALYTICS
                 </button>
                 <button
                   onClick={() => onNavigate && onNavigate('reports')}
-                  className="px-3.5 py-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
+                  className="px-4 py-2 bg-white/[0.04] hover:bg-white/[0.08] text-slate-200 hover:text-white border border-white/[0.1] hover:border-cyan-500/40 rounded-xl text-xs font-mono font-medium tracking-wider transition-all cursor-pointer"
                 >
-                  Placement Reports
+                  INTELLIGENCE REPORTS
                 </button>
-                <span className="px-3.5 py-2 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 rounded-xl text-xs font-medium border border-slate-200 dark:border-slate-700">
-                  Read-Only Mode
+                <span className="px-3 py-1.5 rounded-xl bg-white/[0.02] border border-white/[0.06] text-[10px] font-mono text-slate-400">
+                  READ-ONLY ACTIVE
                 </span>
               </>
             )}
@@ -295,24 +347,26 @@ export default function DashboardPage({ onNavigate }) {
         </div>
       </div>
 
-      {/* Filters Bar & Actions */}
-      <div className="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs">
+      {/* Intelligence Filter Terminal */}
+      <div className="intel-card p-5 rounded-2xl border border-white/[0.08]">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-            <h2 className="text-sm font-bold text-slate-800 dark:text-slate-200">
-              Dashboard Filters
-            </h2>
+          <div className="flex items-center gap-2.5">
+            <FilterIcon className="w-4 h-4 text-cyan-400" />
+            <span className="font-mono text-xs uppercase tracking-wider text-slate-200 font-semibold">
+              Filter Query Parameters
+            </span>
+            <span className="text-slate-600 font-mono text-xs">•</span>
+            <span className="text-[10px] font-mono text-cyan-400/80">LIVE SCOPE</span>
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            {/* Department Filter */}
+            {/* Department */}
             <div className="flex items-center gap-1.5">
-              <span className="text-xs font-medium text-slate-500">Dept:</span>
+              <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400">DEPT:</span>
               <select
                 value={department}
                 onChange={(e) => setDepartment(e.target.value)}
-                className="text-xs font-semibold py-1.5 px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
+                className="text-xs font-mono py-1.5 px-3 bg-black/50 border border-white/10 rounded-xl text-slate-200 focus:outline-hidden focus:border-cyan-400"
               >
                 <option value="All">All Departments</option>
                 {filter_options?.departments?.map((d) => (
@@ -321,28 +375,28 @@ export default function DashboardPage({ onNavigate }) {
               </select>
             </div>
 
-            {/* Academic Year Filter */}
+            {/* Academic Year */}
             <div className="flex items-center gap-1.5">
-              <span className="text-xs font-medium text-slate-500">Academic Year:</span>
+              <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400">ACAD.YR:</span>
               <select
                 value={academicYear}
                 onChange={(e) => setAcademicYear(e.target.value)}
-                className="text-xs font-semibold py-1.5 px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
+                className="text-xs font-mono py-1.5 px-3 bg-black/50 border border-white/10 rounded-xl text-slate-200 focus:outline-hidden focus:border-cyan-400"
               >
-                <option value="All">All Years</option>
+                <option value="All">All Academic Years</option>
                 {filter_options?.academic_years?.map((y) => (
                   <option key={y} value={y}>{y}</option>
                 ))}
               </select>
             </div>
 
-            {/* Graduation Year Filter */}
+            {/* Graduation Year */}
             <div className="flex items-center gap-1.5">
-              <span className="text-xs font-medium text-slate-500">Grad Year:</span>
+              <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400">GRAD.YR:</span>
               <select
                 value={graduationYear}
                 onChange={(e) => setGraduationYear(e.target.value)}
-                className="text-xs font-semibold py-1.5 px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
+                className="text-xs font-mono py-1.5 px-3 bg-black/50 border border-white/10 rounded-xl text-slate-200 focus:outline-hidden focus:border-cyan-400"
               >
                 <option value="All">All Grad Years</option>
                 {filter_options?.graduation_years?.map((gy) => (
@@ -351,13 +405,13 @@ export default function DashboardPage({ onNavigate }) {
               </select>
             </div>
 
-            {/* Company Filter */}
+            {/* Company */}
             <div className="flex items-center gap-1.5">
-              <span className="text-xs font-medium text-slate-500">Company:</span>
+              <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400">PARTNER:</span>
               <select
                 value={companyId}
                 onChange={(e) => setCompanyId(e.target.value)}
-                className="text-xs font-semibold py-1.5 px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden max-w-[150px] truncate"
+                className="text-xs font-mono py-1.5 px-3 bg-black/50 border border-white/10 rounded-xl text-slate-200 focus:outline-hidden focus:border-cyan-400 max-w-[150px] truncate"
               >
                 <option value="All">All Companies</option>
                 {filter_options?.companies?.map((c) => (
@@ -366,75 +420,98 @@ export default function DashboardPage({ onNavigate }) {
               </select>
             </div>
 
-            {/* Refresh Button */}
+            {/* Refresh */}
             <button
               onClick={() => fetchStats(true)}
               disabled={refreshing}
-              className="p-2 bg-blue-50 dark:bg-blue-950/40 hover:bg-blue-100 dark:hover:bg-blue-900/40 text-blue-600 dark:text-blue-300 rounded-xl border border-blue-200 dark:border-blue-800 transition-colors"
-              title="Refresh metrics from database"
+              className="p-2 text-slate-400 hover:text-cyan-400 hover:bg-white/[0.04] border border-white/10 rounded-xl transition-all cursor-pointer"
+              title="Recalculate live telemetry"
             >
-              <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
+              <RefreshCwIcon className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin text-cyan-400' : ''}`} />
             </button>
           </div>
         </div>
       </div>
 
-      {/* KPI Cards Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-        {statCards.map((card, idx) => {
-          const Icon = card.icon;
-          return (
-            <div
-              key={idx}
-              className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs hover:shadow-md transition-shadow flex flex-col justify-between"
-            >
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 truncate">
-                  {card.label}
-                </span>
-                <div className={`p-1.5 rounded-lg border ${colorStyles[card.color]}`}>
-                  <Icon className="w-3.5 h-3.5" />
+      {/* 12 High-Precision KPI Intelligence Metric Units */}
+      <div>
+        <div className="flex items-center justify-between mb-3 px-1">
+          <div className="editorial-kicker text-[10px] text-cyan-400">
+            <span>INDEX // RECRUITMENT METRIC TELEMETRY MATRIX</span>
+          </div>
+          <span className="text-[10px] font-mono text-slate-500">REALTIME SYNC</span>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3.5">
+          {statCards.map((card, idx) => {
+            const Icon = card.icon;
+            return (
+              <div
+                key={idx}
+                className={`intel-card-interactive p-4 rounded-2xl border-t-2 ${card.accent} flex flex-col justify-between relative overflow-hidden`}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[9px] font-mono tracking-[0.2em] uppercase text-cyan-400/90 font-medium">
+                      {card.badge}
+                    </span>
+                    <Icon className="w-3.5 h-3.5 text-slate-400" />
+                  </div>
+                  <div className="text-xs font-medium text-slate-300 truncate mb-1">
+                    {card.label}
+                  </div>
+                </div>
+
+                <div className="mt-2">
+                  <div className="font-mono-num text-2xl font-bold tracking-tight text-white">
+                    {card.value}
+                  </div>
+                  <div className="text-[10px] font-mono text-slate-400 mt-1 truncate">
+                    {card.sub}
+                  </div>
                 </div>
               </div>
-              <div>
-                <div className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
-                  {card.value}
-                </div>
-                <div className="text-[11px] font-medium text-slate-400 dark:text-slate-500 mt-0.5 truncate">
-                  {card.sub}
-                </div>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
 
-      {/* Interactive Charts Grid */}
+      {/* Interactive Intelligence Visualizations */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Chart 1: Department-wise Placement Performance */}
-        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs">
-          <div className="flex items-center justify-between mb-4">
+        {/* Chart 1: Department Performance */}
+        <div className="intel-card p-6 rounded-3xl border border-white/[0.08]">
+          <div className="flex items-center justify-between mb-5">
             <div>
-              <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
-                Department Performance
+              <span className="editorial-kicker text-[10px] text-cyan-400 mb-1 block">
+                ANALYTICS // FIG. 01
+              </span>
+              <h3 className="font-editorial text-xl font-semibold text-white tracking-tight">
+                Department Performance Ledger
               </h3>
-              <p className="text-xs text-slate-400 dark:text-slate-500">
-                Total registered vs Eligible vs Placed students
+              <p className="text-xs text-slate-400 mt-0.5">
+                Total registered vs Eligible vs Placed candidate volume
               </p>
             </div>
           </div>
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={charts?.department_stats || []} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
-                <XAxis dataKey="department" tick={{ fontSize: 11 }} />
-                <YAxis tick={{ fontSize: 11 }} />
+                <CartesianGrid strokeDasharray="2 4" stroke="rgba(255, 255, 255, 0.05)" />
+                <XAxis dataKey="department" tick={{ fill: '#94a3b8', fontSize: 11, fontFamily: 'JetBrains Mono' }} />
+                <YAxis tick={{ fill: '#94a3b8', fontSize: 11, fontFamily: 'JetBrains Mono' }} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '12px', fontSize: '12px', color: '#fff' }}
+                  contentStyle={{
+                    backgroundColor: 'rgba(13, 18, 31, 0.95)',
+                    borderColor: 'rgba(255, 255, 255, 0.12)',
+                    borderRadius: '16px',
+                    backdropFilter: 'blur(16px)',
+                    fontFamily: 'JetBrains Mono',
+                    color: '#f1f5f9'
+                  }}
                 />
-                <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '8px' }} />
-                <Bar dataKey="total" name="Total" fill="#94a3b8" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="eligible" name="Eligible" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '8px', fontFamily: 'JetBrains Mono' }} />
+                <Bar dataKey="total" name="Total" fill="#475569" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="eligible" name="Eligible" fill="#06b6d4" radius={[4, 4, 0, 0]} />
                 <Bar dataKey="placed" name="Placed" fill="#10b981" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -442,97 +519,130 @@ export default function DashboardPage({ onNavigate }) {
         </div>
 
         {/* Chart 2: Salary Package Distribution */}
-        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs">
-          <div className="flex items-center justify-between mb-4">
+        <div className="intel-card p-6 rounded-3xl border border-white/[0.08]">
+          <div className="flex items-center justify-between mb-5">
             <div>
-              <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
+              <span className="editorial-kicker text-[10px] text-cyan-400 mb-1 block">
+                ANALYTICS // FIG. 02
+              </span>
+              <h3 className="font-editorial text-xl font-semibold text-white tracking-tight">
                 Salary Package Distribution (LPA)
               </h3>
-              <p className="text-xs text-slate-400 dark:text-slate-500">
-                Placement counts grouped by CTC brackets
+              <p className="text-xs text-slate-400 mt-0.5">
+                Frequency distribution across compensation brackets
               </p>
             </div>
           </div>
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={charts?.salary_distribution || []} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
-                <XAxis dataKey="range" tick={{ fontSize: 11 }} />
-                <YAxis tick={{ fontSize: 11 }} />
+                <CartesianGrid strokeDasharray="2 4" stroke="rgba(255, 255, 255, 0.05)" />
+                <XAxis dataKey="range" tick={{ fill: '#94a3b8', fontSize: 11, fontFamily: 'JetBrains Mono' }} />
+                <YAxis tick={{ fill: '#94a3b8', fontSize: 11, fontFamily: 'JetBrains Mono' }} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '12px', fontSize: '12px', color: '#fff' }}
+                  contentStyle={{
+                    backgroundColor: 'rgba(13, 18, 31, 0.95)',
+                    borderColor: 'rgba(255, 255, 255, 0.12)',
+                    borderRadius: '16px',
+                    backdropFilter: 'blur(16px)',
+                    fontFamily: 'JetBrains Mono',
+                    color: '#f1f5f9'
+                  }}
                 />
-                <Bar dataKey="count" name="Offers / Placements" fill="#8b5cf6" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="count" name="Offers Extended" fill="#8b5cf6" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Chart 3: Top Hiring Companies */}
-        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs">
-          <div className="flex items-center justify-between mb-4">
+        <div className="intel-card p-6 rounded-3xl border border-white/[0.08]">
+          <div className="flex items-center justify-between mb-5">
             <div>
-              <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
-                Top Hiring Companies & Average CTC
+              <span className="editorial-kicker text-[10px] text-cyan-400 mb-1 block">
+                ANALYTICS // FIG. 03
+              </span>
+              <h3 className="font-editorial text-xl font-semibold text-white tracking-tight">
+                Recruiter Acquisition Matrix
               </h3>
-              <p className="text-xs text-slate-400 dark:text-slate-500">
-                Number of student selections by recruiter
+              <p className="text-xs text-slate-400 mt-0.5">
+                Candidate headcount by corporate hiring partner
               </p>
             </div>
           </div>
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart layout="vertical" data={charts?.company_selections || []} margin={{ top: 5, right: 20, left: 40, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
-                <XAxis type="number" tick={{ fontSize: 11 }} />
-                <YAxis type="category" dataKey="company" tick={{ fontSize: 10 }} width={90} />
+                <CartesianGrid strokeDasharray="2 4" stroke="rgba(255, 255, 255, 0.05)" />
+                <XAxis type="number" tick={{ fill: '#94a3b8', fontSize: 11, fontFamily: 'JetBrains Mono' }} />
+                <YAxis type="category" dataKey="company" tick={{ fill: '#cbd5e1', fontSize: 11, fontFamily: 'JetBrains Mono' }} width={90} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '12px', fontSize: '12px', color: '#fff' }}
+                  contentStyle={{
+                    backgroundColor: 'rgba(13, 18, 31, 0.95)',
+                    borderColor: 'rgba(255, 255, 255, 0.12)',
+                    borderRadius: '16px',
+                    backdropFilter: 'blur(16px)',
+                    fontFamily: 'JetBrains Mono',
+                    color: '#f1f5f9'
+                  }}
                 />
-                <Bar dataKey="selections" name="Selections" fill="#3b82f6" radius={[0, 4, 4, 0]} />
+                <Bar dataKey="selections" name="Selections" fill="#06b6d4" radius={[0, 4, 4, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Chart 4: CGPA Ranges vs Placement */}
-        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs">
-          <div className="flex items-center justify-between mb-4">
+        <div className="intel-card p-6 rounded-3xl border border-white/[0.08]">
+          <div className="flex items-center justify-between mb-5">
             <div>
-              <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
-                CGPA Distribution vs Placement Outcome
+              <span className="editorial-kicker text-[10px] text-cyan-400 mb-1 block">
+                ANALYTICS // FIG. 04
+              </span>
+              <h3 className="font-editorial text-xl font-semibold text-white tracking-tight">
+                Academic CGPA vs Conversion
               </h3>
-              <p className="text-xs text-slate-400 dark:text-slate-500">
-                Stacked breakdown across academic score tiers
+              <p className="text-xs text-slate-400 mt-0.5">
+                Placement success breakdown by score tiers
               </p>
             </div>
           </div>
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={charts?.cgpa_ranges || []} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
-                <XAxis dataKey="range" tick={{ fontSize: 11 }} />
-                <YAxis tick={{ fontSize: 11 }} />
+                <CartesianGrid strokeDasharray="2 4" stroke="rgba(255, 255, 255, 0.05)" />
+                <XAxis dataKey="range" tick={{ fill: '#94a3b8', fontSize: 11, fontFamily: 'JetBrains Mono' }} />
+                <YAxis tick={{ fill: '#94a3b8', fontSize: 11, fontFamily: 'JetBrains Mono' }} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '12px', fontSize: '12px', color: '#fff' }}
+                  contentStyle={{
+                    backgroundColor: 'rgba(13, 18, 31, 0.95)',
+                    borderColor: 'rgba(255, 255, 255, 0.12)',
+                    borderRadius: '16px',
+                    backdropFilter: 'blur(16px)',
+                    fontFamily: 'JetBrains Mono',
+                    color: '#f1f5f9'
+                  }}
                 />
-                <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '8px' }} />
+                <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '8px', fontFamily: 'JetBrains Mono' }} />
                 <Bar dataKey="placed" name="Placed" stackId="a" fill="#10b981" />
-                <Bar dataKey="unplaced" name="Unplaced" stackId="a" fill="#cbd5e1" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="unplaced" name="Unplaced" stackId="a" fill="#334155" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Chart 5: Placement Eligibility Breakdown (Donut) */}
-        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs">
-          <div className="flex items-center justify-between mb-4">
+        <div className="intel-card p-6 rounded-3xl border border-white/[0.08]">
+          <div className="flex items-center justify-between mb-5">
             <div>
-              <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
-                Eligibility Status Breakdown
+              <span className="editorial-kicker text-[10px] text-cyan-400 mb-1 block">
+                ANALYTICS // FIG. 05
+              </span>
+              <h3 className="font-editorial text-xl font-semibold text-white tracking-tight">
+                Eligibility Compliance Ratio
               </h3>
-              <p className="text-xs text-slate-400 dark:text-slate-500">
-                Student compliance with current placement rules
+              <p className="text-xs text-slate-400 mt-0.5">
+                Cohort standing against configured placement rules
               </p>
             </div>
           </div>
@@ -543,47 +653,70 @@ export default function DashboardPage({ onNavigate }) {
                   data={charts?.eligibility_breakdown || []}
                   cx="50%"
                   cy="50%"
-                  innerRadius={60}
-                  outerRadius={85}
-                  paddingAngle={5}
+                  innerRadius={62}
+                  outerRadius={88}
+                  paddingAngle={6}
                   dataKey="count"
                   nameKey="status"
                 >
                   {(charts?.eligibility_breakdown || []).map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
+                    <Cell key={`cell-${index}`} fill={entry.color} stroke="rgba(7, 9, 14, 0.8)" strokeWidth={2} />
                   ))}
                 </Pie>
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '12px', fontSize: '12px', color: '#fff' }}
+                  contentStyle={{
+                    backgroundColor: 'rgba(13, 18, 31, 0.95)',
+                    borderColor: 'rgba(255, 255, 255, 0.12)',
+                    borderRadius: '16px',
+                    backdropFilter: 'blur(16px)',
+                    fontFamily: 'JetBrains Mono',
+                    color: '#f1f5f9'
+                  }}
                 />
-                <Legend wrapperStyle={{ fontSize: '12px' }} />
+                <Legend wrapperStyle={{ fontSize: '11px', fontFamily: 'JetBrains Mono' }} />
               </PieChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Chart 6: Year Trends (Area) */}
-        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs">
-          <div className="flex items-center justify-between mb-4">
+        <div className="intel-card p-6 rounded-3xl border border-white/[0.08]">
+          <div className="flex items-center justify-between mb-5">
             <div>
-              <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
-                Batch Placement Progression
+              <span className="editorial-kicker text-[10px] text-cyan-400 mb-1 block">
+                ANALYTICS // FIG. 06
+              </span>
+              <h3 className="font-editorial text-xl font-semibold text-white tracking-tight">
+                Historical Progression
               </h3>
-              <p className="text-xs text-slate-400 dark:text-slate-500">
-                Placements and average package trajectory
+              <p className="text-xs text-slate-400 mt-0.5">
+                Longitudinal placement trajectory across academic cohorts
               </p>
             </div>
           </div>
           <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={charts?.year_trends || []} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
-                <XAxis dataKey="year" tick={{ fontSize: 11 }} />
-                <YAxis tick={{ fontSize: 11 }} />
+                <defs>
+                  <linearGradient id="colorPlaced" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.4} />
+                    <stop offset="95%" stopColor="#06b6d4" stopOpacity={0.0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="2 4" stroke="rgba(255, 255, 255, 0.05)" />
+                <XAxis dataKey="year" tick={{ fill: '#94a3b8', fontSize: 11, fontFamily: 'JetBrains Mono' }} />
+                <YAxis tick={{ fill: '#94a3b8', fontSize: 11, fontFamily: 'JetBrains Mono' }} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '12px', fontSize: '12px', color: '#fff' }}
+                  contentStyle={{
+                    backgroundColor: 'rgba(13, 18, 31, 0.95)',
+                    borderColor: 'rgba(255, 255, 255, 0.12)',
+                    borderRadius: '16px',
+                    backdropFilter: 'blur(16px)',
+                    fontFamily: 'JetBrains Mono',
+                    color: '#f1f5f9'
+                  }}
                 />
-                <Area type="monotone" dataKey="placed" name="Placed Students" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.2} />
+                <Area type="monotone" dataKey="placed" name="Placed Students" stroke="#06b6d4" strokeWidth={2} fillOpacity={1} fill="url(#colorPlaced)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
