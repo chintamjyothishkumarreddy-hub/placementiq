@@ -12,7 +12,6 @@ import {
   Trash2,
   CheckCircle,
   XCircle,
-  Download,
   X,
   FileCheck
 } from 'lucide-react';
@@ -164,10 +163,6 @@ export default function OffersPage() {
     }
   };
 
-  const handleExport = (fmt = 'csv') => {
-    window.open(`/api/import-export/export/offers?format=${fmt}`, '_blank');
-  };
-
   // Distinct placed students calculation
   const acceptedOffers = offers.filter((o) => o.status === 'Accepted');
   const distinctPlacedStudents = new Set(acceptedOffers.map((o) => o.student_id)).size;
@@ -195,21 +190,6 @@ export default function OffersPage() {
               <span>Record Job Offer</span>
             </button>
           )}
-
-          <div className="flex items-center gap-1 border-l border-slate-200 dark:border-slate-800 pl-2">
-            <button
-              onClick={() => handleExport('csv')}
-              className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-xs font-medium flex items-center gap-1"
-            >
-              <Download className="w-3.5 h-3.5" /> CSV
-            </button>
-            <button
-              onClick={() => handleExport('excel')}
-              className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-xs font-medium flex items-center gap-1"
-            >
-              <Download className="w-3.5 h-3.5" /> Excel
-            </button>
-          </div>
         </div>
       </div>
 

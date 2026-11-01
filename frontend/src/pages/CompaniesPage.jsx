@@ -10,7 +10,6 @@ import {
   Mail,
   Phone,
   MapPin,
-  Download,
   X,
   ExternalLink,
   ChevronDown,
@@ -225,10 +224,6 @@ export default function CompaniesPage() {
     }
   };
 
-  const handleExport = (fmt = 'csv') => {
-    window.open(`/api/import-export/export/companies?format=${fmt}`, '_blank');
-  };
-
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -252,21 +247,6 @@ export default function CompaniesPage() {
               <span>Add Company</span>
             </button>
           )}
-
-          <div className="flex items-center gap-1 border-l border-slate-200 dark:border-slate-800 pl-2">
-            <button
-              onClick={() => handleExport('csv')}
-              className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-xs font-medium flex items-center gap-1"
-            >
-              <Download className="w-3.5 h-3.5" /> CSV
-            </button>
-            <button
-              onClick={() => handleExport('excel')}
-              className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-xs font-medium flex items-center gap-1"
-            >
-              <Download className="w-3.5 h-3.5" /> Excel
-            </button>
-          </div>
         </div>
       </div>
 
