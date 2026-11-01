@@ -134,3 +134,39 @@ The application includes built-in spreadsheet documentation and import templates
 2. Access executive KPIs on the **Dashboard**.
 3. Inspect branch-wise placement percentages, salary distributions, and hiring partner metrics under **Placement Analytics**.
 4. Generate print-ready institutional summaries under **Reports**.
+
+---
+
+## 8. Public Landing Page & Route Architecture
+
+The application implements a multi-tier routing model:
+
+```
+[ Visitor / Public User ]
+         │
+         ▼
+[ / (Landing Page) ] ───► Features, Workflow, Analytics Preview, About, Contact
+         │
+         ├───► [ /login ] ───► Authentication (Existing LoginPage)
+         │                         │
+         └───► [ /signup ] ──► Registration (New SignupPage)
+                                   │
+                                   ▼
+                   [ /dashboard (Protected App Shell) ]
+                   ├── 1. Dashboard (KPIs & Charts)
+                   ├── 2. Students Directory
+                   ├── 3. Companies & Job Roles
+                   ├── 4. Placement Drives
+                   ├── 5. Applications & Stages
+                   ├── 6. Eligibility Rules Engine
+                   ├── 7. Offers & Salaries
+                   ├── 8. Placement Analytics
+                   ├── 9. Data Import & Export
+                   ├── 10. Reports Generation
+                   ├── 11. User Management
+                   ├── 12. System Settings
+                   └── 13. Immutable Audit Logs
+```
+
+- **Guarded Access**: Direct visits to `/dashboard` by unauthenticated users automatically redirect to `/login`.
+- **Seamless Return**: Authenticated users can click **"Public Site"** in the top navigation bar to return to the landing page anytime without terminating their active session.

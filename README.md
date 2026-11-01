@@ -6,21 +6,29 @@
 
 ---
 
-## 🌐 Live Web Deployment
+## 🌐 Application Access & Routes
 
-The application is deployed and actively running on the public web with secure SSL / HTTPS:
+The application features a modern SaaS public landing page with seamless authentication and dashboard integration:
 
-- **Live Web Application**: [https://bar-closer-bond-pension.trycloudflare.com](https://bar-closer-bond-pension.trycloudflare.com)
-- **Interactive REST API Documentation**: [https://bar-closer-bond-pension.trycloudflare.com/docs](https://bar-closer-bond-pension.trycloudflare.com/docs)
-- **Local Unified Server**: [http://127.0.0.1:8000](http://127.0.0.1:8000)
-
-*(Accessible globally across mobile devices, tablets, and desktop browsers with no local installation required).*
+- **Public Landing Page**: [http://127.0.0.1:8000/](http://127.0.0.1:8000/) *(Showcases institutional metrics, features, 4-step process, and demo analytics preview)*
+- **Sign In Portal**: [http://127.0.0.1:8000/login](http://127.0.0.1:8000/login)
+- **Account Registration**: [http://127.0.0.1:8000/signup](http://127.0.0.1:8000/signup)
+- **Protected Dashboard**: [http://127.0.0.1:8000/dashboard](http://127.0.0.1:8000/dashboard) *(Guarded route for authenticated management)*
+- **Interactive REST API Documentation (Swagger)**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+- **Technical Reference (ReDoc)**: [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
 
 ---
 
 ## 🌟 Key Capabilities & Modules
 
-### 1. Fully Editable Admin Panel
+### 1. Modern SaaS Public Landing Page
+- **Hero Section**: Value proposition with dual CTAs and dynamic KPI preview cards.
+- **Interactive Analytics Preview**: Real-time Recharts demonstration with branch-wise metrics and eligibility distributions.
+- **6 Key Feature Highlights**: Student Performance Analysis, Placement Prediction, Statistics, Department Analysis, Skill Gap Analysis, and Interactive Dashboard.
+- **4-Step Workflow**: Timeline visualization of institutional placement operations.
+- **Direct Navigation**: Smooth-scrolling anchors and direct links to Login and Signup.
+
+### 2. Fully Editable Admin Panel
 - Real CRUD operations across every single entity in the application.
 - All modifications immediately persist in the SQLite database and trigger real-time updates across the dashboard and analytics.
 - Zero hardcoded student records, companies, salary packages, or cutoffs.
