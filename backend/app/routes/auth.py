@@ -32,6 +32,39 @@ def login(login_data: LoginRequest, db: Session = Depends(get_db)):
         }
     }
 
+@router.post("/register", response_model=Token)
+@router.post("/signup", response_model=Token)
+def register(user_in: UserCreate, db: Session = Depends(get_db)):
+    if db.query(User).filter(User.username == user_in.username).first():
+        raise HTTPException(status_code=400, detail="Username is already taken")
+    if db.query(User).filter(User.email == user_in.email).first():
+        raise HTTPException(status_code=400, detail="Email is already registered")
+
+    user = User(
+        username=user_in.username,
+        email=user_in.email,
+        full_name=user_in.full_name,
+        role=user_in.role or "viewer",
+        is_active=True,
+        hashed_password=get_password_hash(user_in.password)
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+
+    access_token = create_access_token(data={"sub": user.username, "role": user.role})
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "user": {
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+            "full_name": user.full_name,
+            "role": user.role
+        }
+    }
+
 @router.get("/me", response_model=UserOut)
 def read_current_user(current_user: User = Depends(get_current_user)):
     return current_user

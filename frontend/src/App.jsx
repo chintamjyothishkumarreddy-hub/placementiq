@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { ShieldAlert } from 'lucide-react';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
 import Sidebar, { NAV_ITEMS } from './components/Sidebar';
 import Navbar from './components/Navbar';
 import Toast from './components/Toast';
@@ -21,12 +23,83 @@ import UsersPage from './pages/UsersPage';
 import SettingsPage from './pages/SettingsPage';
 import AuditLogsPage from './pages/AuditLogsPage';
 
+function getViewFromPath(pathname) {
+  const path = (pathname || '').toLowerCase().replace(/\/$/, '') || '/';
+  if (path === '/login') return 'login';
+  if (path === '/signup' || path === '/register') return 'signup';
+  if (path === '/dashboard' || path === '/app') return 'dashboard';
+  return 'landing';
+}
+
 function MainApp() {
   const { user, role, isAuthenticated, loading } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Automatically reset to dashboard if tab is not permitted for the active role
+  // View state: 'landing' | 'login' | 'signup' | 'dashboard'
+  const [currentView, setCurrentView] = useState(() => {
+    return getViewFromPath(window.location.pathname);
+  });
+
+  // Navigate handler that synchronizes view state and URL path
+  const handleNavigate = (targetView) => {
+    let targetPath = '/';
+    let resolvedView = targetView;
+
+    if (targetView === 'login') {
+      targetPath = '/login';
+      resolvedView = 'login';
+    } else if (targetView === 'signup' || targetView === 'register') {
+      targetPath = '/signup';
+      resolvedView = 'signup';
+    } else if (targetView === 'dashboard' || targetView === 'app') {
+      if (!isAuthenticated) {
+        // Protected route guard: force unauthenticated users to login
+        targetPath = '/login';
+        resolvedView = 'login';
+      } else {
+        targetPath = '/dashboard';
+        resolvedView = 'dashboard';
+      }
+    } else {
+      targetPath = '/';
+      resolvedView = 'landing';
+    }
+
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState({}, '', targetPath);
+    }
+    setCurrentView(resolvedView);
+  };
+
+  // Sync with browser back/forward buttons
+  useEffect(() => {
+    const handlePopState = () => {
+      const view = getViewFromPath(window.location.pathname);
+      setCurrentView(view);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // Route guards and authentication state sync
+  useEffect(() => {
+    if (loading) return;
+
+    if (isAuthenticated) {
+      // If an already logged-in user hits /login or /signup, direct them straight to dashboard
+      if (currentView === 'login' || currentView === 'signup') {
+        handleNavigate('dashboard');
+      }
+    } else {
+      // If an unauthenticated user tries to view the protected dashboard route, redirect to /login
+      if (currentView === 'dashboard') {
+        handleNavigate('login');
+      }
+    }
+  }, [isAuthenticated, loading, currentView]);
+
+  // Automatically reset to dashboard tab if activeTab is not permitted for the active role
   useEffect(() => {
     if (user && role) {
       const navItem = NAV_ITEMS.find((n) => n.id === activeTab);
@@ -44,37 +117,57 @@ function MainApp() {
     );
   }
 
-  if (!isAuthenticated) {
+  // 1. Landing page view (available at `/`, works for both guests & logged-in users)
+  if (currentView === 'landing') {
     return (
       <>
-        <LoginPage />
+        <LandingPage onNavigate={handleNavigate} />
         <Toast />
       </>
     );
   }
 
+  // 2. Unauthenticated views
+  if (!isAuthenticated) {
+    if (currentView === 'signup') {
+      return (
+        <>
+          <SignupPage onNavigate={handleNavigate} />
+          <Toast />
+        </>
+      );
+    }
+    // Protected fallback: if on /login or any protected route, show LoginPage
+    return (
+      <>
+        <LoginPage onNavigate={handleNavigate} />
+        <Toast />
+      </>
+    );
+  }
+
+  // 3. Authenticated Dashboard Application (/dashboard)
   const currentNav = NAV_ITEMS.find((n) => n.id === activeTab);
   const isAuthorized = currentNav ? currentNav.roles.includes(role) : true;
 
   const renderActivePage = () => {
     if (!isAuthorized) {
       return (
-        <div className="flex flex-col items-center justify-center min-h-[50vh] text-center p-8 bg-[#0d121f]/80 backdrop-blur-xl rounded-3xl border border-rose-500/30 shadow-[0_0_30px_rgba(244,63,94,0.1)]">
-          <div className="w-16 h-16 rounded-2xl bg-rose-950/40 border border-rose-500/30 flex items-center justify-center text-rose-400 mb-4 shadow-[0_0_15px_rgba(244,63,94,0.2)]">
+        <div className="flex flex-col items-center justify-center min-h-[50vh] text-center p-8 bg-white dark:bg-slate-900 rounded-3xl border border-rose-200 dark:border-rose-900/40 shadow-xs">
+          <div className="w-16 h-16 rounded-2xl bg-rose-50 dark:bg-rose-950/60 flex items-center justify-center text-rose-600 dark:text-rose-400 mb-4 border border-rose-200 dark:border-rose-800">
             <ShieldAlert className="w-8 h-8" />
           </div>
-          <span className="editorial-kicker text-rose-400/90 mb-1">SECURITY VIOLATION // RESTRICTED</span>
-          <h2 className="font-editorial text-2xl font-bold text-white mb-2">
-            Access Clearance Denied
+          <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
+            Access Restricted
           </h2>
-          <p className="text-sm text-slate-400 max-w-md mb-6 font-sans">
-            Your authenticated role (<span className="font-mono text-cyan-300 capitalize">{role.replace('_', ' ')}</span>) lacks protocol clearance to inspect the <strong className="text-white">{currentNav?.label || activeTab}</strong> module.
+          <p className="text-sm text-slate-500 dark:text-slate-400 max-w-md mb-6">
+            Your current role (<span className="font-semibold text-slate-700 dark:text-slate-300 capitalize">{role.replace('_', ' ')}</span>) does not have authorization to access the <strong>{currentNav?.label || activeTab}</strong> module.
           </p>
           <button
             onClick={() => setActiveTab('dashboard')}
-            className="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-mono text-xs font-semibold tracking-wider rounded-xl transition-all shadow-[0_0_15px_rgba(6,182,212,0.25)] cursor-pointer"
+            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-sm transition-colors shadow-xs cursor-pointer"
           >
-            RETURN TO COMMAND DASHBOARD
+            Return to Dashboard
           </button>
         </div>
       );
@@ -113,7 +206,7 @@ function MainApp() {
   };
 
   return (
-    <div className="min-h-screen bg-[#07090e] text-slate-100 flex flex-col font-sans selection:bg-cyan-500/25 selection:text-cyan-200">
+    <div className="min-h-screen bg-slate-50/60 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col">
       <Sidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -126,6 +219,7 @@ function MainApp() {
         <Navbar
           activeTab={activeTab}
           onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+          onNavigate={handleNavigate}
         />
 
         <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto animate-fade-in">

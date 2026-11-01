@@ -230,17 +230,13 @@ export default function RulesPage() {
 
   return (
     <div className="space-y-6">
-      {/* Editorial Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.06] pb-5">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="editorial-kicker">// ENGINE POLICIES // CUTOFF GOVERNANCE</div>
-          <h2 className="text-2xl font-editorial italic font-normal text-white tracking-tight flex items-center gap-3">
-            Automated Cutoff & Eligibility Engine
-            <span className="text-[11px] font-mono not-italic px-2.5 py-0.5 rounded-full bg-cyan-950/60 border border-cyan-500/30 text-cyan-300 font-medium">
-              {rules.length} ACTIVE RULES
-            </span>
+          <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
+            Eligibility Rules & Cutoff Management
           </h2>
-          <p className="text-xs font-sans text-slate-400 mt-0.5">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             Define global, company-specific, and department-wise cutoff criteria. Changes dynamically re-evaluate students across the database.
           </p>
         </div>
@@ -248,10 +244,10 @@ export default function RulesPage() {
         {canEdit && (
           <button
             onClick={handleOpenAdd}
-            className="px-4 py-2 bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white text-xs font-mono font-medium rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.25)] transition-all flex items-center gap-2 cursor-pointer self-start sm:self-auto"
+            className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-semibold rounded-xl shadow-xs transition-all flex items-center gap-2 cursor-pointer self-start sm:self-auto"
           >
             <Plus className="w-4 h-4" />
-            <span>CONFIGURE NEW RULE</span>
+            <span>Add Eligibility Rule</span>
           </button>
         )}
       </div>
@@ -259,13 +255,13 @@ export default function RulesPage() {
       {/* Rules Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {loading ? (
-          <div className="col-span-full text-center py-12 text-slate-500 font-mono text-xs">
-            <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-cyan-400" />
-            // RETRIEVING ELIGIBILITY RULES...
+          <div className="col-span-full text-center py-12 text-slate-400">
+            <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-blue-600" />
+            Loading active rules...
           </div>
         ) : rules.length === 0 ? (
-          <div className="col-span-full text-center py-12 text-slate-500 intel-card rounded-3xl border border-white/[0.08] font-mono text-xs">
-            // ZERO ACTIVE RULES CONFIGURED. ADD A RULE TO ESTABLISH CUTOFFS.
+          <div className="col-span-full text-center py-12 text-slate-400 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800">
+            No rules configured. Add a rule to establish placement cutoffs.
           </div>
         ) : (
           rules.map((rule) => {
@@ -273,88 +269,88 @@ export default function RulesPage() {
             return (
               <div
                 key={rule.id}
-                className={`intel-card rounded-3xl p-6 border transition-all duration-300 flex flex-col justify-between hover:border-cyan-500/30 ${
+                className={`bg-white dark:bg-slate-900 rounded-3xl p-6 border transition-all shadow-2xs flex flex-col justify-between ${
                   rule.is_active
-                    ? 'border-white/[0.08]'
-                    : 'border-white/[0.04] opacity-50 bg-slate-950/40'
+                    ? 'border-slate-200 dark:border-slate-800'
+                    : 'border-slate-200/50 dark:border-slate-800/40 opacity-60 bg-slate-50/50 dark:bg-slate-950/20'
                 }`}
               >
                 <div>
                   {/* Top tags */}
                   <div className="flex items-center justify-between mb-3">
                     <span
-                      className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider ${
+                      className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${
                         rule.rule_type === 'Global'
-                          ? 'bg-cyan-950/60 text-cyan-300 border border-cyan-500/30'
+                          ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300'
                           : rule.rule_type === 'Company'
-                          ? 'bg-purple-950/60 text-purple-300 border border-purple-500/30'
-                          : 'bg-emerald-950/60 text-emerald-300 border border-emerald-500/30'
+                          ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300'
+                          : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300'
                       }`}
                     >
-                      {rule.rule_type} RULE
+                      {rule.rule_type} Rule
                     </span>
 
                     <button
                       onClick={() => handleToggleRule(rule.id)}
                       disabled={!canEdit}
-                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider transition-all cursor-pointer ${
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold transition-all ${
                         rule.is_active
-                          ? 'bg-emerald-950/60 text-emerald-300 border border-emerald-500/30'
-                          : 'bg-slate-900 text-slate-500 border border-white/[0.06]'
+                          ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/40'
+                          : 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400 border border-slate-200 dark:border-slate-700'
                       }`}
                     >
                       <Power className="w-3 h-3" />
-                      {rule.is_active ? 'ACTIVE' : 'DISABLED'}
+                      {rule.is_active ? 'Active' : 'Disabled'}
                     </button>
                   </div>
 
-                  <h3 className="text-base font-serif font-medium text-white leading-tight">
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white leading-tight">
                     {rule.name}
                   </h3>
 
                   {companyName && (
-                    <div className="text-xs font-mono text-purple-400 mt-1">
-                      TARGET: {companyName}
+                    <div className="text-xs font-semibold text-purple-600 dark:text-purple-400 mt-1">
+                      Applies to: {companyName}
                     </div>
                   )}
 
                   {rule.department && (
-                    <div className="text-xs font-mono text-cyan-400 mt-1">
-                      DEPT: {rule.department}
+                    <div className="text-xs font-semibold text-blue-600 dark:text-blue-400 mt-1">
+                      Department: {rule.department}
                     </div>
                   )}
 
-                  {/* Cutoff criteria dock */}
-                  <div className="grid grid-cols-2 gap-2 my-4 p-3 bg-slate-950/60 rounded-2xl border border-white/[0.06] text-xs">
+                  {/* Cutoff criteria grid */}
+                  <div className="grid grid-cols-2 gap-2 my-4 p-3 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-100 dark:border-slate-800 text-xs">
                     <div>
-                      <span className="text-[10px] font-mono uppercase text-slate-500">// MIN CGPA</span>
-                      <p className="font-mono-num font-bold text-emerald-400 text-sm mt-0.5">
+                      <span className="text-[11px] text-slate-400 font-medium">Min CGPA</span>
+                      <p className="font-bold text-slate-900 dark:text-slate-100 text-sm mt-0.5">
                         {rule.min_cgpa.toFixed(2)}
                       </p>
                     </div>
                     <div>
-                      <span className="text-[10px] font-mono uppercase text-slate-500">// MAX ACTIVE BACKLOGS</span>
-                      <p className="font-mono-num font-bold text-rose-400 text-sm mt-0.5">
+                      <span className="text-[11px] text-slate-400 font-medium">Max Active Backlogs</span>
+                      <p className="font-bold text-slate-900 dark:text-slate-100 text-sm mt-0.5">
                         {rule.max_active_backlogs} {rule.allow_active_backlogs ? '(Permitted)' : '(Strict)'}
                       </p>
                     </div>
                     <div>
-                      <span className="text-[10px] font-mono uppercase text-slate-500">// MIN PERCENTAGE</span>
-                      <p className="font-mono-num font-bold text-slate-200 text-sm mt-0.5">
+                      <span className="text-[11px] text-slate-400 font-medium">Min Percentage</span>
+                      <p className="font-bold text-slate-900 dark:text-slate-100 text-sm mt-0.5">
                         {rule.min_percentage ? `${rule.min_percentage}%` : 'N/A'}
                       </p>
                     </div>
                     <div>
-                      <span className="text-[10px] font-mono uppercase text-slate-500">// INTERNSHIP</span>
-                      <p className="font-mono text-cyan-300 text-xs mt-0.5 font-medium">
-                        {rule.internship_required ? 'MANDATORY' : 'OPTIONAL'}
+                      <span className="text-[11px] text-slate-400 font-medium">Internship Req</span>
+                      <p className="font-bold text-slate-900 dark:text-slate-100 text-sm mt-0.5">
+                        {rule.internship_required ? 'Mandatory' : 'Optional'}
                       </p>
                     </div>
                   </div>
 
                   {/* Allowed Departments */}
                   <div className="space-y-1 mb-3">
-                    <span className="text-[10px] font-mono uppercase text-slate-500">// ELIGIBLE BRANCHES:</span>
+                    <span className="text-[11px] font-semibold text-slate-400">Allowed Branches:</span>
                     <div className="flex flex-wrap gap-1">
                       {(rule.allowed_departments && rule.allowed_departments.length > 0
                         ? rule.allowed_departments
@@ -362,7 +358,7 @@ export default function RulesPage() {
                       ).map((d, i) => (
                         <span
                           key={i}
-                          className="px-2 py-0.5 bg-slate-900 border border-white/[0.06] text-slate-300 rounded font-mono text-[10px]"
+                          className="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded text-[10px] font-semibold"
                         >
                           {d}
                         </span>
@@ -371,18 +367,18 @@ export default function RulesPage() {
                   </div>
 
                   {rule.notes && (
-                    <p className="text-xs text-slate-500 font-sans italic mt-2 line-clamp-2">{rule.notes}</p>
+                    <p className="text-xs text-slate-500 italic mt-2 line-clamp-2">{rule.notes}</p>
                   )}
                 </div>
 
                 {/* Card Actions */}
-                <div className="pt-4 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono">
-                  <span className="text-slate-500">PRIORITY: {rule.priority}</span>
+                <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold">
+                  <span className="text-slate-400">Priority: {rule.priority}</span>
                   <div className="flex items-center gap-2">
                     {canEdit && (
                       <button
                         onClick={() => handleOpenEdit(rule)}
-                        className="p-1.5 text-slate-400 hover:text-cyan-300 hover:bg-white/[0.05] rounded-lg transition-colors cursor-pointer"
+                        className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
                         title="Edit Rule"
                       >
                         <Edit className="w-4 h-4" />
@@ -391,7 +387,7 @@ export default function RulesPage() {
                     {canDelete && (
                       <button
                         onClick={() => setDeleteId(rule.id)}
-                        className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-white/[0.05] rounded-lg transition-colors cursor-pointer"
+                        className="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
                         title="Delete Rule"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -407,25 +403,24 @@ export default function RulesPage() {
 
       {/* ADD / EDIT RULE MODAL */}
       {formOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
-          <div className="w-full max-w-2xl intel-card rounded-3xl shadow-2xl border border-white/[0.12] overflow-hidden max-h-[90vh] flex flex-col">
-            <div className="p-6 border-b border-white/[0.08] flex items-center justify-between bg-slate-950/60">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in">
+          <div className="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden max-h-[90vh] flex flex-col">
+            <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
               <div>
-                <div className="editorial-kicker">// ENGINE DIRECTIVE</div>
-                <h3 className="text-xl font-editorial italic font-normal text-white">
-                  {editingRule ? `Update Cutoff Rule: ${editingRule.name}` : 'Configure New Cutoff Policy'}
+                <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+                  {editingRule ? `Edit Rule: ${editingRule.name}` : 'Configure New Eligibility Rule'}
                 </h3>
-                <p className="text-xs font-mono text-cyan-300/80">All student records will dynamically evaluate against this rule</p>
+                <p className="text-xs text-slate-400">All student records will be evaluated against this rule</p>
               </div>
-              <button onClick={() => setFormOpen(false)} className="text-slate-400 hover:text-white cursor-pointer">
+              <button onClick={() => setFormOpen(false)} className="text-slate-400 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <form onSubmit={handleFormSubmit} className="p-6 overflow-y-auto space-y-4 text-xs font-sans flex-1">
+            <form onSubmit={handleFormSubmit} className="p-6 overflow-y-auto space-y-4 text-xs flex-1">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="sm:col-span-2">
-                  <label className="block font-mono text-xs text-slate-400 mb-1">
+                  <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
                     Rule Name *
                   </label>
                   <input
@@ -434,18 +429,18 @@ export default function RulesPage() {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="e.g. Tier-1 Super Dream Cutoff"
-                    className="w-full p-2.5 bg-slate-950/60 border border-white/[0.08] rounded-xl text-slate-200 focus:outline-hidden focus:border-cyan-500"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-mono text-xs text-slate-400 mb-1">
+                  <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
                     Rule Type *
                   </label>
                   <select
                     value={formData.rule_type}
                     onChange={(e) => setFormData({ ...formData, rule_type: e.target.value })}
-                    className="w-full p-2.5 bg-slate-900 border border-white/[0.08] rounded-xl font-mono text-xs text-slate-200 focus:outline-hidden focus:border-cyan-500 cursor-pointer"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
                   >
                     <option value="Global">Global Rule</option>
                     <option value="Company">Company-Specific Rule</option>
@@ -456,14 +451,14 @@ export default function RulesPage() {
 
                 {formData.rule_type === 'Company' && (
                   <div>
-                    <label className="block font-mono text-xs text-slate-400 mb-1">
+                    <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
                       Target Company *
                     </label>
                     <select
                       value={formData.company_id}
                       onChange={(e) => setFormData({ ...formData, company_id: e.target.value })}
                       required
-                      className="w-full p-2.5 bg-slate-900 border border-white/[0.08] rounded-xl font-mono text-xs text-slate-200 focus:outline-hidden focus:border-cyan-500 cursor-pointer"
+                      className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
                     >
                       <option value="">Select Company</option>
                       {companies.map((c) => (
@@ -475,14 +470,14 @@ export default function RulesPage() {
 
                 {formData.rule_type === 'Department' && (
                   <div>
-                    <label className="block font-mono text-xs text-slate-400 mb-1">
+                    <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
                       Target Department *
                     </label>
                     <select
                       value={formData.department}
                       onChange={(e) => setFormData({ ...formData, department: e.target.value })}
                       required
-                      className="w-full p-2.5 bg-slate-900 border border-white/[0.08] rounded-xl font-mono text-xs text-slate-200 focus:outline-hidden focus:border-cyan-500 cursor-pointer"
+                      className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
                     >
                       <option value="">Select Department</option>
                       {['CSE', 'IT', 'ECE', 'EEE', 'Mechanical', 'Civil'].map((d) => (
@@ -493,7 +488,7 @@ export default function RulesPage() {
                 )}
 
                 <div>
-                  <label className="block font-mono text-xs text-slate-400 mb-1">
+                  <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
                     Minimum CGPA (0.0 - 10.0) *
                   </label>
                   <input
@@ -504,12 +499,12 @@ export default function RulesPage() {
                     required
                     value={formData.min_cgpa}
                     onChange={(e) => setFormData({ ...formData, min_cgpa: e.target.value })}
-                    className="w-full p-2.5 bg-slate-950/60 border border-white/[0.08] rounded-xl font-mono text-xs text-emerald-300 font-semibold focus:outline-hidden focus:border-cyan-500"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-mono text-xs text-slate-400 mb-1">
+                  <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
                     Minimum Academic Percentage (%)
                   </label>
                   <input
@@ -519,12 +514,12 @@ export default function RulesPage() {
                     max="100"
                     value={formData.min_percentage}
                     onChange={(e) => setFormData({ ...formData, min_percentage: e.target.value })}
-                    className="w-full p-2.5 bg-slate-950/60 border border-white/[0.08] rounded-xl font-mono text-xs text-slate-200 focus:outline-hidden focus:border-cyan-500"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-mono text-xs text-slate-400 mb-1">
+                  <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
                     Max Allowed Active Backlogs
                   </label>
                   <input
@@ -532,12 +527,12 @@ export default function RulesPage() {
                     min="0"
                     value={formData.max_active_backlogs}
                     onChange={(e) => setFormData({ ...formData, max_active_backlogs: e.target.value })}
-                    className="w-full p-2.5 bg-slate-950/60 border border-white/[0.08] rounded-xl font-mono text-xs text-rose-400 focus:outline-hidden focus:border-cyan-500"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-mono text-xs text-slate-400 mb-1">
+                  <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
                     Max Total Backlog History
                   </label>
                   <input
@@ -545,36 +540,40 @@ export default function RulesPage() {
                     min="0"
                     value={formData.max_total_backlogs}
                     onChange={(e) => setFormData({ ...formData, max_total_backlogs: e.target.value })}
-                    className="w-full p-2.5 bg-slate-950/60 border border-white/[0.08] rounded-xl font-mono text-xs text-slate-200 focus:outline-hidden focus:border-cyan-500"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
                   />
                 </div>
               </div>
 
               <div className="flex items-center gap-4 py-2">
-                <label className="flex items-center gap-2 cursor-pointer font-mono text-xs text-slate-300">
+                <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={formData.allow_active_backlogs}
                     onChange={(e) => setFormData({ ...formData, allow_active_backlogs: e.target.checked })}
-                    className="w-4 h-4 rounded-md accent-cyan-500 cursor-pointer"
+                    className="w-4 h-4 rounded-md text-blue-600 focus:ring-0"
                   />
-                  <span>Permit Active Backlogs (if within max limit)</span>
+                  <span className="font-semibold text-slate-700 dark:text-slate-300">
+                    Permit Active Backlogs (if within max limit)
+                  </span>
                 </label>
 
-                <label className="flex items-center gap-2 cursor-pointer font-mono text-xs text-slate-300">
+                <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={formData.internship_required}
                     onChange={(e) => setFormData({ ...formData, internship_required: e.target.checked })}
-                    className="w-4 h-4 rounded-md accent-cyan-500 cursor-pointer"
+                    className="w-4 h-4 rounded-md text-blue-600 focus:ring-0"
                   />
-                  <span>Require Prior Internship Experience</span>
+                  <span className="font-semibold text-slate-700 dark:text-slate-300">
+                    Require Prior Internship Experience
+                  </span>
                 </label>
               </div>
 
               {/* Department Checkboxes */}
               <div>
-                <label className="block font-mono text-xs text-slate-400 mb-2">
+                <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-2">
                   Eligible Departments
                 </label>
                 <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
@@ -585,10 +584,10 @@ export default function RulesPage() {
                         type="button"
                         key={dept}
                         onClick={() => handleDeptToggle(dept)}
-                        className={`p-2 rounded-xl text-center font-mono text-xs border transition-all cursor-pointer ${
+                        className={`p-2 rounded-xl text-center font-bold text-xs border transition-all ${
                           checked
-                            ? 'bg-cyan-950/80 text-cyan-300 border-cyan-500/50 shadow-[0_0_10px_rgba(6,182,212,0.2)]'
-                            : 'bg-slate-900 text-slate-400 border-white/[0.06] hover:text-slate-200'
+                            ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-300 border-blue-500'
+                            : 'bg-slate-50 dark:bg-slate-800 text-slate-400 border-slate-200 dark:border-slate-700'
                         }`}
                       >
                         {dept}
@@ -599,7 +598,7 @@ export default function RulesPage() {
               </div>
 
               <div>
-                <label className="block font-mono text-xs text-slate-400 mb-1">
+                <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
                   Required Skills (comma separated)
                 </label>
                 <input
@@ -607,44 +606,44 @@ export default function RulesPage() {
                   value={formData.required_skills_text}
                   onChange={(e) => setFormData({ ...formData, required_skills_text: e.target.value })}
                   placeholder="e.g. Data Structures, Python, SQL"
-                  className="w-full p-2.5 bg-slate-950/60 border border-white/[0.08] rounded-xl font-mono text-xs text-slate-200 focus:outline-hidden focus:border-cyan-500"
+                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
                 />
               </div>
 
               <div>
-                <label className="block font-mono text-xs text-slate-400 mb-1">Notes / Description</label>
+                <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Notes / Description</label>
                 <textarea
                   rows="2"
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                  className="w-full p-2.5 bg-slate-950/60 border border-white/[0.08] rounded-xl text-slate-200 focus:outline-hidden focus:border-cyan-500"
+                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden"
                 />
               </div>
 
-              <div className="p-4 bg-slate-950/80 border-t border-white/[0.08] -mx-6 -mb-6 flex items-center justify-between">
+              <div className="p-4 bg-slate-50 dark:bg-slate-950/40 border-t border-slate-200 dark:border-slate-800 -mx-6 -mb-6 flex items-center justify-between">
                 <button
                   type="button"
                   onClick={handlePreviewImpact}
-                  className="px-3.5 py-2 bg-indigo-950/60 hover:bg-indigo-900/60 text-indigo-300 rounded-xl font-mono text-xs flex items-center gap-1.5 border border-indigo-500/30 transition-colors cursor-pointer"
+                  className="px-3.5 py-2 bg-indigo-50 dark:bg-indigo-950/40 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 rounded-xl font-bold flex items-center gap-1.5 border border-indigo-200 dark:border-indigo-800"
                 >
-                  <Eye className="w-3.5 h-3.5 text-indigo-400" />
-                  <span>SIMULATE IMPACT</span>
+                  <Eye className="w-3.5 h-3.5" />
+                  <span>Preview Affected Counts</span>
                 </button>
 
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
                     onClick={() => setFormOpen(false)}
-                    className="px-4 py-2 bg-slate-900 border border-white/[0.08] text-slate-400 hover:text-white rounded-xl font-mono text-xs cursor-pointer"
+                    className="px-4 py-2 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-medium"
                   >
-                    CANCEL
+                    Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={formSubmitting}
-                    className="px-5 py-2 bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white font-mono text-xs font-semibold rounded-xl shadow-xs disabled:opacity-50 cursor-pointer"
+                    className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-xs disabled:opacity-50"
                   >
-                    {formSubmitting ? 'RECALCULATING...' : editingRule ? 'UPDATE RULE' : 'SAVE DIRECTIVE'}
+                    {formSubmitting ? 'Applying & Recalculating...' : editingRule ? 'Save Rule Changes' : 'Create Rule'}
                   </button>
                 </div>
               </div>
@@ -655,64 +654,61 @@ export default function RulesPage() {
 
       {/* RULE IMPACT PREVIEW MODAL */}
       {previewOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
-          <div className="w-full max-w-lg intel-card rounded-3xl shadow-2xl border border-white/[0.12] p-6 space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in">
+          <div className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <div>
-                <div className="editorial-kicker">// SIMULATION ENGINE</div>
-                <h3 className="text-xl font-editorial italic font-normal text-white flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-cyan-400" />
-                  Live Policy Simulation
-                </h3>
-              </div>
-              <button onClick={() => setPreviewOpen(false)} className="text-slate-400 hover:text-white cursor-pointer">
+              <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-indigo-600" />
+                Live Rule Impact Preview
+              </h3>
+              <button onClick={() => setPreviewOpen(false)} className="text-slate-400 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {previewLoading ? (
-              <div className="text-center py-8 text-slate-400 font-mono text-xs">
-                <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-cyan-400" />
-                // SIMULATING EVALUATION MATRIX ACROSS ALL CANDIDATE DOSSIERS...
+              <div className="text-center py-8 text-slate-400">
+                <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-indigo-600" />
+                Simulating rule evaluation across all student records...
               </div>
             ) : previewResults ? (
-              <div className="space-y-4 text-xs font-sans">
+              <div className="space-y-4 text-xs">
                 <div className="grid grid-cols-3 gap-2 text-center">
-                  <div className="p-3 bg-emerald-950/40 rounded-xl border border-emerald-500/30">
-                    <span className="font-mono text-[10px] uppercase text-emerald-400">// ELIGIBLE</span>
-                    <div className="text-xl font-mono-num font-bold text-emerald-300 mt-1">
+                  <div className="p-3 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl border border-emerald-200 dark:border-emerald-800/40">
+                    <span className="text-slate-500 font-medium">Eligible</span>
+                    <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 mt-1">
                       {previewResults.Eligible}
                     </div>
                   </div>
-                  <div className="p-3 bg-rose-950/40 rounded-xl border border-rose-500/30">
-                    <span className="font-mono text-[10px] uppercase text-rose-400">// INELIGIBLE</span>
-                    <div className="text-xl font-mono-num font-bold text-rose-300 mt-1">
+                  <div className="p-3 bg-rose-50 dark:bg-rose-950/40 rounded-xl border border-rose-200 dark:border-rose-800/40">
+                    <span className="text-slate-500 font-medium">Not Eligible</span>
+                    <div className="text-xl font-black text-rose-600 dark:text-rose-400 mt-1">
                       {previewResults['Not Eligible']}
                     </div>
                   </div>
-                  <div className="p-3 bg-amber-950/40 rounded-xl border border-amber-500/30">
-                    <span className="font-mono text-[10px] uppercase text-amber-400">// REVIEW</span>
-                    <div className="text-xl font-mono-num font-bold text-amber-300 mt-1">
+                  <div className="p-3 bg-amber-50 dark:bg-amber-950/40 rounded-xl border border-amber-200 dark:border-amber-800/40">
+                    <span className="text-slate-500 font-medium">Needs Review</span>
+                    <div className="text-xl font-black text-amber-600 dark:text-amber-400 mt-1">
                       {previewResults['Needs Review']}
                     </div>
                   </div>
                 </div>
 
-                <div className="text-slate-400 font-mono text-xs">
-                  TOTAL CANDIDATES EVALUATED: <strong className="text-white">{previewResults.Total}</strong>
+                <div className="text-slate-500">
+                  Total student cohort evaluated: <strong>{previewResults.Total}</strong>
                 </div>
 
                 {previewResults.sample_affected && previewResults.sample_affected.length > 0 && (
-                  <div className="p-3 bg-slate-950/60 rounded-xl border border-white/[0.06] space-y-2">
-                    <div className="font-mono text-xs uppercase text-slate-300">
-                      // SAMPLE RESTRICTED CANDIDATES & RATIONALES:
+                  <div className="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+                    <div className="font-bold text-slate-800 dark:text-slate-200">
+                      Sample Ineligible Students & Reasons:
                     </div>
                     {previewResults.sample_affected.map((item, idx) => (
-                      <div key={idx} className="p-2 bg-slate-900/60 rounded-lg border border-white/[0.04]">
-                        <div className="font-serif font-medium text-slate-200">
-                          {item.name} ({item.roll_number}) — CGPA: <span className="font-mono text-emerald-400">{item.cgpa}</span>
+                      <div key={idx} className="p-2 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800">
+                        <div className="font-semibold text-slate-900 dark:text-slate-100">
+                          {item.name} ({item.roll_number}) - CGPA: {item.cgpa}
                         </div>
-                        <ul className="text-[11px] font-mono text-rose-400 list-disc list-inside mt-0.5">
+                        <ul className="text-[11px] text-rose-600 dark:text-rose-400 list-disc list-inside mt-0.5">
                           {item.reasons.map((r, ri) => (
                             <li key={ri}>{r}</li>
                           ))}
@@ -726,9 +722,9 @@ export default function RulesPage() {
                   <button
                     type="button"
                     onClick={() => setPreviewOpen(false)}
-                    className="px-4 py-2 bg-slate-900 border border-white/[0.08] text-slate-300 hover:text-white rounded-xl font-mono text-xs cursor-pointer"
+                    className="px-4 py-2 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-semibold"
                   >
-                    DISMISS SIMULATION
+                    Done Reviewing
                   </button>
                 </div>
               </div>
@@ -740,9 +736,9 @@ export default function RulesPage() {
       {/* CONFIRM DELETE MODAL */}
       <ConfirmModal
         isOpen={!!deleteId}
-        title="Purge Cutoff Policy"
+        title="Delete Eligibility Rule"
         message="Are you sure you want to remove this cutoff rule? All students will immediately be re-evaluated against the remaining active rules."
-        confirmText="Purge Policy"
+        confirmText="Delete Rule"
         confirmVariant="danger"
         loading={deleteLoading}
         onConfirm={handleDelete}

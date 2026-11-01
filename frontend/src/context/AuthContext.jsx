@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   });
   const [loading, setLoading] = useState(true);
   const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem('placementiq_theme') !== 'light';
+    return localStorage.getItem('placementiq_theme') === 'dark';
   });
   const [toast, setToast] = useState(null);
 
@@ -68,6 +68,23 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const register = async (userData) => {
+    try {
+      const res = await api.post('/auth/register', userData);
+      const { access_token, user: userDataRes } = res.data;
+      setToken(access_token);
+      setUser(userDataRes);
+      localStorage.setItem('placementiq_token', access_token);
+      localStorage.setItem('placementiq_user', JSON.stringify(userDataRes));
+      showToast(`Welcome to PlacementIQ, ${userDataRes.full_name}!`, 'success');
+      return true;
+    } catch (err) {
+      const msg = err.response?.data?.detail || 'Registration failed. Please check your details.';
+      showToast(msg, 'error');
+      return false;
+    }
+  };
+
   const logout = () => {
     setToken(null);
     setUser(null);
@@ -89,6 +106,7 @@ export const AuthProvider = ({ children }) => {
         toast,
         showToast,
         login,
+        register,
         logout,
       }}
     >

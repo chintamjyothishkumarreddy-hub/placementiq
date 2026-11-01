@@ -1,39 +1,28 @@
-import os
-import sys
+import urllib.request
+import urllib.error
 import json
+import sys
 
-# Ensure backend directory is in sys.path
-backend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "backend"))
-if backend_dir not in sys.path:
-    sys.path.insert(0, backend_dir)
-
-import app  # triggers compatibility loader in app/__init__.py
-from fastapi.testclient import TestClient
-from app.main import app as fastapi_app
-
-client = TestClient(fastapi_app)
+BASE_URL = "http://127.0.0.1:8000"
 
 def request(method, path, body=None, token=None):
-    headers = {}
+    url = f"{BASE_URL}{path}"
+    headers = {"Content-Type": "application/json"}
     if token:
         headers["Authorization"] = f"Bearer {token}"
-    
-    if method == "GET":
-        resp = client.get(path, headers=headers)
-    elif method == "POST":
-        resp = client.post(path, json=body, headers=headers)
-    elif method == "PUT":
-        resp = client.put(path, json=body, headers=headers)
-    elif method == "DELETE":
-        resp = client.delete(path, headers=headers)
-    else:
-        resp = client.request(method, path, json=body, headers=headers)
-    
+    data = json.dumps(body).encode("utf-8") if body is not None else None
+    req = urllib.request.Request(url, data=data, headers=headers, method=method)
     try:
-        data = resp.json()
-    except Exception:
-        data = resp.text
-    return resp.status_code, data
+        with urllib.request.urlopen(req) as resp:
+            content = resp.read().decode("utf-8")
+            return resp.status, json.loads(content) if content else {}
+    except urllib.error.HTTPError as e:
+        content = e.read().decode("utf-8")
+        try:
+            parsed = json.loads(content)
+        except Exception:
+            parsed = {"raw": content}
+        return e.code, parsed
 
 def run_tests():
     print("=" * 60)
@@ -53,16 +42,14 @@ def run_tests():
             print(f" [FAIL] Test {total}: {name} - {detail}")
 
     # 1. Inspect source files to ensure no default credentials in LoginPage
-    login_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend", "src", "pages", "LoginPage.jsx"))
-    with open(login_path, "r", encoding="utf-8") as f:
+    with open(r"c:\google\frontend\src\pages\LoginPage.jsx", "r", encoding="utf-8") as f:
         login_code = f.read()
     assert_test("useState('')" in login_code or 'useState("")' in login_code, "LoginPage state starts with empty strings")
     assert_test("Fast Demo Login" not in login_code, "Fast Demo Login section completely removed from LoginPage")
     assert_test("handleQuickLogin" not in login_code, "handleQuickLogin removed from LoginPage")
 
     # 2. Inspect Navbar to ensure demo role switch is removed
-    navbar_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend", "src", "components", "Navbar.jsx"))
-    with open(navbar_path, "r", encoding="utf-8") as f:
+    with open(r"c:\google\frontend\src\components\Navbar.jsx", "r", encoding="utf-8") as f:
         navbar_code = f.read()
     assert_test("handleRoleSelect" not in navbar_code, "Demo role selector removed from Navbar")
     assert_test("<select" not in navbar_code, "Role switch select dropdown removed from Navbar")
@@ -80,9 +67,11 @@ def run_tests():
     admin_token = res.get("access_token")
 
     # 5. Test Admin Privileges (Full Access)
+    # GET /api/users
     status, users = request("GET", "/api/users", token=admin_token)
     assert_test(status == 200 and len(users) >= 3, "Admin can access /api/users")
 
+    # GET /api/settings
     status, settings = request("GET", "/api/settings", token=admin_token)
     assert_test(status == 200, "Admin can access /api/settings")
 
