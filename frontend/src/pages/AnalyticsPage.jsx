@@ -8,8 +8,7 @@ import {
   DollarSign,
   ArrowUpRight,
   Filter,
-  RefreshCw,
-  Download
+  RefreshCw
 } from 'lucide-react';
 import {
   BarChart,

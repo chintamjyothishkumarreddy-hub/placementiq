@@ -13,8 +13,7 @@ import {
   UserCheck,
   Settings,
   History,
-  GraduationCap,
-  Sparkles
+  GraduationCap
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
