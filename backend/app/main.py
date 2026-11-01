@@ -70,7 +70,7 @@ if FRONTEND_DIST.exists():
     @app.get("/")
     def serve_root():
         index_file = FRONTEND_DIST / "index.html"
-        return FileResponse(index_file)
+        return FileResponse(index_file, headers={"Cache-Control": "no-cache, no-store, must-revalidate"})
 
     @app.get("/{full_path:path}")
     def serve_frontend_spa(full_path: str):
@@ -82,7 +82,7 @@ if FRONTEND_DIST.exists():
             return FileResponse(file_target)
 
         index_file = FRONTEND_DIST / "index.html"
-        return FileResponse(index_file)
+        return FileResponse(index_file, headers={"Cache-Control": "no-cache, no-store, must-revalidate"})
 else:
     @app.get("/")
     def root():
