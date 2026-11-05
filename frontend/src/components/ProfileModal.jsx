@@ -26,8 +26,8 @@ import {
 import api from '../api';
 import { useAuth } from '../context/AuthContext';
 import UserAvatar, {
-  APPLE_MEMOJIS,
-  APPLE_SYMBOLS,
+  EMOJI_AVATARS,
+  SYMBOL_BADGES,
   AVATAR_PALETTES,
   getAvatarTheme,
   getUserInitials
@@ -272,7 +272,7 @@ export default function ProfileModal({ isOpen, onClose }) {
           </button>
         </div>
 
-        {/* Apple Segmented Tabs */}
+        {/* Segmented Tabs */}
         <div className="px-4 sm:px-6 pt-2.5 pb-2 border-b border-black/[0.04] dark:border-white/[0.06] bg-black/[0.01] dark:bg-white/[0.01]">
           <div className="inline-flex p-1 rounded-2xl bg-black/5 dark:bg-white/10 text-xs font-medium w-full">
             <button
@@ -448,10 +448,10 @@ export default function ProfileModal({ isOpen, onClose }) {
                     </span>
                     <div className="text-[11px] text-[#86868b] dark:text-[#a1a1a6]">
                       {avatarType === 'memoji'
-                        ? 'Apple Memoji Character'
+                        ? 'Emoji Character'
                         : avatarType === 'symbol'
-                        ? 'Apple Classic Symbol'
-                        : 'VisionOS Monogram Gradient'}
+                        ? 'Classic Symbol Badge'
+                        : 'Monogram Gradient'}
                     </div>
                   </div>
                 </div>
@@ -491,7 +491,7 @@ export default function ProfileModal({ isOpen, onClose }) {
           )}
 
           {/* =========================================================================
-              TAB 2: AVATAR STUDIO (Apple Memoji, Symbols & VisionOS Gradients)
+              TAB 2: AVATAR STUDIO (Emojis, Symbols & Gradients)
           ========================================================================== */}
           {activeTab === 'avatar' && (
             <div className="space-y-5">
@@ -507,7 +507,7 @@ export default function ProfileModal({ isOpen, onClose }) {
                       : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'
                   }`}
                 >
-                  Apple Memoji
+                  Emojis
                 </button>
                 <button
                   type="button"
@@ -518,7 +518,7 @@ export default function ProfileModal({ isOpen, onClose }) {
                       : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'
                   }`}
                 >
-                  Apple Symbols
+                  Symbols
                 </button>
                 <button
                   type="button"
@@ -533,15 +533,15 @@ export default function ProfileModal({ isOpen, onClose }) {
                 </button>
               </div>
 
-              {/* Category 1: Apple Memoji */}
+              {/* Category 1: Emojis */}
               {avatarCategory === 'memoji' && (
                 <div className="space-y-3">
                   <div className="text-xs text-[#86868b] dark:text-[#a1a1a6]">
-                    Select an official Apple Memoji character for your PlacementIQ profile:
+                    Select a personalized emoji character for your PlacementIQ profile:
                   </div>
 
                   <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
-                    {APPLE_MEMOJIS.map((m) => {
+                    {EMOJI_AVATARS.map((m) => {
                       const isSelected = avatarType === 'memoji' && avatarValue === m.id;
                       return (
                         <button
@@ -586,16 +586,16 @@ export default function ProfileModal({ isOpen, onClose }) {
                 </div>
               )}
 
-              {/* Category 2: Apple Classic Symbols */}
+              {/* Category 2: Classic Symbols */}
               {avatarCategory === 'symbols' && (
                 <div className="space-y-3">
                   <div className="text-xs text-[#86868b] dark:text-[#a1a1a6]">
-                    Select a classic Apple icon badge for your institutional presence:
+                    Select a symbolic icon badge for your institutional presence:
                   </div>
 
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    {APPLE_SYMBOLS.map((s) => {
-                      const isSelected = avatarType === 'symbol' && avatarValue === s.id;
+                    {SYMBOL_BADGES.map((s) => {
+                      const isSelected = avatarType === 'symbol' && (avatarValue === s.id || avatarValue === s.id.replace('symbol-', 'apple-'));
                       return (
                         <button
                           key={s.id}

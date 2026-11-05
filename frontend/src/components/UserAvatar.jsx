@@ -2,9 +2,9 @@ import React from 'react';
 import { Shield, Award, UserCheck } from 'lucide-react';
 
 /**
- * Apple-Inspired Avatars & VisionOS Palettes
+ * Curated Emoji Avatars, Symbols & Aesthetic Palettes
  */
-export const APPLE_MEMOJIS = [
+export const EMOJI_AVATARS = [
   { id: 'technologist', label: 'Tech Specialist', emoji: '👨‍💻', bg: 'linear-gradient(135deg, #0071e3 0%, #4f46e5 100%)', shadow: 'rgba(0, 113, 227, 0.4)' },
   { id: 'scholar', label: 'Campus Scholar', emoji: '🎓', bg: 'linear-gradient(135deg, #059669 0%, #10b981 100%)', shadow: 'rgba(16, 185, 129, 0.4)' },
   { id: 'executive', label: 'Corporate Leader', emoji: '💼', bg: 'linear-gradient(135deg, #7c3aed 0%, #af52de 100%)', shadow: 'rgba(124, 58, 237, 0.4)' },
@@ -19,20 +19,24 @@ export const APPLE_MEMOJIS = [
   { id: 'engineer', label: 'Systems Builder', emoji: '⚡', bg: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)', shadow: 'rgba(99, 102, 241, 0.4)' }
 ];
 
-export const APPLE_SYMBOLS = [
-  { id: 'apple-gem', label: 'Sapphire Diamond', emoji: '💎', bg: 'linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)', shadow: 'rgba(14, 165, 233, 0.4)' },
-  { id: 'apple-lion', label: 'Royal Lion', emoji: '🦁', bg: 'linear-gradient(135deg, #f59e0b 0%, #b45309 100%)', shadow: 'rgba(245, 158, 11, 0.4)' },
-  { id: 'apple-eagle', label: 'Golden Eagle', emoji: '🦅', bg: 'linear-gradient(135deg, #d97706 0%, #78350f 100%)', shadow: 'rgba(217, 119, 6, 0.4)' },
-  { id: 'apple-fox', label: 'Swift Fox', emoji: '🦊', bg: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)', shadow: 'rgba(234, 88, 12, 0.4)' },
-  { id: 'apple-shield', label: 'Cyber Shield', emoji: '🛡️', bg: 'linear-gradient(135deg, #8b5cf6 0%, #4f46e5 100%)', shadow: 'rgba(139, 92, 246, 0.4)' },
-  { id: 'apple-fire', label: 'Placement Flame', emoji: '🔥', bg: 'linear-gradient(135deg, #ef4444 0%, #f97316 100%)', shadow: 'rgba(239, 68, 68, 0.4)' },
-  { id: 'apple-lotus', label: 'Zen Lotus', emoji: '🪷', bg: 'linear-gradient(135deg, #ec4899 0%, #a855f7 100%)', shadow: 'rgba(236, 72, 153, 0.4)' },
-  { id: 'apple-globe', label: 'Global Explorer', emoji: '🌍', bg: 'linear-gradient(135deg, #059669 0%, #0284c7 100%)', shadow: 'rgba(5, 150, 105, 0.4)' }
+export const SYMBOL_BADGES = [
+  { id: 'symbol-gem', label: 'Sapphire Diamond', emoji: '💎', bg: 'linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)', shadow: 'rgba(14, 165, 233, 0.4)' },
+  { id: 'symbol-lion', label: 'Royal Lion', emoji: '🦁', bg: 'linear-gradient(135deg, #f59e0b 0%, #b45309 100%)', shadow: 'rgba(245, 158, 11, 0.4)' },
+  { id: 'symbol-eagle', label: 'Golden Eagle', emoji: '🦅', bg: 'linear-gradient(135deg, #d97706 0%, #78350f 100%)', shadow: 'rgba(217, 119, 6, 0.4)' },
+  { id: 'symbol-fox', label: 'Swift Fox', emoji: '🦊', bg: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)', shadow: 'rgba(234, 88, 12, 0.4)' },
+  { id: 'symbol-shield', label: 'Cyber Shield', emoji: '🛡️', bg: 'linear-gradient(135deg, #8b5cf6 0%, #4f46e5 100%)', shadow: 'rgba(139, 92, 246, 0.4)' },
+  { id: 'symbol-fire', label: 'Placement Flame', emoji: '🔥', bg: 'linear-gradient(135deg, #ef4444 0%, #f97316 100%)', shadow: 'rgba(239, 68, 68, 0.4)' },
+  { id: 'symbol-lotus', label: 'Zen Lotus', emoji: '🪷', bg: 'linear-gradient(135deg, #ec4899 0%, #a855f7 100%)', shadow: 'rgba(236, 72, 153, 0.4)' },
+  { id: 'symbol-globe', label: 'Global Explorer', emoji: '🌍', bg: 'linear-gradient(135deg, #059669 0%, #0284c7 100%)', shadow: 'rgba(5, 150, 105, 0.4)' }
 ];
+
+// Backwards-compatible aliases
+export const APPLE_MEMOJIS = EMOJI_AVATARS;
+export const APPLE_SYMBOLS = SYMBOL_BADGES;
 
 export const AVATAR_PALETTES = [
   { id: 'indigo', name: 'Electric Indigo', bg: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #af52de 100%)', shadow: 'rgba(124, 58, 237, 0.35)' },
-  { id: 'sapphire', name: 'Apple Sapphire', bg: 'linear-gradient(135deg, #0071e3 0%, #0284c7 50%, #38bdf8 100%)', shadow: 'rgba(0, 113, 227, 0.35)' },
+  { id: 'sapphire', name: 'Royal Sapphire', bg: 'linear-gradient(135deg, #0071e3 0%, #0284c7 50%, #38bdf8 100%)', shadow: 'rgba(0, 113, 227, 0.35)' },
   { id: 'mint', name: 'Emerald Mint', bg: 'linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%)', shadow: 'rgba(16, 185, 129, 0.35)' },
   { id: 'coral', name: 'Sunset Coral', bg: 'linear-gradient(135deg, #f97316 0%, #fb7185 50%, #ec4899 100%)', shadow: 'rgba(249, 115, 22, 0.35)' },
   { id: 'fuchsia', name: 'Fuchsia Glow', bg: 'linear-gradient(135deg, #d946ef 0%, #a855f7 50%, #6366f1 100%)', shadow: 'rgba(217, 70, 239, 0.35)' },
@@ -123,11 +127,11 @@ export default function UserAvatar({
 
   // Check if Memoji or Symbol
   const memojiItem = (avatarType === 'memoji' && avatarValue)
-    ? APPLE_MEMOJIS.find((m) => m.id === avatarValue)
+    ? EMOJI_AVATARS.find((m) => m.id === avatarValue)
     : null;
 
   const symbolItem = (avatarType === 'symbol' && avatarValue)
-    ? APPLE_SYMBOLS.find((s) => s.id === avatarValue)
+    ? SYMBOL_BADGES.find((s) => s.id === avatarValue || s.id === avatarValue.replace('apple-', 'symbol-') || s.id.replace('symbol-', 'apple-') === avatarValue)
     : null;
 
   const activeTheme = getAvatarTheme(
@@ -172,7 +176,7 @@ export default function UserAvatar({
           }}
         />
 
-        {/* Content: Apple Memoji / Symbol OR Monogram Initials */}
+        {/* Content: Emoji / Symbol OR Monogram Initials */}
         {memojiItem ? (
           <span
             className="relative z-10 leading-none filter drop-shadow-xs transform group-hover:scale-110 transition-transform select-none"

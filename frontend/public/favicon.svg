@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
   <defs>
-    <!-- Background Gradient: Apple Sapphire to Siri Violet -->
+    <!-- Background Gradient: Sapphire to Violet -->
     <linearGradient id="piqBg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#0071e3" />
       <stop offset="50%" stop-color="#4f46e5" />
@@ -74,7 +74,7 @@
     <path d="M86 46 C94 52 97 62 96 74" fill="none" stroke="url(#piqGold)" stroke-width="3" stroke-linecap="round" />
     <circle cx="96" cy="77" r="4" fill="url(#piqGold)" />
 
-    <!-- Intelligence Sparkle Diamond (Apple Success Star) -->
+    <!-- Intelligence Sparkle Diamond (Success Star) -->
     <path d="M96 22 Q96 27 101 27 Q96 27 96 32 Q96 27 91 27 Q96 27 96 22 Z" fill="url(#piqGold)" filter="url(#starGlow)" />
   </g>
 </svg>

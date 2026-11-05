@@ -129,13 +129,13 @@ export default function LandingPage({ onNavigate }) {
   return (
     <div className="min-h-screen bg-[#f5f5f7] dark:bg-black text-[#1d1d1f] dark:text-[#f5f5f7] font-sans selection:bg-[#0071e3] selection:text-white transition-colors duration-500 relative overflow-x-hidden">
       
-      {/* Dynamic Ambient Liquid Glow Orbs (Apple Intelligence Siri Aura) */}
+      {/* Dynamic Ambient Liquid Glow Orbs (Fluid Aurora Glow) */}
       <div className="siri-ambient-aura w-[650px] h-[450px] bg-gradient-to-r from-[#ff2d55]/25 via-[#bf5af2]/30 to-[#0a84ff]/25 top-16 left-1/2 -translate-x-1/2 -z-10" />
       <div className="siri-ambient-aura w-[500px] h-[500px] bg-gradient-to-tr from-[#30d158]/20 to-[#64d2ff]/25 top-[40rem] -right-28 -z-10" />
       <div className="siri-ambient-aura w-[480px] h-[480px] bg-gradient-to-tr from-[#ff9f0a]/20 to-[#ff375f]/20 top-[85rem] -left-28 -z-10" />
 
       {/* =========================================================================
-          1. NAVIGATION BAR (Apple Minimalist Liquid Glass Header)
+          1. NAVIGATION BAR (Minimalist Liquid Glass Header)
       ========================================================================== */}
       <header className="sticky top-0 z-50 bg-white/70 dark:bg-black/70 backdrop-blur-2xl border-b border-black/[0.06] dark:border-white/[0.08] transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -156,7 +156,7 @@ export default function LandingPage({ onNavigate }) {
             </div>
           </button>
 
-          {/* Desktop Navigation Links (Apple Style - Subdued, Tight, Crisp) */}
+          {/* Desktop Navigation Links (Subdued, Tight, Crisp) */}
           <nav className="hidden lg:flex items-center gap-8 text-[13px] font-normal tracking-tight text-[#1d1d1f]/80 dark:text-[#f5f5f7]/80">
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -197,7 +197,7 @@ export default function LandingPage({ onNavigate }) {
             </button>
           </nav>
 
-          {/* Header Action Buttons (Apple Pill Badges) */}
+          {/* Header Action Buttons (Pill Badges) */}
           <div className="hidden sm:flex items-center gap-3">
             {/* Dark Mode Toggle */}
             <button
@@ -334,7 +334,7 @@ export default function LandingPage({ onNavigate }) {
       </header>
 
       {/* =========================================================================
-          2. HERO SECTION (Apple Typographic Grandeur & Liquid Glass Showcase)
+          2. HERO SECTION (Typographic Grandeur & Liquid Glass Showcase)
       ========================================================================== */}
       <section className="relative pt-16 pb-20 lg:pt-24 lg:pb-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -346,7 +346,7 @@ export default function LandingPage({ onNavigate }) {
               <span>Intelligent Campus Recruitment Platform</span>
             </div>
 
-            {/* Apple Grand Headline */}
+            {/* Grand Headline */}
             <h1 className="text-4xl sm:text-6xl lg:text-8xl font-bold tracking-[-0.04em] text-[#1d1d1f] dark:text-[#f5f5f7] leading-[1.04] mb-6">
               <span className="apple-titanium-text">Intelligence.</span>
               <br />
@@ -358,7 +358,7 @@ export default function LandingPage({ onNavigate }) {
               The next-generation campus placement platform. Predictive cutoff modeling, automated student intelligence, and executive reporting engineered with liquid glass.
             </p>
 
-            {/* Dual CTAs (Apple Signature Pills) */}
+            {/* Dual CTAs (Signature Pills) */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <button
                 onClick={() => {
@@ -431,7 +431,7 @@ export default function LandingPage({ onNavigate }) {
               </div>
             </div>
 
-            {/* Apple Hardware Display Frame */}
+            {/* Hardware Display Frame */}
             <div className="liquid-glass rounded-[32px] sm:rounded-[40px] p-5 sm:p-8 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.9)] relative overflow-hidden">
               
               {/* Traffic Light Chrome */}
@@ -450,7 +450,7 @@ export default function LandingPage({ onNavigate }) {
                 </div>
               </div>
 
-              {/* 4 Apple Liquid KPI Cards */}
+              {/* 4 Liquid KPI Cards */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
                 <div className="p-4 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.04] dark:border-white/[0.06] transition-all hover:scale-[1.01]">
                   <div className="text-xs font-medium text-[#86868b]">Total Students</div>
@@ -503,7 +503,7 @@ export default function LandingPage({ onNavigate }) {
       </section>
 
       {/* =========================================================================
-          3. FEATURES SECTION (Apple Bento Grid - 6 Liquid Glass Tiles)
+          3. FEATURES SECTION (Bento Grid - 6 Liquid Glass Tiles)
       ========================================================================== */}
       <section id="features" className="py-20 lg:py-28 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -622,7 +622,7 @@ export default function LandingPage({ onNavigate }) {
       </section>
 
       {/* =========================================================================
-          4. HOW IT WORKS SECTION (Apple 4-Step Process)
+          4. HOW IT WORKS SECTION (4-Step Process)
       ========================================================================== */}
       <section id="how-it-works" className="py-20 lg:py-28 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -697,7 +697,7 @@ export default function LandingPage({ onNavigate }) {
       </section>
 
       {/* =========================================================================
-          5. ANALYTICS PREVIEW SECTION (Apple Segmented Pill & Clean Recharts)
+          5. ANALYTICS PREVIEW SECTION (Segmented Pill & Clean Recharts)
       ========================================================================== */}
       <section id="preview" className="py-20 lg:py-28 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -714,7 +714,7 @@ export default function LandingPage({ onNavigate }) {
             </p>
           </div>
 
-          {/* Apple-Style Segmented Control Switcher */}
+          {/* Segmented Control Switcher */}
           <div className="flex justify-center mb-8 px-2">
             <div className="p-1 rounded-full liquid-glass inline-flex gap-1 overflow-x-auto max-w-full">
               <button
@@ -898,7 +898,7 @@ export default function LandingPage({ onNavigate }) {
       </section>
 
       {/* =========================================================================
-          6. ABOUT SECTION (Apple Editorial Aesthetic)
+          6. ABOUT SECTION (Editorial Aesthetic)
       ========================================================================== */}
       <section id="about" className="py-20 lg:py-28 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -931,7 +931,7 @@ export default function LandingPage({ onNavigate }) {
               </div>
             </div>
 
-            {/* Value Pillars (Apple Bento Tiles) */}
+            {/* Value Pillars (Bento Tiles) */}
             <div className="space-y-4">
               <div className="apple-bento-card p-6 flex items-start gap-4">
                 <div className="w-10 h-10 rounded-xl liquid-pill text-[#0071e3] dark:text-[#2997ff] flex items-center justify-center shrink-0">
@@ -974,7 +974,7 @@ export default function LandingPage({ onNavigate }) {
       </section>
 
       {/* =========================================================================
-          7. CALL-TO-ACTION SECTION (Apple Liquid Glass Hero Bento)
+          7. CALL-TO-ACTION SECTION (Liquid Glass Hero Bento)
       ========================================================================== */}
       <section id="cta" className="py-16 sm:py-24 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1020,7 +1020,7 @@ export default function LandingPage({ onNavigate }) {
       </section>
 
       {/* =========================================================================
-          8. CONTACT SECTION (Apple Clean Cards)
+          8. CONTACT SECTION (Clean Cards)
       ========================================================================== */}
       <section id="contact" className="py-20 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1237,7 +1237,7 @@ export default function LandingPage({ onNavigate }) {
       </section>
 
       {/* =========================================================================
-          9. FOOTER SECTION (Apple Global Footer)
+          9. FOOTER SECTION (Global Footer)
       ========================================================================== */}
       <footer className="bg-[#f5f5f7] dark:bg-[#111112] text-[#86868b] dark:text-[#a1a1a6] py-14 border-t border-black/[0.06] dark:border-white/[0.08] text-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

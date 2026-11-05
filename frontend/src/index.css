@@ -83,7 +83,7 @@
     background: rgba(255, 255, 255, 0.38);
   }
 
-  /* Universal Apple Fluid Transitions */
+  /* Universal Fluid Transitions */
   button, a, input, select, textarea {
     transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
                 background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
@@ -95,7 +95,7 @@
 }
 
 /* =========================================================================
-   AUTHENTIC APPLE LIQUID GLASS & IOS 18 SPECULAR REFRACTION
+   AUTHENTIC LIQUID GLASS & SPECULAR REFRACTION
 ========================================================================= */
 
 /* Light Mode Base Liquid Glass */
@@ -170,7 +170,7 @@
 }
 
 /* =========================================================================
-   IOS 18 SIRI / APPLE INTELLIGENCE AURORA GLOW BORDER
+   CHROMATIC AURORA GLOW BORDER
 ========================================================================= */
 
 .siri-aurora-glow {
@@ -241,7 +241,7 @@
 }
 
 /* =========================================================================
-   CINEMATIC APPLE TYPOGRAPHY & TITANIUM GRADIENTS
+   CINEMATIC TYPOGRAPHY & TITANIUM GRADIENTS
 ========================================================================= */
 
 .apple-titanium-text {
@@ -373,7 +373,7 @@
 }
 
 /* =========================================================================
-   APPLE BENTO GRID CARDS
+   BENTO GRID CARDS
 ========================================================================= */
 
 .apple-bento-card {
@@ -417,7 +417,7 @@
 }
 
 /* =========================================================================
-   DYNAMIC APPLE ANIMATIONS
+   DYNAMIC SYSTEM ANIMATIONS
 ========================================================================= */
 
 @keyframes apple-spring-enter {
@@ -488,7 +488,7 @@
 }
 
 /* =========================================================================
-   UNIVERSAL APPLE LIQUID GLASS MODULE OVERRIDES
+   UNIVERSAL LIQUID GLASS MODULE OVERRIDES
 ========================================================================= */
 
 /* Light Mode Cards */
@@ -622,7 +622,7 @@ table tbody td {
   box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.9) !important;
 }
 
-/* Apple Sleek Scrollbar */
+/* Sleek Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;

@@ -73,7 +73,7 @@ export default function SignupPage({ onNavigate }) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
           
           {/* =========================================================================
-              LEFT COLUMN: APPLE SHOWCASE & INSTANT EXPLORATION HIGHLIGHTS
+              LEFT COLUMN: SHOWCASE & INSTANT EXPLORATION HIGHLIGHTS
           ========================================================================== */}
           <div className="order-2 lg:order-1 lg:col-span-6 space-y-6">
             
@@ -100,7 +100,7 @@ export default function SignupPage({ onNavigate }) {
               </p>
             </div>
 
-            {/* Apple Feature Glass Cards */}
+            {/* Feature Glass Cards */}
             <div className="space-y-3 pt-2">
               <div className="apple-gloss-tile p-4 flex items-center gap-3.5">
                 <div className="w-9 h-9 rounded-xl liquid-pill text-[#34c759] flex items-center justify-center shrink-0">
@@ -141,7 +141,7 @@ export default function SignupPage({ onNavigate }) {
           </div>
 
           {/* =========================================================================
-              RIGHT COLUMN: APPLE LIQUID GLASS SIGNUP CARD
+              RIGHT COLUMN: LIQUID GLASS SIGNUP CARD
           ========================================================================== */}
           <div className="order-1 lg:order-2 lg:col-span-6">
             <div className="liquid-glass siri-aurora-glow rounded-[32px] p-7 sm:p-10 shadow-2xl">

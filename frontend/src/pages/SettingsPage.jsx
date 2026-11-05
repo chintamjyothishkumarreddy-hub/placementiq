@@ -70,7 +70,7 @@ export default function SettingsPage() {
 
   return (
     <div className="space-y-6 max-w-4xl">
-      {/* Apple Studio Hero Command Bar */}
+      {/* Studio Hero Command Bar */}
       <div className="apple-gloss-tile p-6 sm:p-7 rounded-[28px] relative overflow-hidden">
         <div className="absolute -top-20 -right-20 w-80 h-80 bg-gradient-to-br from-[#0071e3]/15 to-transparent rounded-full blur-3xl pointer-events-none" />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5">

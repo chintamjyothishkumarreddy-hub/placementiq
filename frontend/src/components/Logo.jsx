@@ -1,9 +1,9 @@
 import React from 'react';
 
 /**
- * PlacementIQ Apple-Design System Emblem & Brandmark
- * Features an authentic iOS 18 superellipse squircle with specular rim lighting,
- * dynamic multi-stop gradient (Apple Sapphire -> Siri Indigo),
+ * PlacementIQ Intelligent Emblem & Brandmark
+ * Features an authentic superellipse squircle with specular rim lighting,
+ * dynamic multi-stop gradient (Sapphire -> Indigo Violet),
  * a faceted academic graduation crest, analytical growth trajectory pillars,
  * and a success sparkle star.
  */

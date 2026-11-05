@@ -74,7 +74,7 @@ export default function AnalyticsPage() {
 
   const TIER_COLORS = ['#af52de', '#0071e3', '#30d158', '#ff9f0a'];
 
-  const CustomAppleTooltip = ({ active, payload, label }) => {
+  const CustomGlassTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
         <div className="liquid-glass p-3.5 rounded-2xl shadow-2xl border border-black/10 dark:border-white/15 text-xs backdrop-blur-2xl">
@@ -151,7 +151,7 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
-      {/* 4 Apple Bento Metric Cards */}
+      {/* 4 Bento Metric Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Metric 1 */}
         <div className="apple-gloss-tile p-5 rounded-2xl flex flex-col justify-between">
@@ -258,7 +258,7 @@ export default function AnalyticsPage() {
                     <Cell key={`cell-${index}`} fill={TIER_COLORS[index % TIER_COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip content={<CustomAppleTooltip />} />
+                <Tooltip content={<CustomGlassTooltip />} />
                 <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
               </PieChart>
             </ResponsiveContainer>
@@ -295,7 +295,7 @@ export default function AnalyticsPage() {
                 <CartesianGrid strokeDasharray="3 3" opacity={0.08} />
                 <XAxis dataKey="bracket" tick={{ fontSize: 11, fill: '#86868b' }} axisLine={false} tickLine={false} />
                 <YAxis unit="%" tick={{ fontSize: 11, fill: '#86868b' }} axisLine={false} tickLine={false} />
-                <Tooltip content={<CustomAppleTooltip />} />
+                <Tooltip content={<CustomGlassTooltip />} />
                 <Bar dataKey="placement_rate" name="Placement Rate (%)" fill="#0071e3" radius={[8, 8, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>

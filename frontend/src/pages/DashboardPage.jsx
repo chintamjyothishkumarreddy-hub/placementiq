@@ -97,8 +97,8 @@ export default function DashboardPage({ onNavigate }) {
 
   const { kpis, charts, filter_options } = data || {};
 
-  // Custom Apple Glass Tooltip
-  const CustomAppleTooltip = ({ active, payload, label }) => {
+  // Custom Glass Tooltip
+  const CustomGlassTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
         <div className="liquid-glass p-3.5 rounded-2xl shadow-2xl border border-black/10 dark:border-white/15 text-xs backdrop-blur-2xl">
@@ -247,7 +247,7 @@ export default function DashboardPage({ onNavigate }) {
       </div>
 
       {/* =========================================================================
-          2. APPLE CONTROL CENTER FLOATING FILTER CAPSULE
+          2. CONTROL CENTER FLOATING FILTER CAPSULE
       ========================================================================== */}
       <div className="liquid-glass rounded-[24px] p-4 sm:p-5 shadow-lg border border-black/[0.06] dark:border-white/[0.08]">
         <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
@@ -338,7 +338,7 @@ export default function DashboardPage({ onNavigate }) {
       </div>
 
       {/* =========================================================================
-          3. APPLE BENTO GRID V2: ASYMMETRICAL SPOTLIGHTS
+          3. BENTO GRID V2: ASYMMETRICAL SPOTLIGHTS
       ========================================================================== */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-5">
         
@@ -364,7 +364,7 @@ export default function DashboardPage({ onNavigate }) {
               </span>
             </div>
 
-            {/* Apple Activity Ring Graphic */}
+            {/* Activity Ring Graphic */}
             <div className="flex items-center justify-center my-3">
               <div className="relative w-36 h-36 flex items-center justify-center">
                 <svg className="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
@@ -695,7 +695,7 @@ export default function DashboardPage({ onNavigate }) {
                   <CartesianGrid strokeDasharray="3 3" opacity={0.08} />
                   <XAxis dataKey="department" tick={{ fontSize: 11, fill: '#86868b' }} axisLine={false} tickLine={false} />
                   <YAxis tick={{ fontSize: 11, fill: '#86868b' }} axisLine={false} tickLine={false} />
-                  <Tooltip content={<CustomAppleTooltip />} />
+                  <Tooltip content={<CustomGlassTooltip />} />
                   <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '8px' }} />
                   <Bar dataKey="total" name="Total Students" fill="#86868b" radius={[6, 6, 0, 0]} />
                   <Bar dataKey="eligible" name="Eligible" fill="#0071e3" radius={[6, 6, 0, 0]} />
@@ -706,7 +706,7 @@ export default function DashboardPage({ onNavigate }) {
                   <CartesianGrid strokeDasharray="3 3" opacity={0.08} />
                   <XAxis dataKey="department" tick={{ fontSize: 11, fill: '#86868b' }} axisLine={false} tickLine={false} />
                   <YAxis unit="%" tick={{ fontSize: 11, fill: '#86868b' }} axisLine={false} tickLine={false} />
-                  <Tooltip content={<CustomAppleTooltip />} />
+                  <Tooltip content={<CustomGlassTooltip />} />
                   <Bar dataKey="placement_rate" name="Placement Conversion Rate" fill="#0071e3" radius={[6, 6, 0, 0]} />
                 </BarChart>
               )}
@@ -742,7 +742,7 @@ export default function DashboardPage({ onNavigate }) {
                 <CartesianGrid strokeDasharray="3 3" opacity={0.08} />
                 <XAxis dataKey="range" tick={{ fontSize: 11, fill: '#86868b' }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fontSize: 11, fill: '#86868b' }} axisLine={false} tickLine={false} />
-                <Tooltip content={<CustomAppleTooltip />} />
+                <Tooltip content={<CustomGlassTooltip />} />
                 <Bar dataKey="count" name="Placed Students" fill="url(#purpleBarGrad)" radius={[8, 8, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -786,7 +786,7 @@ export default function DashboardPage({ onNavigate }) {
                   axisLine={false}
                   tickLine={false}
                 />
-                <Tooltip content={<CustomAppleTooltip />} />
+                <Tooltip content={<CustomGlassTooltip />} />
                 <Bar dataKey="selections" name="Selections" fill="#0071e3" radius={[0, 8, 8, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -815,7 +815,7 @@ export default function DashboardPage({ onNavigate }) {
                 <CartesianGrid strokeDasharray="3 3" opacity={0.08} />
                 <XAxis dataKey="range" tick={{ fontSize: 11, fill: '#86868b' }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fontSize: 11, fill: '#86868b' }} axisLine={false} tickLine={false} />
-                <Tooltip content={<CustomAppleTooltip />} />
+                <Tooltip content={<CustomGlassTooltip />} />
                 <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '8px' }} />
                 <Bar dataKey="placed" name="Placed" stackId="cgpa" fill="#34c759" radius={[0, 0, 0, 0]} />
                 <Bar dataKey="unplaced" name="Unplaced" stackId="cgpa" fill="#86868b" radius={[6, 6, 0, 0]} />
@@ -854,12 +854,12 @@ export default function DashboardPage({ onNavigate }) {
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <Tooltip content={<CustomAppleTooltip />} />
+                <Tooltip content={<CustomGlassTooltip />} />
                 <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
               </PieChart>
             </ResponsiveContainer>
 
-            {/* Apple Center Readout */}
+            {/* Center Readout */}
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none pb-6">
               <span className="text-2xl font-bold tracking-tight text-[#1d1d1f] dark:text-[#f5f5f7]">
                 {kpis?.total_registered ?? 0}
@@ -891,7 +891,7 @@ export default function DashboardPage({ onNavigate }) {
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={charts?.year_trends || []} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
-                  <linearGradient id="appleAreaGrad" x1="0" y1="0" x2="0" y2="1">
+                  <linearGradient id="piqAreaGrad" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#0071e3" stopOpacity={0.4} />
                     <stop offset="95%" stopColor="#0071e3" stopOpacity={0.0} />
                   </linearGradient>
@@ -899,14 +899,14 @@ export default function DashboardPage({ onNavigate }) {
                 <CartesianGrid strokeDasharray="3 3" opacity={0.08} />
                 <XAxis dataKey="year" tick={{ fontSize: 11, fill: '#86868b' }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fontSize: 11, fill: '#86868b' }} axisLine={false} tickLine={false} />
-                <Tooltip content={<CustomAppleTooltip />} />
+                <Tooltip content={<CustomGlassTooltip />} />
                 <Area
                   type="monotone"
                   dataKey="placed"
                   name="Placed Students"
                   stroke="#0071e3"
                   strokeWidth={3}
-                  fill="url(#appleAreaGrad)"
+                  fill="url(#piqAreaGrad)"
                 />
               </AreaChart>
             </ResponsiveContainer>
