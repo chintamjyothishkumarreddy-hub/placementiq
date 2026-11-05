@@ -235,6 +235,7 @@ class JobRoleOut(JobRoleBase):
 class CompanyBase(BaseModel):
     name: str
     industry: Optional[str] = None
+    logo_url: Optional[str] = None
     website: Optional[str] = None
     hr_name: Optional[str] = None
     hr_email: Optional[str] = None
@@ -250,6 +251,7 @@ class CompanyCreate(CompanyBase):
 class CompanyUpdate(BaseModel):
     name: Optional[str] = None
     industry: Optional[str] = None
+    logo_url: Optional[str] = None
     website: Optional[str] = None
     hr_name: Optional[str] = None
     hr_email: Optional[str] = None

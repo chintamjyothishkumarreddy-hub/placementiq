@@ -18,6 +18,7 @@ import {
 import api from '../api';
 import { useAuth } from '../context/AuthContext';
 import ConfirmModal from '../components/ConfirmModal';
+import CompanyLogo from '../components/CompanyLogo';
 
 export default function OffersPage() {
   const { role, showToast } = useAuth();
@@ -308,7 +309,14 @@ export default function OffersPage() {
                       </div>
                     </td>
                     <td className="p-3 font-semibold text-slate-900 dark:text-slate-100">
-                      {off.company_name}
+                      <div className="flex items-center gap-2.5">
+                        <CompanyLogo
+                          company={companies.find((c) => c.id === off.company_id || c.name === off.company_name) || { name: off.company_name }}
+                          size={28}
+                          rounded="rounded-lg"
+                        />
+                        <span className="truncate">{off.company_name}</span>
+                      </div>
                     </td>
                     <td className="p-3 text-slate-700 dark:text-slate-300">
                       {off.job_role}

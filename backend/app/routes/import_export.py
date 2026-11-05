@@ -309,6 +309,7 @@ def commit_import(
                 comp = Company(
                     name=str(row_data.get("name", "")).strip(),
                     industry=str(row_data.get("industry", "IT")).strip(),
+                    logo_url=str(row_data.get("logo_url", "")).strip() or None,
                     website=str(row_data.get("website", "")).strip() or None,
                     hr_name=str(row_data.get("hr_name", "")).strip() or None,
                     hr_email=str(row_data.get("hr_email", "")).strip() or None,

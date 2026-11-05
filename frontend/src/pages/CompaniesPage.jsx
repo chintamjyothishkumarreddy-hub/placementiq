@@ -14,11 +14,14 @@ import {
   ExternalLink,
   ChevronDown,
   ChevronUp,
-  DollarSign
+  DollarSign,
+  Image,
+  Sparkles
 } from 'lucide-react';
 import api from '../api';
 import { useAuth } from '../context/AuthContext';
 import ConfirmModal from '../components/ConfirmModal';
+import CompanyLogo, { POPULAR_COMPANY_PRESETS } from '../components/CompanyLogo';
 
 export default function CompaniesPage() {
   const { role, showToast } = useAuth();
@@ -53,6 +56,7 @@ export default function CompaniesPage() {
   const defaultCompany = {
     name: '',
     industry: 'Software & Technology',
+    logo_url: '',
     website: '',
     hr_name: '',
     hr_email: '',
@@ -119,6 +123,7 @@ export default function CompaniesPage() {
     setCompanyForm({
       name: c.name,
       industry: c.industry || '',
+      logo_url: c.logo_url || '',
       website: c.website || '',
       hr_name: c.hr_name || '',
       hr_email: c.hr_email || '',
@@ -304,15 +309,19 @@ export default function CompaniesPage() {
               >
                 <div>
                   <div className="flex items-start justify-between gap-3 mb-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-lg">
-                        {comp.name[0]}
-                      </div>
-                      <div>
-                        <h3 className="text-base font-bold text-slate-900 dark:text-white leading-tight">
+                    <div className="flex items-center gap-3.5 min-w-0">
+                      <CompanyLogo
+                        company={comp}
+                        size={52}
+                        className="shadow-xs"
+                      />
+                      <div className="min-w-0">
+                        <h3 className="text-base font-bold text-slate-900 dark:text-white leading-tight truncate">
                           {comp.name}
                         </h3>
-                        <span className="text-xs text-slate-400">{comp.industry || 'Industry'}</span>
+                        <span className="text-xs text-slate-400 dark:text-slate-500 truncate block mt-0.5">
+                          {comp.industry || 'Industry'}
+                        </span>
                       </div>
                     </div>
 
@@ -504,6 +513,105 @@ export default function CompaniesPage() {
                 />
               </div>
 
+              {/* Company Logo Section with Live Preview & Presets */}
+              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 space-y-3">
+                <div className="flex items-center justify-between">
+                  <label className="block font-semibold text-slate-800 dark:text-slate-200">
+                    Company Logo
+                  </label>
+                  <span className="text-[11px] text-slate-400">Custom URL, Website Domain, or Preset</span>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="shrink-0 flex flex-col items-center gap-1">
+                    <CompanyLogo
+                      name={companyForm.name}
+                      logoUrl={companyForm.logo_url}
+                      website={companyForm.website}
+                      size={54}
+                      className="border-2 border-dashed border-blue-400/40"
+                    />
+                    <span className="text-[9px] text-slate-400 font-medium">Preview</span>
+                  </div>
+
+                  <div className="flex-1 space-y-2">
+                    <div className="relative">
+                      <Image className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                      <input
+                        type="url"
+                        value={companyForm.logo_url || ''}
+                        onChange={(e) => setCompanyForm({ ...companyForm, logo_url: e.target.value })}
+                        placeholder="https://... (SVG, PNG, or Web logo URL)"
+                        className="w-full pl-9 pr-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden text-xs"
+                      />
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (!companyForm.website) {
+                            showToast('Please enter a Website URL above to auto-detect logo', 'error');
+                            return;
+                          }
+                          try {
+                            const url = new URL(companyForm.website.startsWith('http') ? companyForm.website : `https://${companyForm.website}`);
+                            const domain = url.hostname.replace(/^www\./, '');
+                            const logo = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+                            setCompanyForm({ ...companyForm, logo_url: logo });
+                            showToast(`Detected logo for ${domain}`, 'success');
+                          } catch {
+                            showToast('Invalid website URL format', 'error');
+                          }
+                        }}
+                        className="px-2.5 py-1 rounded-lg text-[11px] font-medium bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 hover:bg-blue-100 transition-colors flex items-center gap-1 cursor-pointer"
+                      >
+                        <Sparkles className="w-3 h-3" />
+                        <span>Auto-Detect from Website</span>
+                      </button>
+
+                      {companyForm.logo_url && (
+                        <button
+                          type="button"
+                          onClick={() => setCompanyForm({ ...companyForm, logo_url: '' })}
+                          className="px-2 py-1 rounded-lg text-[11px] text-rose-500 hover:text-rose-700 cursor-pointer"
+                        >
+                          Clear Logo URL
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Popular Recruiter Quick Presets */}
+                <div>
+                  <div className="text-[10px] text-slate-400 font-semibold mb-1.5 uppercase tracking-wider">
+                    Or auto-populate from a top campus recruiter:
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto p-0.5">
+                    {POPULAR_COMPANY_PRESETS.map((p) => (
+                      <button
+                        key={p.name}
+                        type="button"
+                        onClick={() => {
+                          setCompanyForm({
+                            ...companyForm,
+                            name: p.name,
+                            industry: p.industry,
+                            website: p.website,
+                            logo_url: p.logo_url
+                          });
+                        }}
+                        className="px-2 py-1 rounded-lg text-[11px] font-medium bg-white dark:bg-slate-700 hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-slate-600 transition-colors border border-black/[0.06] dark:border-white/[0.08] flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                      >
+                        <CompanyLogo company={p} size={16} rounded="rounded-xs" showInitialFallback={false} />
+                        <span>{p.name.replace(/\(.*\)/, '').trim()}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block font-semibold mb-1">HR / Recruiter Name</label>
@@ -679,7 +787,11 @@ export default function CompaniesPage() {
       <ConfirmModal
         isOpen={!!deleteCompanyId}
         title="Delete Company Record"
-        message="Are you sure you want to delete this company? Historical placement offers will remain preserved."
+        message={
+          deleteCompanyId
+            ? `Are you sure you want to delete "${companies.find((c) => c.id === deleteCompanyId)?.name || 'this company'}"? Historical placement offers will remain preserved.`
+            : "Are you sure you want to delete this company? Historical placement offers will remain preserved."
+        }
         confirmText="Delete Company"
         confirmVariant="danger"
         loading={deleteLoading}

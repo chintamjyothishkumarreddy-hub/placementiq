@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import api from '../api';
 import { useAuth } from '../context/AuthContext';
+import CompanyLogo from '../components/CompanyLogo';
 
 export default function ApplicationsPage() {
   const { role, showToast } = useAuth();
@@ -209,11 +210,20 @@ export default function ApplicationsPage() {
                       </div>
                     </td>
                     <td className="p-3">
-                      <div className="font-semibold text-slate-800 dark:text-slate-200">
-                        {app.company_name}
-                      </div>
-                      <div className="text-[11px] text-slate-400 truncate max-w-[160px]">
-                        {app.drive_title}
+                      <div className="flex items-center gap-2.5">
+                        <CompanyLogo
+                          name={app.company_name}
+                          size={28}
+                          rounded="rounded-lg"
+                        />
+                        <div className="min-w-0">
+                          <div className="font-semibold text-slate-800 dark:text-slate-200 truncate">
+                            {app.company_name}
+                          </div>
+                          <div className="text-[11px] text-slate-400 truncate max-w-[160px]">
+                            {app.drive_title}
+                          </div>
+                        </div>
                       </div>
                     </td>
                     <td className="p-3 font-semibold text-slate-800 dark:text-slate-200">

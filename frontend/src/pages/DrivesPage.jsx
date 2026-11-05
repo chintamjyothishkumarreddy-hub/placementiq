@@ -19,6 +19,7 @@ import {
 import api from '../api';
 import { useAuth } from '../context/AuthContext';
 import ConfirmModal from '../components/ConfirmModal';
+import CompanyLogo from '../components/CompanyLogo';
 
 export default function DrivesPage() {
   const { role, showToast } = useAuth();
@@ -256,13 +257,19 @@ export default function DrivesPage() {
             >
               <div>
                 <div className="flex items-start justify-between gap-3 mb-3">
-                  <div>
-                    <span className="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
-                      {drive.company_name}
-                    </span>
-                    <h3 className="text-base font-bold text-slate-900 dark:text-white mt-0.5">
-                      {drive.title}
-                    </h3>
+                  <div className="flex items-center gap-3">
+                    <CompanyLogo
+                      company={companies.find((c) => c.id === drive.company_id || c.name === drive.company_name) || { name: drive.company_name }}
+                      size={44}
+                    />
+                    <div>
+                      <span className="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
+                        {drive.company_name}
+                      </span>
+                      <h3 className="text-base font-bold text-slate-900 dark:text-white mt-0.5">
+                        {drive.title}
+                      </h3>
+                    </div>
                   </div>
                   <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${statusStyles[drive.status] || 'bg-slate-100'}`}>
                     {drive.status}
