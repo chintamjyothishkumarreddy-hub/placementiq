@@ -209,26 +209,35 @@ export default function DrivesPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
-            Placement Drive Management
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Organize recruitment schedules, vacancies, and configure custom multi-stage interview pipelines.
-          </p>
-        </div>
+      {/* Apple Studio Hero Command Bar */}
+      <div className="apple-gloss-tile p-6 sm:p-7 rounded-[28px] relative overflow-hidden">
+        <div className="absolute -top-20 -right-20 w-80 h-80 bg-gradient-to-br from-[#0071e3]/15 to-transparent rounded-full blur-3xl pointer-events-none" />
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5">
+          <div className="space-y-1.5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 liquid-pill text-xs font-semibold text-[#0071e3] dark:text-[#2997ff] shadow-xs">
+              <Briefcase className="w-3.5 h-3.5" />
+              <span>Campus Recruitment Operations</span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#1d1d1f] dark:text-[#f5f5f7]">
+              Placement Drives & <span className="apple-siri-gradient-text">Interview Pipeline</span>
+            </h1>
+            <p className="text-xs sm:text-sm text-[#86868b] dark:text-[#a1a1a6] max-w-2xl leading-relaxed">
+              Schedule active recruitment campaigns, configure vacancies, and manage custom multi-stage interview assessment rounds.
+            </p>
+          </div>
 
-        {canEdit && (
-          <button
-            onClick={handleOpenAddDrive}
-            className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-semibold rounded-xl shadow-xs transition-all flex items-center gap-2 cursor-pointer self-start sm:self-auto"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Schedule Placement Drive</span>
-          </button>
-        )}
+          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+            {canEdit && (
+              <button
+                onClick={handleOpenAddDrive}
+                className="apple-btn-primary px-4 py-2 text-xs font-medium cursor-pointer flex items-center gap-2 shadow-md"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Schedule Placement Drive</span>
+              </button>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* Drives Grid */}

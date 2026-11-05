@@ -113,20 +113,27 @@ export default function ImportExportPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
-            Bulk Data Import, Validation & Export
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Import batches from Excel/CSV with automatic column validation, duplicate detection, and pre-commit review.
-          </p>
+      {/* Apple Studio Hero Command Bar */}
+      <div className="apple-gloss-tile p-6 sm:p-7 rounded-[28px] relative overflow-hidden">
+        <div className="absolute -top-20 -right-20 w-80 h-80 bg-gradient-to-br from-[#0071e3]/15 to-transparent rounded-full blur-3xl pointer-events-none" />
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5">
+          <div className="space-y-1.5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 liquid-pill text-xs font-semibold text-[#0071e3] dark:text-[#2997ff] shadow-xs">
+              <FileSpreadsheet className="w-3.5 h-3.5" />
+              <span>Bulk Data Exchange Engine</span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#1d1d1f] dark:text-[#f5f5f7]">
+              Data Ingestion, <span className="apple-siri-gradient-text">Validation & Archival</span>
+            </h1>
+            <p className="text-xs sm:text-sm text-[#86868b] dark:text-[#a1a1a6] max-w-2xl leading-relaxed">
+              Ingest institutional datasets from Excel/CSV with automated schema validation, pre-commit anomaly detection, and instant multi-format exports.
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* Entity Selection Tabs */}
-      <div className="bg-white dark:bg-slate-900 p-2 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs flex flex-wrap gap-2">
+      {/* Apple Segmented Entity Control */}
+      <div className="liquid-glass p-2 rounded-2xl border border-black/[0.06] dark:border-white/[0.08] shadow-sm flex flex-wrap gap-2">
         {[
           { id: 'students', label: 'Students Data' },
           { id: 'companies', label: 'Company Partners' },
@@ -140,10 +147,10 @@ export default function ImportExportPage() {
               setSelectedFile(null);
               setPreviewData(null);
             }}
-            className={`py-2 px-4 rounded-xl text-xs font-bold transition-all ${
+            className={`py-2 px-4 rounded-xl text-xs font-medium transition-all cursor-pointer ${
               activeEntity === tab.id
-                ? 'bg-blue-600 text-white shadow-xs'
-                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                ? 'bg-[#0071e3] text-white shadow-xs font-semibold'
+                : 'text-[#86868b] dark:text-[#a1a1a6] hover:text-[#1d1d1f] dark:hover:text-[#f5f5f7]'
             }`}
           >
             {tab.label}

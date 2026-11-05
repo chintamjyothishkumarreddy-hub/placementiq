@@ -6,25 +6,38 @@ export default function Toast() {
   const { toast } = useAuth();
   if (!toast) return null;
 
-  const bgStyles = {
-    success: 'bg-emerald-50 dark:bg-emerald-950/80 border-emerald-500 text-emerald-800 dark:text-emerald-200',
-    error: 'bg-rose-50 dark:bg-rose-950/80 border-rose-500 text-rose-800 dark:text-rose-200',
-    warning: 'bg-amber-50 dark:bg-amber-950/80 border-amber-500 text-amber-800 dark:text-amber-200',
-    info: 'bg-blue-50 dark:bg-blue-950/80 border-blue-500 text-blue-800 dark:text-blue-200',
+  const typeConfig = {
+    success: {
+      color: 'text-[#34c759]',
+      border: 'border-[#34c759]/30',
+      icon: <CheckCircle2 className="w-5 h-5 text-[#34c759] shrink-0" />
+    },
+    error: {
+      color: 'text-[#ff3b30]',
+      border: 'border-[#ff3b30]/30',
+      icon: <AlertCircle className="w-5 h-5 text-[#ff3b30] shrink-0" />
+    },
+    warning: {
+      color: 'text-[#ff9500]',
+      border: 'border-[#ff9500]/30',
+      icon: <AlertTriangle className="w-5 h-5 text-[#ff9500] shrink-0" />
+    },
+    info: {
+      color: 'text-[#0071e3] dark:text-[#2997ff]',
+      border: 'border-[#0071e3]/30',
+      icon: <Info className="w-5 h-5 text-[#0071e3] dark:text-[#2997ff] shrink-0" />
+    },
   };
 
-  const icons = {
-    success: <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0" />,
-    error: <AlertCircle className="w-5 h-5 text-rose-600 dark:text-rose-400 shrink-0" />,
-    warning: <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />,
-    info: <Info className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0" />,
-  };
+  const config = typeConfig[toast.type] || typeConfig.info;
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 animate-bounce-in max-w-md">
-      <div className={`flex items-start gap-3 p-4 rounded-xl border shadow-lg backdrop-blur-md ${bgStyles[toast.type] || bgStyles.info}`}>
-        {icons[toast.type] || icons.info}
-        <div className="flex-1 text-sm font-medium">{toast.message}</div>
+    <div className="fixed bottom-6 right-6 z-50 animate-dynamic-island max-w-md font-sans pointer-events-auto">
+      <div className={`liquid-pill px-5 py-3.5 shadow-2xl flex items-center gap-3 border ${config.border} bg-white/80 dark:bg-[#1c1c1e]/85 backdrop-blur-2xl`}>
+        {config.icon}
+        <div className="flex-1 text-xs sm:text-sm font-medium text-[#1d1d1f] dark:text-[#f5f5f7] leading-snug">
+          {toast.message}
+        </div>
       </div>
     </div>
   );

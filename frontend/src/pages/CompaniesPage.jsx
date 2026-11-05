@@ -227,39 +227,47 @@ export default function CompaniesPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
-            Company & Job Role Management
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Maintain recruiting partners, compensation packages, and position requirements.
-          </p>
-        </div>
+      {/* Apple Studio Hero Command Bar */}
+      <div className="apple-gloss-tile p-6 sm:p-7 rounded-[28px] relative overflow-hidden">
+        <div className="absolute -top-20 -right-20 w-80 h-80 bg-gradient-to-br from-[#0071e3]/15 to-transparent rounded-full blur-3xl pointer-events-none" />
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5">
+          <div className="space-y-1.5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 liquid-pill text-xs font-semibold text-[#0071e3] dark:text-[#2997ff] shadow-xs">
+              <Building2 className="w-3.5 h-3.5" />
+              <span>Enterprise Recruiter Network</span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#1d1d1f] dark:text-[#f5f5f7]">
+              Company Portfolios & <span className="apple-siri-gradient-text">Job Role Matrix</span>
+            </h1>
+            <p className="text-xs sm:text-sm text-[#86868b] dark:text-[#a1a1a6] max-w-2xl leading-relaxed">
+              Maintain active corporate recruitment partners, configure compensation tiers, and manage position eligibility criteria.
+            </p>
+          </div>
 
-        <div className="flex flex-wrap items-center gap-2">
-          {canEdit && (
-            <button
-              onClick={handleOpenAddCompany}
-              className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-semibold rounded-xl shadow-xs transition-all flex items-center gap-2 cursor-pointer"
-            >
-              <Plus className="w-4 h-4" />
-              <span>Add Company</span>
-            </button>
-          )}
+          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+            {canEdit && (
+              <button
+                onClick={handleOpenAddCompany}
+                className="apple-btn-primary px-4 py-2 text-xs font-medium cursor-pointer flex items-center gap-2 shadow-md"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Add Enterprise Partner</span>
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Filter and Search Bar */}
-      <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-3">
+      {/* Apple Control Center Floating Filter & Search Capsule */}
+      <div className="liquid-glass rounded-[24px] p-4 sm:p-5 shadow-lg border border-black/[0.06] dark:border-white/[0.08] flex flex-col md:flex-row items-center justify-between gap-3">
         <form onSubmit={handleSearchSubmit} className="relative flex-1 w-full">
-          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#86868b]" />
           <input
             type="text"
             placeholder="Search company by name, industry, location..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm focus:outline-hidden"
+            className="w-full pl-10 pr-4 py-2 bg-white/70 dark:bg-white/10 border border-black/10 dark:border-white/10 rounded-xl text-xs sm:text-sm focus:outline-hidden focus:border-[#0071e3] text-[#1d1d1f] dark:text-[#f5f5f7]"
           />
         </form>
 
@@ -267,7 +275,7 @@ export default function CompaniesPage() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="py-1.5 px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-medium focus:outline-hidden"
+            className="py-2 px-3 bg-white/70 dark:bg-white/10 border border-black/10 dark:border-white/10 rounded-xl font-medium focus:outline-hidden text-[#1d1d1f] dark:text-[#f5f5f7] cursor-pointer"
           >
             <option value="All">All Statuses</option>
             <option value="Active">Active</option>
@@ -292,7 +300,7 @@ export default function CompaniesPage() {
             return (
               <div
                 key={comp.id}
-                className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-2xs flex flex-col justify-between"
+                className="apple-gloss-tile p-6 flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-start justify-between gap-3 mb-3">

@@ -14,35 +14,40 @@ export default function ConfirmModal({
   if (!isOpen) return null;
 
   const btnColors = {
-    danger: "bg-rose-600 hover:bg-rose-700 text-white",
-    primary: "bg-blue-600 hover:bg-blue-700 text-white",
-    warning: "bg-amber-600 hover:bg-amber-700 text-white"
+    danger: "bg-[#ff3b30] hover:bg-[#e03126] text-white shadow-sm shadow-rose-500/20",
+    primary: "apple-btn-primary",
+    warning: "bg-[#ff9500] hover:bg-[#e08400] text-white shadow-sm shadow-amber-500/20"
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs animate-fade-in">
-      <div className="w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transform transition-all">
-        <div className="p-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-md animate-fade-in font-sans">
+      <div className="w-full max-w-md liquid-glass rounded-[28px] shadow-2xl overflow-hidden transform transition-all border border-white/60 dark:border-white/10 animate-modal-pop">
+        <div className="p-6 sm:p-7">
           <div className="flex items-center justify-between mb-4">
-            <div className="w-10 h-10 rounded-full bg-rose-100 dark:bg-rose-950/60 flex items-center justify-center text-rose-600 dark:text-rose-400">
+            <div className="w-10 h-10 rounded-full liquid-pill flex items-center justify-center text-[#ff3b30] shadow-xs">
               <AlertTriangle className="w-5 h-5" />
             </div>
             <button
               onClick={onClose}
-              className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+              className="p-1 rounded-full text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors cursor-pointer"
+              aria-label="Close dialog"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
-          <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2">{title}</h3>
-          <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{message}</p>
+          <h3 className="text-lg font-bold text-[#1d1d1f] dark:text-[#f5f5f7] tracking-tight mb-2">
+            {title}
+          </h3>
+          <p className="text-xs sm:text-sm text-[#86868b] dark:text-[#a1a1a6] leading-relaxed">
+            {message}
+          </p>
         </div>
-        <div className="bg-slate-50 dark:bg-slate-950/40 px-6 py-4 flex items-center justify-end gap-3 border-t border-slate-100 dark:border-slate-800">
+        <div className="px-6 sm:p-7 pt-0 pb-6 flex items-center justify-end gap-3">
           <button
             type="button"
             onClick={onClose}
             disabled={loading}
-            className="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-colors"
+            className="apple-btn-secondary px-4 py-2 text-xs sm:text-sm font-medium cursor-pointer"
           >
             Cancel
           </button>
@@ -50,7 +55,7 @@ export default function ConfirmModal({
             type="button"
             onClick={onConfirm}
             disabled={loading}
-            className={`px-4 py-2 text-sm font-semibold rounded-lg shadow-sm transition-all flex items-center gap-2 ${btnColors[confirmVariant] || btnColors.primary}`}
+            className={`px-4 py-2 text-xs sm:text-sm font-semibold rounded-full transition-all flex items-center gap-2 cursor-pointer ${btnColors[confirmVariant] || btnColors.primary}`}
           >
             {loading && <span className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full" />}
             {confirmText}

@@ -31,6 +31,50 @@ function getViewFromPath(pathname) {
   return 'landing';
 }
 
+class ModuleErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+  componentDidCatch(error, errorInfo) {
+    console.error("ModuleErrorBoundary caught:", error, errorInfo);
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.activeTab !== this.props.activeTab && this.state.hasError) {
+      this.setState({ hasError: false, error: null });
+    }
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="apple-gloss-tile p-8 sm:p-10 rounded-[32px] text-center max-w-lg mx-auto my-12 space-y-4">
+          <div className="w-12 h-12 rounded-2xl liquid-pill flex items-center justify-center text-[#ff3b30] mx-auto shadow-sm">
+            <ShieldAlert className="w-6 h-6" />
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-[#1d1d1f] dark:text-[#f5f5f7] tracking-tight">
+              Module View Recovery
+            </h2>
+            <p className="text-xs sm:text-sm text-[#86868b] dark:text-[#a1a1a6] mt-1 leading-relaxed">
+              An unexpected render exception was caught in this view. Your session and database data remain safe.
+            </p>
+          </div>
+          <button
+            onClick={() => this.setState({ hasError: false, error: null })}
+            className="apple-btn-primary px-5 py-2.5 text-xs font-semibold cursor-pointer inline-flex items-center gap-2"
+          >
+            <span>Reload Module View</span>
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 function MainApp() {
   const { user, role, isAuthenticated, loading } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -120,10 +164,10 @@ function MainApp() {
   // 1. Landing page view (available at `/`, works for both guests & logged-in users)
   if (currentView === 'landing') {
     return (
-      <>
+      <div key="landing" className="animate-apple-enter">
         <LandingPage onNavigate={handleNavigate} />
         <Toast />
-      </>
+      </div>
     );
   }
 
@@ -131,18 +175,18 @@ function MainApp() {
   if (!isAuthenticated) {
     if (currentView === 'signup') {
       return (
-        <>
+        <div key="signup" className="animate-apple-enter">
           <SignupPage onNavigate={handleNavigate} />
           <Toast />
-        </>
+        </div>
       );
     }
     // Protected fallback: if on /login or any protected route, show LoginPage
     return (
-      <>
+      <div key="login" className="animate-apple-enter">
         <LoginPage onNavigate={handleNavigate} />
         <Toast />
-      </>
+      </div>
     );
   }
 
@@ -206,7 +250,7 @@ function MainApp() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50/60 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col">
+    <div className="min-h-screen bg-[#f5f5f7] dark:bg-black text-[#1d1d1f] dark:text-[#f5f5f7] flex flex-col font-sans selection:bg-[#0071e3]/20 selection:text-[#0071e3]">
       <Sidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -222,8 +266,12 @@ function MainApp() {
           onNavigate={handleNavigate}
         />
 
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto animate-fade-in">
-          {renderActivePage()}
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+          <div key={activeTab} className="animate-apple-enter">
+            <ModuleErrorBoundary activeTab={activeTab}>
+              {renderActivePage()}
+            </ModuleErrorBoundary>
+          </div>
         </main>
       </div>
 

@@ -12,7 +12,8 @@ import {
   Award,
   ChevronRight,
   X,
-  User
+  User,
+  Users
 } from 'lucide-react';
 import api from '../api';
 import { useAuth } from '../context/AuthContext';
@@ -123,46 +124,53 @@ export default function ApplicationsPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
-            Applications & Recruitment Pipeline Tracker
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Track student interview progression stage-by-stage and record assessment feedback.
-          </p>
-        </div>
+      {/* Apple Studio Hero Command Bar */}
+      <div className="apple-gloss-tile p-6 sm:p-7 rounded-[28px] relative overflow-hidden">
+        <div className="absolute -top-20 -right-20 w-80 h-80 bg-gradient-to-br from-[#0071e3]/15 to-transparent rounded-full blur-3xl pointer-events-none" />
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5">
+          <div className="space-y-1.5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 liquid-pill text-xs font-semibold text-[#0071e3] dark:text-[#2997ff] shadow-xs">
+              <Users className="w-3.5 h-3.5" />
+              <span>Assessment Pipeline Telemetry</span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#1d1d1f] dark:text-[#f5f5f7]">
+              Candidate Applications & <span className="apple-siri-gradient-text">Interview Pipeline</span>
+            </h1>
+            <p className="text-xs sm:text-sm text-[#86868b] dark:text-[#a1a1a6] max-w-2xl leading-relaxed">
+              Track student recruitment applications stage-by-stage, log technical interview feedback, and update qualification statuses.
+            </p>
+          </div>
 
-        {/* Filters */}
-        <div className="flex flex-wrap items-center gap-2 text-xs">
-          <select
-            value={selectedDriveId}
-            onChange={(e) => setSelectedDriveId(e.target.value)}
-            className="py-1.5 px-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl font-semibold shadow-2xs focus:outline-hidden"
-          >
-            <option value="All">All Drives</option>
-            {drives.map((d) => (
-              <option key={d.id} value={d.id}>{d.title}</option>
-            ))}
-          </select>
+          {/* Filters */}
+          <div className="flex flex-wrap items-center gap-2.5 text-xs shrink-0">
+            <select
+              value={selectedDriveId}
+              onChange={(e) => setSelectedDriveId(e.target.value)}
+              className="py-2 px-3.5 bg-white/70 dark:bg-white/10 border border-black/10 dark:border-white/10 rounded-xl font-medium focus:outline-hidden text-[#1d1d1f] dark:text-[#f5f5f7] cursor-pointer"
+            >
+              <option value="All">All Drives</option>
+              {drives.map((d) => (
+                <option key={d.id} value={d.id}>{d.title}</option>
+              ))}
+            </select>
 
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="py-1.5 px-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl font-semibold shadow-2xs focus:outline-hidden"
-          >
-            <option value="All">All Statuses</option>
-            <option value="Applied">Applied</option>
-            <option value="In Interview">In Interview</option>
-            <option value="Selected">Selected</option>
-            <option value="Rejected">Rejected</option>
-          </select>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="py-2 px-3.5 bg-white/70 dark:bg-white/10 border border-black/10 dark:border-white/10 rounded-xl font-medium focus:outline-hidden text-[#1d1d1f] dark:text-[#f5f5f7] cursor-pointer"
+            >
+              <option value="All">All Statuses</option>
+              <option value="Applied">Applied</option>
+              <option value="In Interview">In Interview</option>
+              <option value="Selected">Selected</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+          </div>
         </div>
       </div>
 
-      {/* Applications Table */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs overflow-hidden">
+      {/* Applications Glass Table */}
+      <div className="apple-glass-table-container rounded-[28px] overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
