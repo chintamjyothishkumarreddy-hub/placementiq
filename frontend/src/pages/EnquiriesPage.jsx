@@ -244,12 +244,12 @@ export default function EnquiriesPage() {
       {/* Filter & Search Bar */}
       <div className="apple-gloss-tile p-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
         {/* Status Pills */}
-        <div className="inline-flex p-1 rounded-2xl bg-black/5 dark:bg-white/10 text-xs font-medium">
+        <div className="inline-flex p-1 rounded-2xl bg-black/5 dark:bg-white/10 text-xs font-medium overflow-x-auto max-w-full">
           {['all', 'Pending', 'In Progress', 'Resolved'].map((st) => (
             <button
               key={st}
               onClick={() => setStatusFilter(st)}
-              className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                 statusFilter === st
                   ? 'bg-white dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-[#f5f5f7] shadow-xs font-semibold'
                   : 'text-[#86868b] dark:text-[#a1a1a6]'
@@ -419,8 +419,8 @@ export default function EnquiriesPage() {
           SOLVE / INSPECT INQUIRY MODAL (Apple VisionOS Liquid Sheet)
       ========================================================================== */}
       {inspectModalOpen && activeEnquiry && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-md animate-fade-in font-sans">
-          <div className="w-full max-w-2xl liquid-glass rounded-[32px] shadow-2xl overflow-hidden border border-white/60 dark:border-white/15 animate-modal-pop relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-md animate-fade-in font-sans overflow-y-auto">
+          <div className="w-full max-w-2xl my-auto liquid-glass rounded-[32px] shadow-2xl overflow-hidden border border-white/60 dark:border-white/15 animate-modal-pop relative max-h-[90vh] flex flex-col">
             
             {/* Modal Header */}
             <div className="p-6 border-b border-black/[0.06] dark:border-white/[0.08] flex items-start justify-between">

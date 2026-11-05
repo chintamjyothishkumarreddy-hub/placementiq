@@ -57,7 +57,7 @@ export default function LoginPage({ onNavigate }) {
           {/* =========================================================================
               LEFT COLUMN: APPLE INTELLIGENCE SHOWCASE & INSTITUTIONAL METRICS
           ========================================================================== */}
-          <div className="lg:col-span-6 space-y-6">
+          <div className="order-2 lg:order-1 lg:col-span-6 space-y-6">
             
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 liquid-pill text-xs font-semibold text-[#0071e3] dark:text-[#2997ff] shadow-xs">
               <Sparkles className="w-3.5 h-3.5" />
@@ -129,7 +129,7 @@ export default function LoginPage({ onNavigate }) {
           {/* =========================================================================
               RIGHT COLUMN: APPLE LIQUID GLASS LOGIN CARD
           ========================================================================== */}
-          <div className="lg:col-span-6">
+          <div className="order-1 lg:order-2 lg:col-span-6">
             <div className="liquid-glass siri-aurora-glow rounded-[32px] p-7 sm:p-10 shadow-2xl">
               
               <div className="mb-6">

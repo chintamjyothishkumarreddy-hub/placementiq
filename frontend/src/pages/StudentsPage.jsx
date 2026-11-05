@@ -623,12 +623,12 @@ export default function StudentsPage() {
             </div>
 
             {/* Profile Tabs */}
-            <div className="flex items-center px-6 border-b border-slate-200 dark:border-slate-800 text-xs font-semibold">
+            <div className="flex items-center px-4 sm:px-6 border-b border-slate-200 dark:border-slate-800 text-xs font-semibold overflow-x-auto scrollbar-none">
               {['overview', 'academics', 'skills_projects', 'applications', 'offers'].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setProfileTab(tab)}
-                  className={`py-3 px-4 border-b-2 font-bold capitalize transition-colors ${
+                  className={`py-3 px-3 sm:px-4 border-b-2 font-bold capitalize transition-colors whitespace-nowrap shrink-0 ${
                     profileTab === tab
                       ? 'border-blue-600 text-blue-600 dark:text-blue-400'
                       : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'

@@ -347,7 +347,7 @@ export default function LandingPage({ onNavigate }) {
             </div>
 
             {/* Apple Grand Headline */}
-            <h1 className="text-5xl sm:text-7xl lg:text-8xl font-bold tracking-[-0.04em] text-[#1d1d1f] dark:text-[#f5f5f7] leading-[1.04] mb-6">
+            <h1 className="text-4xl sm:text-6xl lg:text-8xl font-bold tracking-[-0.04em] text-[#1d1d1f] dark:text-[#f5f5f7] leading-[1.04] mb-6">
               <span className="apple-titanium-text">Intelligence.</span>
               <br />
               <span className="apple-siri-gradient-text">Unmatched Clarity.</span>
@@ -715,11 +715,11 @@ export default function LandingPage({ onNavigate }) {
           </div>
 
           {/* Apple-Style Segmented Control Switcher */}
-          <div className="flex justify-center mb-8">
-            <div className="p-1 rounded-full liquid-glass inline-flex gap-1">
+          <div className="flex justify-center mb-8 px-2">
+            <div className="p-1 rounded-full liquid-glass inline-flex gap-1 overflow-x-auto max-w-full">
               <button
                 onClick={() => setActivePreviewTab('department')}
-                className={`px-5 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all cursor-pointer ${
+                className={`px-3.5 sm:px-5 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                   activePreviewTab === 'department'
                     ? 'apple-btn-primary shadow-xs'
                     : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'
@@ -729,7 +729,7 @@ export default function LandingPage({ onNavigate }) {
               </button>
               <button
                 onClick={() => setActivePreviewTab('salary')}
-                className={`px-5 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all cursor-pointer ${
+                className={`px-3.5 sm:px-5 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                   activePreviewTab === 'salary'
                     ? 'apple-btn-primary shadow-xs'
                     : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'
@@ -739,7 +739,7 @@ export default function LandingPage({ onNavigate }) {
               </button>
               <button
                 onClick={() => setActivePreviewTab('eligibility')}
-                className={`px-5 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all cursor-pointer ${
+                className={`px-3.5 sm:px-5 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                   activePreviewTab === 'eligibility'
                     ? 'apple-btn-primary shadow-xs'
                     : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'
@@ -1210,14 +1210,14 @@ export default function LandingPage({ onNavigate }) {
                     />
                   </div>
 
-                  <div className="flex items-center justify-between pt-1">
-                    <span className="text-[11px] text-[#86868b] dark:text-[#a1a1a6]">
+                  <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-3 pt-1">
+                    <span className="text-[11px] text-[#86868b] dark:text-[#a1a1a6] text-center sm:text-left">
                       🔒 Secure submission routed directly to Admin Desk
                     </span>
                     <button
                       type="submit"
                       disabled={contactSubmitting}
-                      className="apple-btn-primary px-6 py-2.5 text-xs font-semibold cursor-pointer flex items-center gap-2 shadow-md"
+                      className="apple-btn-primary w-full sm:w-auto px-6 py-2.5 text-xs font-semibold cursor-pointer flex items-center justify-center gap-2 shadow-md"
                     >
                       {contactSubmitting ? (
                         <>

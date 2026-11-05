@@ -263,15 +263,15 @@ function MainApp() {
       />
 
       {/* Main Content Area */}
-      <div className="lg:pl-64 flex-1 flex flex-col transition-all">
+      <div className="lg:pl-64 flex-1 flex flex-col transition-all min-w-0 overflow-x-hidden">
         <Navbar
           activeTab={activeTab}
           onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
           onNavigate={handleNavigate}
         />
 
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
-          <div key={activeTab} className="animate-apple-enter">
+        <main className="flex-1 p-3.5 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto min-w-0">
+          <div key={activeTab} className="animate-apple-enter min-w-0">
             <ModuleErrorBoundary activeTab={activeTab}>
               {renderActivePage()}
             </ModuleErrorBoundary>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { AlertTriangle, X } from 'lucide-react';
 
 export default function ConfirmModal({
@@ -19,9 +20,17 @@ export default function ConfirmModal({
     warning: "bg-[#ff9500] hover:bg-[#e08400] text-white shadow-sm shadow-amber-500/20"
   };
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-md animate-fade-in font-sans">
-      <div className="w-full max-w-md liquid-glass rounded-[28px] shadow-2xl overflow-hidden transform transition-all border border-white/60 dark:border-white/10 animate-modal-pop">
+  return createPortal(
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-md animate-fade-in font-sans"
+      aria-modal="true"
+      role="dialog"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-md my-auto liquid-glass rounded-[28px] shadow-2xl overflow-hidden transform transition-all border border-white/60 dark:border-white/10 animate-modal-pop"
+      >
         <div className="p-6 sm:p-7">
           <div className="flex items-center justify-between mb-4">
             <div className="w-10 h-10 rounded-full liquid-pill flex items-center justify-center text-[#ff3b30] shadow-xs">
@@ -62,6 +71,7 @@ export default function ConfirmModal({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

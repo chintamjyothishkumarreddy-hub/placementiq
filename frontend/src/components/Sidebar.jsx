@@ -13,7 +13,8 @@ import {
   UserCheck,
   Settings,
   History,
-  HelpCircle
+  HelpCircle,
+  X
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { PlacementIQEmblem } from './Logo';
@@ -67,21 +68,30 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen, setIsOpen }) 
       )}
 
       <aside
-        className={`fixed top-0 left-0 bottom-0 z-40 w-64 bg-white/80 dark:bg-[#161617]/85 backdrop-blur-2xl border-r border-black/[0.06] dark:border-white/[0.08] flex flex-col transition-transform duration-300 ease-in-out font-sans ${
+        className={`fixed top-0 left-0 bottom-0 z-40 w-72 max-w-[85vw] lg:w-64 bg-white/80 dark:bg-[#161617]/85 backdrop-blur-2xl border-r border-black/[0.06] dark:border-white/[0.08] flex flex-col transition-transform duration-300 ease-in-out font-sans ${
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
         {/* Logo / Header */}
-        <div className="h-16 flex items-center gap-3 px-5 border-b border-black/[0.06] dark:border-white/[0.08]">
-          <PlacementIQEmblem size={34} className="hover:scale-105 transition-transform duration-300 drop-shadow-sm" />
-          <div>
-            <div className="flex items-center gap-1 font-semibold text-[#1d1d1f] dark:text-[#f5f5f7] tracking-tight text-base leading-tight">
-              Placement<span className="text-[#0071e3] dark:text-[#2997ff]">IQ</span>
-            </div>
-            <div className="text-[10px] font-medium tracking-wide text-[#86868b] dark:text-[#a1a1a6]">
-              Campus Intelligence
+        <div className="h-16 flex items-center justify-between px-5 border-b border-black/[0.06] dark:border-white/[0.08]">
+          <div className="flex items-center gap-3">
+            <PlacementIQEmblem size={34} className="hover:scale-105 transition-transform duration-300 drop-shadow-sm" />
+            <div>
+              <div className="flex items-center gap-1 font-semibold text-[#1d1d1f] dark:text-[#f5f5f7] tracking-tight text-base leading-tight">
+                Placement<span className="text-[#0071e3] dark:text-[#2997ff]">IQ</span>
+              </div>
+              <div className="text-[10px] font-medium tracking-wide text-[#86868b] dark:text-[#a1a1a6]">
+                Campus Intelligence
+              </div>
             </div>
           </div>
+          <button
+            onClick={() => setIsOpen(false)}
+            className="lg:hidden p-2 text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 rounded-xl cursor-pointer transition-colors"
+            aria-label="Close navigation sidebar"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
         {/* Organized Navigation List */}
@@ -105,7 +115,7 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen, setIsOpen }) 
                         setActiveTab(item.id);
                         setIsOpen(false);
                       }}
-                      className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs sm:text-[13px] font-medium transition-all duration-200 cursor-pointer ${
+                      className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs sm:text-[13px] font-medium transition-all duration-200 cursor-pointer min-h-[40px] ${
                         isActive
                           ? 'bg-[#0071e3] text-white shadow-md shadow-blue-500/25 font-semibold'
                           : 'text-[#86868b] dark:text-[#a1a1a6] hover:text-[#1d1d1f] dark:hover:text-[#f5f5f7] hover:bg-black/5 dark:hover:bg-white/5'

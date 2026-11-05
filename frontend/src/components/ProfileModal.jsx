@@ -212,17 +212,17 @@ export default function ProfileModal({ isOpen, onClose }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-2xl my-auto liquid-glass rounded-[32px] sm:rounded-[36px] shadow-[0_25px_70px_rgba(0,0,0,0.5)] border border-white/70 dark:border-white/15 overflow-hidden animate-modal-pop relative"
+        className="w-full max-w-2xl my-auto liquid-glass rounded-[28px] sm:rounded-[36px] shadow-[0_25px_70px_rgba(0,0,0,0.5)] border border-white/70 dark:border-white/15 overflow-hidden animate-modal-pop relative max-h-[92dvh] flex flex-col"
       >
         {/* Modal Header */}
-        <div className="p-6 sm:p-7 border-b border-black/[0.06] dark:border-white/[0.08] relative z-10 flex items-start justify-between">
-          <div className="flex items-center gap-4">
+        <div className="p-4 sm:p-7 border-b border-black/[0.06] dark:border-white/[0.08] relative z-10 flex items-start justify-between gap-3">
+          <div className="flex items-center gap-3 sm:gap-4 min-w-0">
             
             {/* Clickable Avatar with Camera / Edit Overlay */}
-            <div className="relative group cursor-pointer" onClick={() => setActiveTab('avatar')} title="Click to Change Avatar">
+            <div className="relative group cursor-pointer shrink-0" onClick={() => setActiveTab('avatar')} title="Click to Change Avatar">
               <UserAvatar
                 user={previewUser}
-                size={66}
+                size={56}
                 showRoleBadge={true}
                 className="shadow-xl"
               />
@@ -231,20 +231,20 @@ export default function ProfileModal({ isOpen, onClose }) {
               </div>
             </div>
 
-            <div>
-              <div className="flex flex-wrap items-center gap-2">
-                <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#1d1d1f] dark:text-[#f5f5f7]">
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <h2 className="text-lg sm:text-2xl font-bold tracking-tight text-[#1d1d1f] dark:text-[#f5f5f7] truncate">
                   {fullName || user?.username}
                 </h2>
-                <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${currentRoleInfo.color}`}>
+                <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border shrink-0 ${currentRoleInfo.color}`}>
                   {currentRoleInfo.badge}
                 </span>
               </div>
-              <div className="flex flex-wrap items-center gap-2 text-xs text-[#86868b] dark:text-[#a1a1a6] mt-0.5 font-mono">
+              <div className="flex flex-wrap items-center gap-2 text-xs text-[#86868b] dark:text-[#a1a1a6] mt-0.5 font-mono truncate">
                 <span>@{user?.username}</span>
                 <span>•</span>
-                <span>{email || user?.email}</span>
-                {designation && <span>• {designation}</span>}
+                <span className="truncate">{email || user?.email}</span>
+                {designation && <span className="hidden sm:inline">• {designation}</span>}
               </div>
               <div className="flex items-center gap-2 mt-1.5">
                 <button
@@ -265,7 +265,7 @@ export default function ProfileModal({ isOpen, onClose }) {
 
           <button
             onClick={onClose}
-            className="p-2 rounded-full text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
+            className="p-2 min-h-[40px] min-w-[40px] flex items-center justify-center rounded-full text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer shrink-0"
             aria-label="Close Profile"
           >
             <X className="w-5 h-5" />
@@ -273,57 +273,61 @@ export default function ProfileModal({ isOpen, onClose }) {
         </div>
 
         {/* Apple Segmented Tabs */}
-        <div className="px-6 pt-3 pb-2 border-b border-black/[0.04] dark:border-white/[0.06] bg-black/[0.01] dark:bg-white/[0.01]">
+        <div className="px-4 sm:px-6 pt-2.5 pb-2 border-b border-black/[0.04] dark:border-white/[0.06] bg-black/[0.01] dark:bg-white/[0.01]">
           <div className="inline-flex p-1 rounded-2xl bg-black/5 dark:bg-white/10 text-xs font-medium w-full">
             <button
               onClick={() => setActiveTab('details')}
-              className={`flex-1 py-1.5 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+              className={`flex-1 py-1.5 px-2 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 text-xs sm:text-[13px] ${
                 activeTab === 'details'
                   ? 'bg-white dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-[#f5f5f7] shadow-xs font-semibold'
                   : 'text-[#86868b] dark:text-[#a1a1a6]'
               }`}
             >
-              <User className="w-3.5 h-3.5" />
-              <span>Profile Details</span>
+              <User className="w-3.5 h-3.5 shrink-0" />
+              <span className="hidden sm:inline">Profile Details</span>
+              <span className="sm:hidden">Details</span>
             </button>
             <button
               onClick={() => setActiveTab('avatar')}
-              className={`flex-1 py-1.5 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+              className={`flex-1 py-1.5 px-2 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 text-xs sm:text-[13px] ${
                 activeTab === 'avatar'
                   ? 'bg-white dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-[#f5f5f7] shadow-xs font-semibold'
                   : 'text-[#86868b] dark:text-[#a1a1a6]'
               }`}
             >
-              <Sparkles className="w-3.5 h-3.5 text-[#af52de]" />
-              <span>Avatar Studio</span>
+              <Sparkles className="w-3.5 h-3.5 text-[#af52de] shrink-0" />
+              <span className="hidden sm:inline">Avatar Studio</span>
+              <span className="sm:hidden">Avatar</span>
             </button>
             <button
               onClick={() => setActiveTab('security')}
-              className={`flex-1 py-1.5 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+              className={`flex-1 py-1.5 px-2 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 text-xs sm:text-[13px] ${
                 activeTab === 'security'
                   ? 'bg-white dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-[#f5f5f7] shadow-xs font-semibold'
                   : 'text-[#86868b] dark:text-[#a1a1a6]'
               }`}
             >
-              <Lock className="w-3.5 h-3.5" />
-              <span>Password & Security</span>
+              <Lock className="w-3.5 h-3.5 shrink-0" />
+              <span className="hidden sm:inline">Password & Security</span>
+              <span className="sm:hidden">Security</span>
             </button>
             <button
               onClick={() => setActiveTab('permissions')}
-              className={`flex-1 py-1.5 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+              className={`flex-1 py-1.5 px-2 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 text-xs sm:text-[13px] ${
                 activeTab === 'permissions'
                   ? 'bg-white dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-[#f5f5f7] shadow-xs font-semibold'
                   : 'text-[#86868b] dark:text-[#a1a1a6]'
               }`}
             >
-              <Shield className="w-3.5 h-3.5" />
-              <span>Permissions</span>
+              <Shield className="w-3.5 h-3.5 shrink-0" />
+              <span className="hidden sm:inline">Permissions</span>
+              <span className="sm:hidden">Roles</span>
             </button>
           </div>
         </div>
 
         {/* Tab Contents */}
-        <div className="p-6 sm:p-7 max-h-[60vh] overflow-y-auto">
+        <div className="p-4 sm:p-7 flex-1 overflow-y-auto">
           
           {/* =========================================================================
               TAB 1: EDITABLE PROFILE DETAILS

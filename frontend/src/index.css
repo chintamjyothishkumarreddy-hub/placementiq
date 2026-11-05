@@ -637,3 +637,81 @@ table tbody td {
 .dark ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.2);
 }
+
+/* =========================================================================
+   MOBILE & LAPTOP OPTIMIZATIONS (Responsive Viewports, Touch & Typography)
+========================================================================= */
+
+/* Prevent iOS Safari Automatic Zoom on Input Focus */
+@media (max-width: 768px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="tel"],
+  input[type="search"],
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Universal Momentum Touch Scrolling */
+.overflow-x-auto,
+.overflow-y-auto,
+.apple-glass-table-container {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Responsive Table Wrapper with Minimum Width to Prevent Column Crushing */
+.apple-glass-table-container {
+  overflow-x: auto !important;
+  position: relative !important;
+  width: 100% !important;
+}
+
+.apple-glass-table-container table {
+  min-width: 680px;
+}
+
+/* Mobile Ergonomics & Safe Area Padding */
+@media (max-width: 640px) {
+  .apple-gloss-tile,
+  .apple-bento-card {
+    border-radius: 22px !important;
+    padding: 18px 16px !important;
+  }
+
+  /* Compact tap buttons on narrow screens */
+  .apple-btn-primary,
+  .apple-btn-secondary {
+    min-height: 40px;
+  }
+}
+
+/* Touch manipulation optimization (removes 300ms tap delay on mobile browsers) */
+button,
+a,
+input,
+select,
+textarea {
+  touch-action: manipulation;
+}
+
+/* Mobile Safe Area insets support (iPhone Dynamic Island / Notch / Home Indicator) */
+@supports (padding: env(safe-area-inset-bottom)) {
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Laptop Density & Spacing Refinements (1024px - 1536px) */
+@media (min-width: 1024px) {
+  .apple-gloss-tile {
+    border-radius: 28px !important;
+  }
+  
+  .apple-glass-table-container table {
+    width: 100% !important;
+  }
+}
