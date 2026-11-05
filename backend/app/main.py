@@ -40,6 +40,7 @@ from app.routes.import_export import router as import_export_router
 from app.routes.users import router as users_router
 from app.routes.audit_logs import router as audit_logs_router
 from app.routes.reports import router as reports_router
+from app.routes.enquiries import router as enquiries_router
 
 app.include_router(auth_router, prefix=settings.API_PREFIX)
 app.include_router(students_router, prefix=settings.API_PREFIX)
@@ -54,6 +55,7 @@ app.include_router(import_export_router, prefix=settings.API_PREFIX)
 app.include_router(users_router, prefix=settings.API_PREFIX)
 app.include_router(audit_logs_router, prefix=settings.API_PREFIX)
 app.include_router(reports_router, prefix=settings.API_PREFIX)
+app.include_router(enquiries_router, prefix=settings.API_PREFIX)
 
 @app.get("/health")
 def health_check():

@@ -3,9 +3,10 @@ import { Menu, Sun, Moon, LogOut, Shield, User, Info, Globe } from 'lucide-react
 import { useAuth } from '../context/AuthContext';
 import { NAV_ITEMS } from './Sidebar';
 import { PlacementIQEmblem } from './Logo';
+import UserAvatar from './UserAvatar';
 
 export default function Navbar({ activeTab, onToggleSidebar, onNavigate }) {
-  const { user, role, logout, darkMode, toggleDarkMode } = useAuth();
+  const { user, role, logout, darkMode, toggleDarkMode, openProfile } = useAuth();
 
   const currentNav = NAV_ITEMS.find((n) => n.id === activeTab);
 
@@ -85,27 +86,24 @@ export default function Navbar({ activeTab, onToggleSidebar, onNavigate }) {
           {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-[#86868b]" />}
         </button>
 
-        {/* User Info & Logout */}
-        <div className="flex items-center gap-2.5 pl-3 border-l border-black/[0.08] dark:border-white/[0.1]">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#0071e3] to-[#af52de] text-white flex items-center justify-center font-bold text-xs shadow-xs select-none">
-            {((user?.full_name || user?.username || 'User') + '')
-              .split(' ')
-              .filter(Boolean)
-              .map((n) => n[0])
-              .filter(Boolean)
-              .slice(0, 2)
-              .join('')
-              .toUpperCase() || 'U'}
-          </div>
+        {/* User Info & Profile Trigger */}
+        <div className="flex items-center gap-2 pl-3 border-l border-black/[0.08] dark:border-white/[0.1]">
+          <button
+            onClick={openProfile}
+            className="flex items-center gap-2.5 p-1 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-200 cursor-pointer group text-left focus:outline-hidden"
+            title="Open Account Profile & Settings"
+          >
+            <UserAvatar user={user} size={34} interactive={true} showRoleBadge={true} />
 
-          <div className="hidden sm:flex flex-col text-left">
-            <span className="text-xs font-semibold text-[#1d1d1f] dark:text-[#f5f5f7] leading-tight">
-              {user?.full_name || 'User'}
-            </span>
-            <span className="text-[10px] text-[#86868b] dark:text-[#a1a1a6] font-mono">
-              @{user?.username}
-            </span>
-          </div>
+            <div className="hidden sm:flex flex-col text-left">
+              <span className="text-xs font-semibold text-[#1d1d1f] dark:text-[#f5f5f7] leading-tight group-hover:text-[#0071e3] dark:group-hover:text-[#2997ff] transition-colors">
+                {user?.full_name || 'User'}
+              </span>
+              <span className="text-[10px] text-[#86868b] dark:text-[#a1a1a6] font-mono">
+                @{user?.username}
+              </span>
+            </div>
+          </button>
 
           <button
             onClick={logout}

@@ -47,6 +47,7 @@ import {
   Cell
 } from 'recharts';
 import { useAuth } from '../context/AuthContext';
+import api from '../api';
 
 // Sample demonstration dataset clearly marked for preview
 const DEMO_DEPARTMENT_DATA = [
@@ -76,10 +77,16 @@ export default function LandingPage({ onNavigate }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activePreviewTab, setActivePreviewTab] = useState('department');
 
-  // Contact form submission feedback
+  // Contact form submission state
   const [contactSubmitted, setContactSubmitted] = useState(false);
+  const [contactSubmitting, setContactSubmitting] = useState(false);
+  const [contactError, setContactError] = useState(null);
+  const [contactResult, setContactResult] = useState(null);
   const [contactName, setContactName] = useState('');
   const [contactEmail, setContactEmail] = useState('');
+  const [contactPhone, setContactPhone] = useState('');
+  const [contactCategory, setContactCategory] = useState('General');
+  const [contactSubject, setContactSubject] = useState('');
   const [contactMsg, setContactMsg] = useState('');
 
   const scrollToSection = (id) => {
@@ -90,14 +97,33 @@ export default function LandingPage({ onNavigate }) {
     }
   };
 
-  const handleContactSubmit = (e) => {
+  const handleContactSubmit = async (e) => {
     e.preventDefault();
-    setContactSubmitted(true);
-    setTimeout(() => {
+    if (!contactName.trim() || !contactEmail.trim() || !contactMsg.trim()) return;
+
+    setContactSubmitting(true);
+    setContactError(null);
+    try {
+      const res = await api.post('/enquiries', {
+        name: contactName.trim(),
+        email: contactEmail.trim(),
+        phone: contactPhone.trim() || undefined,
+        category: contactCategory,
+        subject: contactSubject.trim() || undefined,
+        message: contactMsg.trim()
+      });
+      setContactResult(res.data);
+      setContactSubmitted(true);
       setContactName('');
       setContactEmail('');
+      setContactPhone('');
+      setContactSubject('');
       setContactMsg('');
-    }, 2000);
+    } catch (err) {
+      setContactError(err.response?.data?.detail || 'Failed to submit inquiry. Please try again.');
+    } finally {
+      setContactSubmitting(false);
+    }
   };
 
   return (
@@ -1053,37 +1079,68 @@ export default function LandingPage({ onNavigate }) {
 
             {/* Direct Message Form (Liquid Glass Container) */}
             <div className="lg:col-span-2 apple-bento-card p-6 sm:p-8">
-              <h3 className="text-base font-bold text-[#1d1d1f] dark:text-[#f5f5f7] mb-4">
-                Send an Institutional Inquiry
-              </h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-base font-bold text-[#1d1d1f] dark:text-[#f5f5f7]">
+                  Send an Institutional Inquiry
+                </h3>
+                <span className="liquid-pill px-2.5 py-1 text-[11px] font-semibold text-[#0071e3] dark:text-[#2997ff]">
+                  Direct Placement Desk
+                </span>
+              </div>
 
               {contactSubmitted ? (
-                <div className="p-6 liquid-pill bg-emerald-500/10 border-emerald-500/30 text-center">
-                  <CheckCircle2 className="w-8 h-8 text-[#34c759] mx-auto mb-2" />
-                  <h4 className="text-sm font-bold text-[#1d1d1f] dark:text-[#f5f5f7]">Message Received</h4>
-                  <p className="text-xs text-[#86868b] dark:text-[#a1a1a6] mt-1">
-                    Thank you. The placement coordination team will review your message shortly.
+                <div className="p-6 sm:p-8 liquid-pill bg-emerald-500/10 border-emerald-500/30 text-center animate-fade-in space-y-3">
+                  <CheckCircle2 className="w-10 h-10 text-[#34c759] mx-auto animate-bounce-subtle" />
+                  <div>
+                    <h4 className="text-base font-bold text-[#1d1d1f] dark:text-[#f5f5f7]">
+                      Inquiry Successfully Logged
+                    </h4>
+                    <div className="inline-block px-3 py-1 mt-1.5 rounded-full text-xs font-mono font-bold bg-[#34c759]/15 text-[#34c759] border border-[#34c759]/30">
+                      {contactResult?.reference_no || 'Reference #ENQ-NEW'}
+                    </div>
+                  </div>
+                  <p className="text-xs text-[#86868b] dark:text-[#a1a1a6] max-w-md mx-auto leading-relaxed">
+                    Thank you. Your message has been safely delivered into the institutional administrative desk. Our placement officers will review and solve your inquiry shortly.
                   </p>
+                  <div className="pt-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setContactSubmitted(false);
+                        setContactResult(null);
+                      }}
+                      className="apple-btn-secondary px-5 py-2 text-xs font-medium cursor-pointer"
+                    >
+                      Submit Another Inquiry
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <form onSubmit={handleContactSubmit} className="space-y-4">
+                  {contactError && (
+                    <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-xs text-[#ff3b30] flex items-center gap-2">
+                      <Shield className="w-4 h-4 shrink-0" />
+                      <span>{contactError}</span>
+                    </div>
+                  )}
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-medium text-[#86868b] dark:text-[#a1a1a6] mb-1.5">
-                        Your Name
+                        Your Full Name <span className="text-[#ff3b30]">*</span>
                       </label>
                       <input
                         type="text"
                         value={contactName}
                         onChange={(e) => setContactName(e.target.value)}
                         required
-                        placeholder="Prof. Ananya Rao"
-                        className="w-full px-4 py-2.5 bg-white/60 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl text-sm focus:outline-hidden focus:border-[#0071e3] transition-colors"
+                        placeholder="Prof. Ananya Rao / Recruiter Name"
+                        className="w-full px-4 py-2.5 bg-white/60 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl text-xs sm:text-sm focus:outline-hidden focus:border-[#0071e3] text-[#1d1d1f] dark:text-[#f5f5f7] transition-colors"
                       />
                     </div>
                     <div>
                       <label className="block text-xs font-medium text-[#86868b] dark:text-[#a1a1a6] mb-1.5">
-                        Email Address
+                        Official Email Address <span className="text-[#ff3b30]">*</span>
                       </label>
                       <input
                         type="email"
@@ -1091,31 +1148,87 @@ export default function LandingPage({ onNavigate }) {
                         onChange={(e) => setContactEmail(e.target.value)}
                         required
                         placeholder="ananya.rao@university.edu"
-                        className="w-full px-4 py-2.5 bg-white/60 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl text-sm focus:outline-hidden focus:border-[#0071e3] transition-colors"
+                        className="w-full px-4 py-2.5 bg-white/60 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl text-xs sm:text-sm focus:outline-hidden focus:border-[#0071e3] text-[#1d1d1f] dark:text-[#f5f5f7] transition-colors"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-medium text-[#86868b] dark:text-[#a1a1a6] mb-1.5">
+                        Inquiry Category
+                      </label>
+                      <select
+                        value={contactCategory}
+                        onChange={(e) => setContactCategory(e.target.value)}
+                        className="w-full px-4 py-2.5 bg-white/60 dark:bg-[#1c1c1e] border border-black/10 dark:border-white/10 rounded-xl text-xs sm:text-sm focus:outline-hidden focus:border-[#0071e3] text-[#1d1d1f] dark:text-[#f5f5f7] transition-colors"
+                      >
+                        <option value="General">General Inquiry</option>
+                        <option value="Drive Collaboration">Placement Drive Collaboration</option>
+                        <option value="Student Verification">Student / Eligibility Verification</option>
+                        <option value="Data Integration">NIRF / Data Accreditation Export</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-[#86868b] dark:text-[#a1a1a6] mb-1.5">
+                        Contact Phone / WhatsApp (Optional)
+                      </label>
+                      <input
+                        type="tel"
+                        value={contactPhone}
+                        onChange={(e) => setContactPhone(e.target.value)}
+                        placeholder="+91 (080) 1234-5678"
+                        className="w-full px-4 py-2.5 bg-white/60 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl text-xs sm:text-sm focus:outline-hidden focus:border-[#0071e3] text-[#1d1d1f] dark:text-[#f5f5f7] transition-colors"
                       />
                     </div>
                   </div>
 
                   <div>
                     <label className="block text-xs font-medium text-[#86868b] dark:text-[#a1a1a6] mb-1.5">
-                      Message / Requirement
+                      Subject / Topic
+                    </label>
+                    <input
+                      type="text"
+                      value={contactSubject}
+                      onChange={(e) => setContactSubject(e.target.value)}
+                      placeholder="e.g. Campus Recruitment Slots for Nov 2026"
+                      className="w-full px-4 py-2.5 bg-white/60 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl text-xs sm:text-sm focus:outline-hidden focus:border-[#0071e3] text-[#1d1d1f] dark:text-[#f5f5f7] transition-colors"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-medium text-[#86868b] dark:text-[#a1a1a6] mb-1.5">
+                      Message / Requirement Details <span className="text-[#ff3b30]">*</span>
                     </label>
                     <textarea
                       rows={3}
                       value={contactMsg}
                       onChange={(e) => setContactMsg(e.target.value)}
                       required
-                      placeholder="Specify your department, batch inquiry, or placement drive coordination question..."
-                      className="w-full px-4 py-2.5 bg-white/60 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl text-sm focus:outline-hidden focus:border-[#0071e3] transition-colors"
+                      placeholder="Specify your department, batch inquiry, drive coordination dates, or data question..."
+                      className="w-full px-4 py-2.5 bg-white/60 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl text-xs sm:text-sm focus:outline-hidden focus:border-[#0071e3] text-[#1d1d1f] dark:text-[#f5f5f7] transition-colors"
                     />
                   </div>
 
-                  <button
-                    type="submit"
-                    className="apple-btn-primary px-6 py-2.5 text-xs font-medium cursor-pointer"
-                  >
-                    Submit Inquiry
-                  </button>
+                  <div className="flex items-center justify-between pt-1">
+                    <span className="text-[11px] text-[#86868b] dark:text-[#a1a1a6]">
+                      🔒 Secure submission routed directly to Admin Desk
+                    </span>
+                    <button
+                      type="submit"
+                      disabled={contactSubmitting}
+                      className="apple-btn-primary px-6 py-2.5 text-xs font-semibold cursor-pointer flex items-center gap-2 shadow-md"
+                    >
+                      {contactSubmitting ? (
+                        <>
+                          <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          <span>Delivering...</span>
+                        </>
+                      ) : (
+                        <span>Submit Inquiry</span>
+                      )}
+                    </button>
+                  </div>
                 </form>
               )}
             </div>

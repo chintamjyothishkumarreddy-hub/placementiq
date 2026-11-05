@@ -64,6 +64,14 @@ def update_user(
 
     if user_in.full_name is not None:
         user.full_name = user_in.full_name
+    if user_in.phone is not None:
+        user.phone = user_in.phone
+    if user_in.department is not None:
+        user.department = user_in.department
+    if user_in.designation is not None:
+        user.designation = user_in.designation
+    if user_in.bio is not None:
+        user.bio = user_in.bio
     if user_in.role is not None:
         user.role = user_in.role
     if user_in.is_active is not None:

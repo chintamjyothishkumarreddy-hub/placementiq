@@ -14,6 +14,10 @@ export const AuthProvider = ({ children }) => {
     return localStorage.getItem('placementiq_theme') === 'dark';
   });
   const [toast, setToast] = useState(null);
+  const [profileOpen, setProfileOpen] = useState(false);
+
+  const openProfile = () => setProfileOpen(true);
+  const closeProfile = () => setProfileOpen(false);
 
   useEffect(() => {
     if (darkMode) {
@@ -95,6 +99,15 @@ export const AuthProvider = ({ children }) => {
     showToast('Logged out successfully', 'info');
   };
 
+  const updateUserProfile = (updatedFields) => {
+    setUser((prev) => {
+      if (!prev) return prev;
+      const nextUser = { ...prev, ...updatedFields };
+      localStorage.setItem('placementiq_user', JSON.stringify(nextUser));
+      return nextUser;
+    });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -110,6 +123,10 @@ export const AuthProvider = ({ children }) => {
         login,
         register,
         logout,
+        updateUserProfile,
+        profileOpen,
+        openProfile,
+        closeProfile,
       }}
     >
       {children}

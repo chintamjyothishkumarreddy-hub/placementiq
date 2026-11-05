@@ -17,6 +17,12 @@ class UserBase(BaseModel):
     email: EmailStr
     full_name: str
     role: str = "viewer"  # admin, placement_officer, viewer
+    phone: Optional[str] = None
+    department: Optional[str] = None
+    designation: Optional[str] = None
+    bio: Optional[str] = None
+    avatar_type: Optional[str] = "monogram"
+    avatar_value: Optional[str] = "indigo"
     is_active: bool = True
 
 class UserCreate(UserBase):
@@ -25,6 +31,12 @@ class UserCreate(UserBase):
 class UserUpdate(BaseModel):
     email: Optional[EmailStr] = None
     full_name: Optional[str] = None
+    phone: Optional[str] = None
+    department: Optional[str] = None
+    designation: Optional[str] = None
+    bio: Optional[str] = None
+    avatar_type: Optional[str] = None
+    avatar_value: Optional[str] = None
     role: Optional[str] = None
     is_active: Optional[bool] = None
     password: Optional[str] = None
@@ -466,3 +478,41 @@ class AuditLogOut(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+# ----------------- Enquiries & Helpdesk -----------------
+class EnquiryBase(BaseModel):
+    name: str
+    email: EmailStr
+    phone: Optional[str] = None
+    subject: Optional[str] = "General Institutional Inquiry"
+    category: Optional[str] = "General"
+    message: str
+
+class EnquiryCreate(EnquiryBase):
+    pass
+
+class EnquiryUpdate(BaseModel):
+    status: Optional[str] = None  # Pending, In Progress, Resolved
+    priority: Optional[str] = None  # Low, Medium, High, Urgent
+    resolution_notes: Optional[str] = None
+
+class EnquiryOut(EnquiryBase):
+    id: int
+    status: str
+    priority: str
+    resolution_notes: Optional[str] = None
+    resolved_by: Optional[str] = None
+    resolved_at: Optional[datetime.datetime] = None
+    created_at: datetime.datetime
+    updated_at: datetime.datetime
+
+    class Config:
+        from_attributes = True
+
+class EnquiryStats(BaseModel):
+    total: int
+    pending: int
+    in_progress: int
+    resolved: int
+

@@ -13,9 +13,10 @@ import {
 } from 'lucide-react';
 import api from '../api';
 import { useAuth } from '../context/AuthContext';
+import UserAvatar from '../components/UserAvatar';
 
 export default function SettingsPage() {
-  const { showToast } = useAuth();
+  const { showToast, user, openProfile } = useAuth();
   const [settings, setSettings] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -97,6 +98,37 @@ export default function SettingsPage() {
             </button>
           </div>
         </div>
+      </div>
+
+      {/* Account Profile Quick Access Tile */}
+      <div className="apple-gloss-tile p-5 rounded-3xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3.5">
+          <UserAvatar user={user} size={48} showRoleBadge={true} interactive={true} onClick={openProfile} />
+          <div>
+            <div className="flex items-center gap-2">
+              <h3 className="text-sm font-bold text-[#1d1d1f] dark:text-[#f5f5f7]">
+                {user?.full_name || user?.username}
+              </h3>
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#0071e3]/10 text-[#0071e3] border border-[#0071e3]/20">
+                {user?.role === 'admin' ? 'Administrator' : user?.role}
+              </span>
+            </div>
+            <div className="text-xs text-[#86868b] dark:text-[#a1a1a6] mt-0.5 flex items-center gap-2 font-mono">
+              <span>@{user?.username}</span>
+              <span>•</span>
+              <span>{user?.email}</span>
+              {user?.designation && <span>• {user?.designation}</span>}
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={openProfile}
+          className="apple-btn-secondary px-4 py-2 text-xs font-semibold cursor-pointer self-start sm:self-auto flex items-center gap-2"
+        >
+          <span>Edit Profile & Credentials</span>
+        </button>
       </div>
 
       <form onSubmit={handleSave} className="space-y-6 text-xs">

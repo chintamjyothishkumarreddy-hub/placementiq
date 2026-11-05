@@ -20,7 +20,8 @@ import {
   Star,
   ChevronRight,
   Flame,
-  Clock
+  Clock,
+  HelpCircle
 } from 'lucide-react';
 import {
   BarChart,
@@ -195,6 +196,14 @@ export default function DashboardPage({ onNavigate }) {
                 >
                   <Target className="w-3.5 h-3.5 text-[#af52de]" />
                   <span>Cutoff Rules</span>
+                </button>
+                <button
+                  onClick={() => onNavigate && onNavigate('enquiries')}
+                  className="apple-btn-secondary px-4 py-2.5 text-xs font-medium cursor-pointer flex items-center gap-2"
+                  title="Review institutional inquiries"
+                >
+                  <HelpCircle className="w-3.5 h-3.5 text-amber-500" />
+                  <span>Inquiries Desk</span>
                 </button>
                 <button
                   onClick={() => onNavigate && onNavigate('users')}

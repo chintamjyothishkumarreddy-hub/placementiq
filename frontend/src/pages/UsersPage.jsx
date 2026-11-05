@@ -15,6 +15,7 @@ import {
 import api from '../api';
 import { useAuth } from '../context/AuthContext';
 import ConfirmModal from '../components/ConfirmModal';
+import UserAvatar from '../components/UserAvatar';
 
 export default function UsersPage() {
   const { user: currentUser, showToast } = useAuth();
@@ -178,12 +179,17 @@ export default function UsersPage() {
                 users.map((u) => (
                   <tr key={u.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40">
                     <td className="p-3 font-mono font-bold text-slate-900 dark:text-white">
-                      @{u.username}
-                      {u.id === currentUser?.id && (
-                        <span className="ml-2 text-[10px] text-blue-600 dark:text-blue-400 font-sans font-semibold">
-                          (You)
-                        </span>
-                      )}
+                      <div className="flex items-center gap-2.5">
+                        <UserAvatar user={u} size={28} showRoleBadge={false} />
+                        <div>
+                          <span>@{u.username}</span>
+                          {u.id === currentUser?.id && (
+                            <span className="ml-2 text-[10px] text-blue-600 dark:text-blue-400 font-sans font-semibold">
+                              (You)
+                            </span>
+                          )}
+                        </div>
+                      </div>
                     </td>
                     <td className="p-3 font-semibold text-slate-900 dark:text-slate-100">
                       {u.full_name}

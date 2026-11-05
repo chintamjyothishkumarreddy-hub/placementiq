@@ -12,10 +12,12 @@ import {
   FilePieChart,
   UserCheck,
   Settings,
-  History
+  History,
+  HelpCircle
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { PlacementIQEmblem } from './Logo';
+import UserAvatar from './UserAvatar';
 
 export const NAV_SECTIONS = [
   {
@@ -40,6 +42,7 @@ export const NAV_SECTIONS = [
     title: 'System & Governance',
     items: [
       { id: 'rules', label: 'Eligibility Rules & Cutoffs', icon: Sliders, roles: ['admin', 'placement_officer', 'viewer'] },
+      { id: 'enquiries', label: 'Inquiries & Helpdesk', icon: HelpCircle, roles: ['admin', 'placement_officer'] },
       { id: 'import-export', label: 'Data Import & Export', icon: FileSpreadsheet, roles: ['admin', 'placement_officer'] },
       { id: 'users', label: 'User Management', icon: UserCheck, roles: ['admin'] },
       { id: 'settings', label: 'System Settings', icon: Settings, roles: ['admin'] },
@@ -51,7 +54,7 @@ export const NAV_SECTIONS = [
 export const NAV_ITEMS = NAV_SECTIONS.flatMap((section) => section.items);
 
 export default function Sidebar({ activeTab, setActiveTab, isOpen, setIsOpen }) {
-  const { role } = useAuth();
+  const { user, role, openProfile } = useAuth();
 
   return (
     <>
@@ -118,14 +121,33 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen, setIsOpen }) 
           })}
         </div>
 
-        {/* Live System Indicator */}
-        <div className="p-4 border-t border-black/[0.06] dark:border-white/[0.08]">
-          <div className="liquid-pill px-3 py-2 flex items-center justify-between text-xs text-[#86868b] dark:text-[#a1a1a6]">
+        {/* User Profile Card & Live System Indicator */}
+        <div className="p-3 border-t border-black/[0.06] dark:border-white/[0.08] space-y-2">
+          <button
+            onClick={() => {
+              openProfile();
+              setIsOpen(false);
+            }}
+            className="w-full flex items-center gap-3 p-2 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-200 cursor-pointer text-left group"
+            title="Open Profile Settings"
+          >
+            <UserAvatar user={user} size={36} interactive={true} showRoleBadge={true} />
+            <div className="flex-1 min-w-0">
+              <div className="text-xs font-bold text-[#1d1d1f] dark:text-[#f5f5f7] truncate group-hover:text-[#0071e3] dark:group-hover:text-[#2997ff] transition-colors">
+                {user?.full_name || 'User'}
+              </div>
+              <div className="text-[10px] text-[#86868b] dark:text-[#a1a1a6] font-mono truncate">
+                @{user?.username}
+              </div>
+            </div>
+          </button>
+
+          <div className="liquid-pill px-3 py-1.5 flex items-center justify-between text-[11px] text-[#86868b] dark:text-[#a1a1a6]">
             <span className="flex items-center gap-1.5 font-medium">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span>DB Active</span>
             </span>
-            <span className="font-mono text-[11px] text-[#0071e3] dark:text-[#2997ff]">v1.0.0</span>
+            <span className="font-mono text-[10px] text-[#0071e3] dark:text-[#2997ff]">v1.0.0</span>
           </div>
         </div>
       </aside>

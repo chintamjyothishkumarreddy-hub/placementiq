@@ -7,6 +7,7 @@ import SignupPage from './pages/SignupPage';
 import Sidebar, { NAV_ITEMS } from './components/Sidebar';
 import Navbar from './components/Navbar';
 import Toast from './components/Toast';
+import ProfileModal from './components/ProfileModal';
 
 // All 13 module pages
 import DashboardPage from './pages/DashboardPage';
@@ -22,6 +23,7 @@ import ReportsPage from './pages/ReportsPage';
 import UsersPage from './pages/UsersPage';
 import SettingsPage from './pages/SettingsPage';
 import AuditLogsPage from './pages/AuditLogsPage';
+import EnquiriesPage from './pages/EnquiriesPage';
 
 function getViewFromPath(pathname) {
   const path = (pathname || '').toLowerCase().replace(/\/$/, '') || '/';
@@ -76,7 +78,7 @@ class ModuleErrorBoundary extends React.Component {
 }
 
 function MainApp() {
-  const { user, role, isAuthenticated, loading } = useAuth();
+  const { user, role, isAuthenticated, loading, profileOpen, closeProfile } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -230,6 +232,8 @@ function MainApp() {
         return <ApplicationsPage />;
       case 'rules':
         return <RulesPage />;
+      case 'enquiries':
+        return <EnquiriesPage />;
       case 'offers':
         return <OffersPage />;
       case 'analytics':
@@ -275,6 +279,7 @@ function MainApp() {
         </main>
       </div>
 
+      <ProfileModal isOpen={profileOpen} onClose={closeProfile} />
       <Toast />
     </div>
   );

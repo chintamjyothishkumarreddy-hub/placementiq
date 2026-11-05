@@ -14,6 +14,12 @@ class User(Base):
     hashed_password = Column(String(255), nullable=False)
     full_name = Column(String(255), nullable=False)
     role = Column(String(50), default="viewer", nullable=False)  # admin, placement_officer, viewer
+    phone = Column(String(50), nullable=True)
+    department = Column(String(100), nullable=True)
+    designation = Column(String(100), nullable=True)
+    bio = Column(Text, nullable=True)
+    avatar_type = Column(String(50), default="monogram")
+    avatar_value = Column(String(255), default="indigo")
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
@@ -304,3 +310,23 @@ class ImportHistory(Base):
     status = Column(String(50), default="Completed")
     error_details = Column(Text, nullable=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+
+class Enquiry(Base):
+    __tablename__ = "enquiries"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(255), nullable=False)
+    email = Column(String(255), nullable=False, index=True)
+    phone = Column(String(50), nullable=True)
+    subject = Column(String(255), nullable=True, default="General Institutional Inquiry")
+    category = Column(String(100), default="General", index=True)  # General, Drive Collaboration, Student Verification, Data Integration
+    message = Column(Text, nullable=False)
+    status = Column(String(50), default="Pending", index=True)  # Pending, In Progress, Resolved
+    priority = Column(String(50), default="Medium")  # Low, Medium, High, Urgent
+    resolution_notes = Column(Text, nullable=True)
+    resolved_by = Column(String(100), nullable=True)
+    resolved_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow, index=True)
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+
