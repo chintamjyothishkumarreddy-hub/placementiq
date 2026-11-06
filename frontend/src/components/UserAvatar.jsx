@@ -110,7 +110,7 @@ export function getAvatarTheme(username = '', paletteId = null) {
   return AVATAR_PALETTES[index];
 }
 
-export default function UserAvatar({
+function UserAvatar({
   user,
   size = 34,
   className = '',
@@ -216,3 +216,5 @@ export default function UserAvatar({
     </div>
   );
 }
+
+export default React.memo(UserAvatar);

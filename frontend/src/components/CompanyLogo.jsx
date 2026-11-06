@@ -302,7 +302,7 @@ function getFaviconUrl(website = '') {
  * CompanyLogo Component
  * Renders official brand logo with priority on full official logos (never a single "G" for Google)
  */
-export default function CompanyLogo({
+function CompanyLogo({
   company,
   name,
   logoUrl,
@@ -437,3 +437,5 @@ export default function CompanyLogo({
     </div>
   );
 }
+
+export default React.memo(CompanyLogo);

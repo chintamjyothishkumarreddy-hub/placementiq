@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Sliders,
   Plus,
@@ -14,9 +14,12 @@ import {
   Info,
   X
 } from 'lucide-react';
-import api from '../api';
+import api, { getErrorMessage } from '../api';
 import { useAuth } from '../context/AuthContext';
 import ConfirmModal from '../components/ConfirmModal';
+import { CardGridSkeleton } from '../components/LoadingSkeleton';
+import EmptyState from '../components/EmptyState';
+import ErrorState from '../components/ErrorState';
 
 export default function RulesPage() {
   const { role, showToast } = useAuth();
@@ -25,6 +28,7 @@ export default function RulesPage() {
 
   const [rules, setRules] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
   const [companies, setCompanies] = useState([]);
 
   // Modal State
@@ -63,8 +67,9 @@ export default function RulesPage() {
   };
   const [formData, setFormData] = useState(defaultRule);
 
-  const fetchRules = async () => {
+  const fetchRules = useCallback(async () => {
     setLoading(true);
+    setFetchError(null);
     try {
       const [rulesRes, compRes] = await Promise.all([
         api.get('/rules'),
@@ -73,15 +78,17 @@ export default function RulesPage() {
       setRules(rulesRes.data);
       setCompanies(compRes.data);
     } catch (err) {
-      showToast('Error loading eligibility rules', 'error');
+      const msg = getErrorMessage(err, 'Error loading eligibility rules');
+      setFetchError(msg);
+      showToast(msg, 'error');
     } finally {
       setLoading(false);
     }
-  };
+  }, [showToast]);
 
   useEffect(() => {
     fetchRules();
-  }, []);
+  }, [fetchRules]);
 
   const handleOpenAdd = () => {
     setEditingRule(null);
@@ -264,13 +271,22 @@ export default function RulesPage() {
       {/* Rules Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {loading ? (
-          <div className="col-span-full text-center py-12 text-slate-400">
-            <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-blue-600" />
-            Loading active rules...
+          <div className="col-span-full">
+            <CardGridSkeleton count={6} columnsClass="grid-cols-1 md:grid-cols-2 lg:grid-cols-3" />
+          </div>
+        ) : fetchError ? (
+          <div className="col-span-full">
+            <ErrorState onRetry={fetchRules} message={fetchError} />
           </div>
         ) : rules.length === 0 ? (
-          <div className="col-span-full text-center py-12 text-slate-400 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800">
-            No rules configured. Add a rule to establish placement cutoffs.
+          <div className="col-span-full">
+            <EmptyState
+              icon={Sliders}
+              title="No Eligibility Rules Configured"
+              description="Define cutoff criteria to automatically evaluate student drive eligibility."
+              onReset={canEdit ? handleOpenAdd : undefined}
+              resetLabel="Create First Rule"
+            />
           </div>
         ) : (
           rules.map((rule) => {

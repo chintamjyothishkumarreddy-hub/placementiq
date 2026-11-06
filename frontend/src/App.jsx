@@ -24,6 +24,7 @@ import UsersPage from './pages/UsersPage';
 import SettingsPage from './pages/SettingsPage';
 import AuditLogsPage from './pages/AuditLogsPage';
 import EnquiriesPage from './pages/EnquiriesPage';
+import ErrorBoundary from './components/ErrorBoundary';
 
 function getViewFromPath(pathname) {
   const path = (pathname || '').toLowerCase().replace(/\/$/, '') || '/';
@@ -31,50 +32,6 @@ function getViewFromPath(pathname) {
   if (path === '/signup' || path === '/register') return 'signup';
   if (path === '/dashboard' || path === '/app') return 'dashboard';
   return 'landing';
-}
-
-class ModuleErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
-  static getDerivedStateFromError(error) {
-    return { hasError: true, error };
-  }
-  componentDidCatch(error, errorInfo) {
-    console.error("ModuleErrorBoundary caught:", error, errorInfo);
-  }
-  componentDidUpdate(prevProps) {
-    if (prevProps.activeTab !== this.props.activeTab && this.state.hasError) {
-      this.setState({ hasError: false, error: null });
-    }
-  }
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="apple-gloss-tile p-8 sm:p-10 rounded-[32px] text-center max-w-lg mx-auto my-12 space-y-4">
-          <div className="w-12 h-12 rounded-2xl liquid-pill flex items-center justify-center text-[#ff3b30] mx-auto shadow-sm">
-            <ShieldAlert className="w-6 h-6" />
-          </div>
-          <div>
-            <h2 className="text-xl font-bold text-[#1d1d1f] dark:text-[#f5f5f7] tracking-tight">
-              Module View Recovery
-            </h2>
-            <p className="text-xs sm:text-sm text-[#86868b] dark:text-[#a1a1a6] mt-1 leading-relaxed">
-              An unexpected render exception was caught in this view. Your session and database data remain safe.
-            </p>
-          </div>
-          <button
-            onClick={() => this.setState({ hasError: false, error: null })}
-            className="apple-btn-primary px-5 py-2.5 text-xs font-semibold cursor-pointer inline-flex items-center gap-2"
-          >
-            <span>Reload Module View</span>
-          </button>
-        </div>
-      );
-    }
-    return this.props.children;
-  }
 }
 
 function MainApp() {
@@ -272,9 +229,9 @@ function MainApp() {
 
         <main className="flex-1 p-3.5 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto min-w-0">
           <div key={activeTab} className="animate-apple-enter min-w-0">
-            <ModuleErrorBoundary activeTab={activeTab}>
+            <ErrorBoundary resetKey={activeTab}>
               {renderActivePage()}
-            </ModuleErrorBoundary>
+            </ErrorBoundary>
           </div>
         </main>
       </div>
@@ -287,8 +244,10 @@ function MainApp() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <MainApp />
-    </AuthProvider>
+    <ErrorBoundary fullPage title="Application Recovery">
+      <AuthProvider>
+        <MainApp />
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }

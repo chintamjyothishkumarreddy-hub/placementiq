@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   UserCheck,
   Plus,
@@ -12,15 +12,19 @@ import {
   XCircle,
   X
 } from 'lucide-react';
-import api from '../api';
+import api, { getErrorMessage } from '../api';
 import { useAuth } from '../context/AuthContext';
 import ConfirmModal from '../components/ConfirmModal';
 import UserAvatar from '../components/UserAvatar';
+import { TableSkeleton } from '../components/LoadingSkeleton';
+import EmptyState from '../components/EmptyState';
+import ErrorState from '../components/ErrorState';
 
 export default function UsersPage() {
   const { user: currentUser, showToast } = useAuth();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
 
   // Modal State
   const [modalOpen, setModalOpen] = useState(false);
@@ -41,21 +45,24 @@ export default function UsersPage() {
   };
   const [formData, setFormData] = useState(defaultUserForm);
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     setLoading(true);
+    setFetchError(null);
     try {
       const res = await api.get('/users');
       setUsers(res.data);
     } catch (err) {
-      showToast('Error loading users', 'error');
+      const msg = getErrorMessage(err, 'Error loading users');
+      setFetchError(msg);
+      showToast(msg, 'error');
     } finally {
       setLoading(false);
     }
-  };
+  }, [showToast]);
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [fetchUsers]);
 
   const handleOpenAdd = () => {
     setEditingUser(null);
@@ -172,9 +179,24 @@ export default function UsersPage() {
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-medium text-slate-700 dark:text-slate-300">
               {loading ? (
-                <tr>
-                  <td colSpan="6" className="p-12 text-center text-slate-400">Loading user accounts...</td>
-                </tr>
+                <TableSkeleton rows={5} columns={6} />
+              ) : fetchError ? (
+                <ErrorState
+                  asTableRow
+                  colSpan={6}
+                  onRetry={fetchUsers}
+                  message={fetchError}
+                />
+              ) : users.length === 0 ? (
+                <EmptyState
+                  asTableRow
+                  colSpan={6}
+                  icon={UserCheck}
+                  title="No Users Found"
+                  description="No system administrators or placement officers registered yet."
+                  onReset={handleOpenAdd}
+                  resetLabel="Create First User"
+                />
               ) : (
                 users.map((u) => (
                   <tr key={u.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40">

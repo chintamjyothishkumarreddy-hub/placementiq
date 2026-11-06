@@ -69,6 +69,10 @@ if FRONTEND_DIST.exists():
     if assets_dir.exists():
         app.mount("/assets", StaticFiles(directory=str(assets_dir)), name="assets")
 
+    logos_dir = FRONTEND_DIST / "logos"
+    if logos_dir.exists():
+        app.mount("/logos", StaticFiles(directory=str(logos_dir)), name="logos")
+
     @app.get("/")
     def serve_root():
         index_file = FRONTEND_DIST / "index.html"

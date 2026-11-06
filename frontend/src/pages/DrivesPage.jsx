@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Briefcase,
   Plus,
@@ -16,10 +16,13 @@ import {
   MoveUp,
   MoveDown
 } from 'lucide-react';
-import api from '../api';
+import api, { getErrorMessage } from '../api';
 import { useAuth } from '../context/AuthContext';
 import ConfirmModal from '../components/ConfirmModal';
 import CompanyLogo from '../components/CompanyLogo';
+import { CardGridSkeleton } from '../components/LoadingSkeleton';
+import EmptyState from '../components/EmptyState';
+import ErrorState from '../components/ErrorState';
 
 export default function DrivesPage() {
   const { role, showToast } = useAuth();
@@ -29,6 +32,7 @@ export default function DrivesPage() {
   const [drives, setDrives] = useState([]);
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
 
   // Drive Modal
   const [driveModalOpen, setDriveModalOpen] = useState(false);
@@ -61,8 +65,9 @@ export default function DrivesPage() {
   };
   const [driveForm, setDriveForm] = useState(defaultDrive);
 
-  const fetchDrives = async () => {
+  const fetchDrives = useCallback(async () => {
     setLoading(true);
+    setFetchError(null);
     try {
       const [drivesRes, compRes] = await Promise.all([
         api.get('/drives'),
@@ -71,11 +76,13 @@ export default function DrivesPage() {
       setDrives(drivesRes.data);
       setCompanies(compRes.data);
     } catch (err) {
-      showToast('Error loading placement drives', 'error');
+      const msg = getErrorMessage(err, 'Failed to retrieve placement drives');
+      setFetchError(msg);
+      showToast(msg, 'error');
     } finally {
       setLoading(false);
     }
-  };
+  }, [showToast]);
 
   useEffect(() => {
     fetchDrives();
@@ -244,11 +251,23 @@ export default function DrivesPage() {
       {/* Drives Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {loading ? (
-          <div className="col-span-full text-center py-12 text-slate-400">Loading placement drives...</div>
-        ) : drives.length === 0 ? (
-          <div className="col-span-full text-center py-12 text-slate-400 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800">
-            No drives currently scheduled.
+          <div className="col-span-full">
+            <CardGridSkeleton count={4} columnsClass="grid-cols-1 lg:grid-cols-2" />
           </div>
+        ) : fetchError ? (
+          <ErrorState
+            title="Unable to Load Placement Drives"
+            message={fetchError}
+            onRetry={fetchDrives}
+          />
+        ) : drives.length === 0 ? (
+          <EmptyState
+            icon={Briefcase}
+            title="No Drives Scheduled"
+            description="There are currently no placement drives configured or active for this recruitment season."
+            onAction={canEdit ? handleOpenAddDrive : undefined}
+            actionLabel="Schedule New Drive"
+          />
         ) : (
           drives.map((drive) => (
             <div

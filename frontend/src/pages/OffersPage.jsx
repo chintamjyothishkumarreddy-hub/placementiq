@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Award,
   Plus,
@@ -15,10 +15,13 @@ import {
   X,
   FileCheck
 } from 'lucide-react';
-import api from '../api';
+import api, { getErrorMessage } from '../api';
 import { useAuth } from '../context/AuthContext';
 import ConfirmModal from '../components/ConfirmModal';
 import CompanyLogo from '../components/CompanyLogo';
+import { TableSkeleton } from '../components/LoadingSkeleton';
+import EmptyState from '../components/EmptyState';
+import ErrorState from '../components/ErrorState';
 
 export default function OffersPage() {
   const { role, showToast } = useAuth();
@@ -29,6 +32,7 @@ export default function OffersPage() {
   const [companies, setCompanies] = useState([]);
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
 
   // Filters
   const [search, setSearch] = useState('');
@@ -59,8 +63,9 @@ export default function OffersPage() {
   };
   const [offerForm, setOfferForm] = useState(defaultOffer);
 
-  const fetchOffers = async () => {
+  const fetchOffers = useCallback(async () => {
     setLoading(true);
+    setFetchError(null);
     try {
       const params = {};
       if (search.trim()) params.search = search.trim();
@@ -76,11 +81,13 @@ export default function OffersPage() {
       setCompanies(compRes.data);
       setStudents(stRes.data.data);
     } catch (err) {
-      showToast('Error loading offers', 'error');
+      const msg = getErrorMessage(err, 'Failed to load offers');
+      setFetchError(msg);
+      showToast(msg, 'error');
     } finally {
       setLoading(false);
     }
-  };
+  }, [search, statusFilter, companyFilter, showToast]);
 
   useEffect(() => {
     fetchOffers();
@@ -288,15 +295,31 @@ export default function OffersPage() {
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium text-slate-700 dark:text-slate-300">
               {loading ? (
-                <tr>
-                  <td colSpan="8" className="p-12 text-center text-slate-400">Loading offers...</td>
-                </tr>
+                <TableSkeleton rows={6} columns={8} />
+              ) : fetchError ? (
+                <ErrorState
+                  asTableRow
+                  colSpan={8}
+                  title="Unable to Load Job Offers"
+                  message={fetchError}
+                  onRetry={fetchOffers}
+                />
               ) : offers.length === 0 ? (
-                <tr>
-                  <td colSpan="8" className="p-12 text-center text-slate-400">
-                    No offers found matching criteria.
-                  </td>
-                </tr>
+                <EmptyState
+                  asTableRow
+                  colSpan={8}
+                  icon={Award}
+                  title="No Offers Found"
+                  description="We couldn't find any job offer records matching your search or filters."
+                  onReset={() => {
+                    setSearch('');
+                    setStatusFilter('All');
+                    setCompanyFilter('All');
+                  }}
+                  resetLabel="Clear Filters"
+                  onAction={canEdit ? handleOpenAdd : undefined}
+                  actionLabel="Add New Offer"
+                />
               ) : (
                 offers.map((off) => (
                   <tr key={off.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">

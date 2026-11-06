@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   History,
   Search,
@@ -10,9 +10,12 @@ import {
   X,
   FileCode
 } from 'lucide-react';
-import api from '../api';
+import api, { getErrorMessage } from '../api';
 import { useAuth } from '../context/AuthContext';
 import Pagination from '../components/Pagination';
+import { TableSkeleton } from '../components/LoadingSkeleton';
+import EmptyState from '../components/EmptyState';
+import ErrorState from '../components/ErrorState';
 
 export default function AuditLogsPage() {
   const { showToast } = useAuth();
@@ -21,6 +24,7 @@ export default function AuditLogsPage() {
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
 
   // Filters
   const [entityType, setEntityType] = useState('All');
@@ -30,8 +34,9 @@ export default function AuditLogsPage() {
   // Inspect Modal
   const [selectedLog, setSelectedLog] = useState(null);
 
-  const fetchLogs = async () => {
+  const fetchLogs = useCallback(async () => {
     setLoading(true);
+    setFetchError(null);
     try {
       const params = { page, limit: 30 };
       if (entityType !== 'All') params.entity_type = entityType;
@@ -43,15 +48,17 @@ export default function AuditLogsPage() {
       setTotal(res.data.total);
       setPages(res.data.pages);
     } catch (err) {
-      showToast('Error loading audit log records', 'error');
+      const msg = getErrorMessage(err, 'Error loading audit log records');
+      setFetchError(msg);
+      showToast(msg, 'error');
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, entityType, action, username, showToast]);
 
   useEffect(() => {
     fetchLogs();
-  }, [page, entityType, action]);
+  }, [fetchLogs]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -157,13 +164,29 @@ export default function AuditLogsPage() {
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-medium text-slate-700 dark:text-slate-300">
               {loading ? (
-                <tr>
-                  <td colSpan="7" className="p-12 text-center text-slate-400">Loading audit log events...</td>
-                </tr>
+                <TableSkeleton rows={8} columns={7} />
+              ) : fetchError ? (
+                <ErrorState
+                  asTableRow
+                  colSpan={7}
+                  onRetry={fetchLogs}
+                  message={fetchError}
+                />
               ) : logs.length === 0 ? (
-                <tr>
-                  <td colSpan="7" className="p-12 text-center text-slate-400">No audit events match filters.</td>
-                </tr>
+                <EmptyState
+                  asTableRow
+                  colSpan={7}
+                  icon={History}
+                  title="No Audit Records Found"
+                  description="No cryptographic audit events match the selected filters."
+                  onReset={() => {
+                    setEntityType('All');
+                    setAction('All');
+                    setUsername('');
+                    setPage(1);
+                  }}
+                  resetLabel="Reset Audit Filters"
+                />
               ) : (
                 logs.map((log) => (
                   <tr key={log.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40">

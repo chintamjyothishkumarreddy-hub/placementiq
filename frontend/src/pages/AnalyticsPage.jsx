@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   BarChart3,
   TrendingUp,
@@ -30,42 +30,52 @@ import {
   Pie,
   Cell
 } from 'recharts';
-import api from '../api';
+import api, { getErrorMessage } from '../api';
 import { useAuth } from '../context/AuthContext';
 import { PlacementIQEmblem } from '../components/Logo';
+import { DashboardSkeleton } from '../components/LoadingSkeleton';
+import ErrorState from '../components/ErrorState';
 
 export default function AnalyticsPage() {
   const { showToast } = useAuth();
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
   const [academicYear, setAcademicYear] = useState('All');
 
-  const fetchReport = async () => {
+  const fetchReport = useCallback(async () => {
     setLoading(true);
+    setFetchError(null);
     try {
       const params = {};
       if (academicYear !== 'All') params.academic_year = academicYear;
       const res = await api.get('/reports/comprehensive-summary', { params });
       setReport(res.data);
-    } catch {
-      showToast('Error loading analytics reports', 'error');
+    } catch (err) {
+      const msg = getErrorMessage(err, 'Error loading analytics reports');
+      setFetchError(msg);
+      showToast(msg, 'error');
     } finally {
       setLoading(false);
     }
-  };
+  }, [academicYear, showToast]);
 
   useEffect(() => {
     fetchReport();
-  }, [academicYear]);
+  }, [fetchReport]);
 
   if (loading && !report) {
+    return <DashboardSkeleton />;
+  }
+
+  if (fetchError && !report) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-        <PlacementIQEmblem size={52} className="animate-pulse drop-shadow-lg" />
-        <div className="flex items-center gap-2 text-xs text-[#86868b] dark:text-[#a1a1a6] font-medium">
-          <div className="w-4 h-4 border-2 border-[#0071e3] border-t-transparent rounded-full animate-spin" />
-          <span>Computing deep multivariate statistical models...</span>
-        </div>
+      <div className="apple-gloss-tile p-8 sm:p-12 rounded-[32px]">
+        <ErrorState
+          title="Analytics Engine Unavailable"
+          message={fetchError}
+          onRetry={fetchReport}
+        />
       </div>
     );
   }

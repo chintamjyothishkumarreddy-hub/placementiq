@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   Users,
   Search,
@@ -18,10 +18,13 @@ import {
   X,
   FileText
 } from 'lucide-react';
-import api from '../api';
+import api, { getErrorMessage } from '../api';
 import { useAuth } from '../context/AuthContext';
 import ConfirmModal from '../components/ConfirmModal';
 import Pagination from '../components/Pagination';
+import { TableSkeleton } from '../components/LoadingSkeleton';
+import EmptyState from '../components/EmptyState';
+import ErrorState from '../components/ErrorState';
 
 export default function StudentsPage() {
   const { role, showToast } = useAuth();
@@ -34,6 +37,7 @@ export default function StudentsPage() {
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
 
   // Filters
   const [search, setSearch] = useState('');
@@ -88,8 +92,9 @@ export default function StudentsPage() {
   };
   const [formData, setFormData] = useState(defaultFormData);
 
-  const fetchStudents = async () => {
+  const fetchStudents = useCallback(async () => {
     setLoading(true);
+    setFetchError(null);
     try {
       const params = { page, limit: 25 };
       if (search.trim()) params.search = search.trim();
@@ -103,11 +108,13 @@ export default function StudentsPage() {
       setTotal(res.data.total);
       setPages(res.data.pages);
     } catch (err) {
-      showToast('Error loading students', 'error');
+      const msg = getErrorMessage(err, 'Failed to retrieve student records');
+      setFetchError(msg);
+      showToast(msg, 'error');
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, search, department, placementEligibility, placementStatus, graduationYear, showToast]);
 
   useEffect(() => {
     fetchStudents();
@@ -442,18 +449,33 @@ export default function StudentsPage() {
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium text-slate-700 dark:text-slate-300">
               {loading ? (
-                <tr>
-                  <td colSpan={canEdit ? 10 : 9} className="p-12 text-center text-slate-400">
-                    <div className="inline-block w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mb-2" />
-                    <p>Loading student records...</p>
-                  </td>
-                </tr>
+                <TableSkeleton rows={8} columns={canEdit ? 10 : 9} />
+              ) : fetchError ? (
+                <ErrorState
+                  asTableRow
+                  colSpan={canEdit ? 10 : 9}
+                  title="Unable to Load Students"
+                  message={fetchError}
+                  onRetry={fetchStudents}
+                />
               ) : students.length === 0 ? (
-                <tr>
-                  <td colSpan={canEdit ? 10 : 9} className="p-12 text-center text-slate-400">
-                    No student records found matching filter criteria.
-                  </td>
-                </tr>
+                <EmptyState
+                  asTableRow
+                  colSpan={canEdit ? 10 : 9}
+                  icon={Users}
+                  title="No Student Records Found"
+                  description="We couldn't find any students matching your search criteria or selected filters."
+                  onReset={() => {
+                    setSearch('');
+                    setDepartment('All');
+                    setPlacementEligibility('All');
+                    setPlacementStatus('All');
+                    setPage(1);
+                  }}
+                  resetLabel="Reset All Filters"
+                  onAction={canEdit ? handleOpenAdd : undefined}
+                  actionLabel="Register New Student"
+                />
               ) : (
                 students.map((st) => {
                   const isSelected = selectedIds.includes(st.id);

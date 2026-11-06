@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   FilePieChart,
   Download,
@@ -15,33 +15,39 @@ import {
   CheckCircle2,
   FileText
 } from 'lucide-react';
-import api from '../api';
+import api, { getErrorMessage } from '../api';
 import { useAuth } from '../context/AuthContext';
 import { PlacementIQEmblem } from '../components/Logo';
+import { DashboardSkeleton } from '../components/LoadingSkeleton';
+import ErrorState from '../components/ErrorState';
 
 export default function ReportsPage() {
   const { showToast } = useAuth();
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
   const [academicYear, setAcademicYear] = useState('All');
 
-  const fetchReport = async () => {
+  const fetchReport = useCallback(async () => {
     setLoading(true);
+    setFetchError(null);
     try {
       const params = {};
       if (academicYear !== 'All') params.academic_year = academicYear;
       const res = await api.get('/reports/comprehensive-summary', { params });
       setReport(res.data);
-    } catch {
-      showToast('Error loading reports', 'error');
+    } catch (err) {
+      const msg = getErrorMessage(err, 'Error loading reports');
+      setFetchError(msg);
+      showToast(msg, 'error');
     } finally {
       setLoading(false);
     }
-  };
+  }, [academicYear, showToast]);
 
   useEffect(() => {
     fetchReport();
-  }, [academicYear]);
+  }, [fetchReport]);
 
   const handlePrint = () => {
     window.print();
@@ -50,6 +56,22 @@ export default function ReportsPage() {
   const handleExport = (fmt = 'csv') => {
     window.open(`/api/import-export/export/students?format=${fmt}`, '_blank');
   };
+
+  if (loading && !report) {
+    return <DashboardSkeleton />;
+  }
+
+  if (fetchError && !report) {
+    return (
+      <div className="apple-gloss-tile p-8 sm:p-12 rounded-[32px]">
+        <ErrorState
+          title="Institutional Report Unavailable"
+          message={fetchError}
+          onRetry={fetchReport}
+        />
+      </div>
+    );
+  }
 
   const { overview, departments, tiers } = report || {};
 

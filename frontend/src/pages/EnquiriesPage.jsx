@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   HelpCircle,
   MessageSquare,
@@ -22,9 +22,12 @@ import {
   CheckCircle,
   FileText
 } from 'lucide-react';
-import api from '../api';
+import api, { getErrorMessage } from '../api';
 import { useAuth } from '../context/AuthContext';
 import ConfirmModal from '../components/ConfirmModal';
+import { CardGridSkeleton } from '../components/LoadingSkeleton';
+import EmptyState from '../components/EmptyState';
+import ErrorState from '../components/ErrorState';
 
 export default function EnquiriesPage() {
   const { user: currentUser, role, showToast } = useAuth();
@@ -32,6 +35,7 @@ export default function EnquiriesPage() {
   const [enquiries, setEnquiries] = useState([]);
   const [stats, setStats] = useState({ total: 0, pending: 0, in_progress: 0, resolved: 0 });
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
 
   // Filters & Search
   const [statusFilter, setStatusFilter] = useState('all');
@@ -50,8 +54,9 @@ export default function EnquiriesPage() {
   const [deleteId, setDeleteId] = useState(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
 
-  const fetchEnquiries = async () => {
+  const fetchEnquiries = useCallback(async () => {
     setLoading(true);
+    setFetchError(null);
     try {
       const params = {};
       if (statusFilter !== 'all') params.status = statusFilter;
@@ -62,15 +67,17 @@ export default function EnquiriesPage() {
       setEnquiries(res.data.enquiries || []);
       setStats(res.data.stats || { total: 0, pending: 0, in_progress: 0, resolved: 0 });
     } catch (err) {
-      showToast(err.response?.data?.detail || 'Failed to load inquiries', 'error');
+      const msg = getErrorMessage(err, 'Failed to load inquiries');
+      setFetchError(msg);
+      showToast(msg, 'error');
     } finally {
       setLoading(false);
     }
-  };
+  }, [statusFilter, categoryFilter, searchTerm, showToast]);
 
   useEffect(() => {
     fetchEnquiries();
-  }, [statusFilter, categoryFilter]);
+  }, [fetchEnquiries]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -295,19 +302,34 @@ export default function EnquiriesPage() {
       {/* Inquiries List / Glass Table */}
       <div className="apple-glass-table-container rounded-[28px] overflow-hidden">
         {loading ? (
-          <div className="p-16 text-center text-[#86868b]">
-            <div className="w-6 h-6 border-2 border-[#0071e3] border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-            <span className="text-xs">Fetching institutional inquiries...</span>
+          <div className="p-8">
+            <CardGridSkeleton count={4} columnsClass="grid-cols-1" />
+          </div>
+        ) : fetchError ? (
+          <div className="p-8">
+            <ErrorState message={fetchError} onRetry={fetchEnquiries} />
           </div>
         ) : enquiries.length === 0 ? (
-          <div className="p-16 text-center text-[#86868b] space-y-2">
-            <CheckCircle2 className="w-10 h-10 text-[#34c759] mx-auto opacity-75" />
-            <h3 className="text-sm font-bold text-[#1d1d1f] dark:text-[#f5f5f7]">No Inquiries Found</h3>
-            <p className="text-xs max-w-sm mx-auto">
-              {statusFilter !== 'all'
-                ? `There are no inquiries with status "${statusFilter}".`
-                : 'All incoming public and institutional inquiries have been addressed.'}
-            </p>
+          <div className="p-8">
+            <EmptyState
+              icon={MessageSquare}
+              title="No Inquiries Found"
+              description={
+                statusFilter !== 'all'
+                  ? `There are no inquiries with status "${statusFilter}".`
+                  : 'All incoming public and institutional inquiries have been addressed.'
+              }
+              onReset={
+                statusFilter !== 'all' || categoryFilter !== 'all' || searchTerm
+                  ? () => {
+                      setStatusFilter('all');
+                      setCategoryFilter('all');
+                      setSearchTerm('');
+                    }
+                  : undefined
+              }
+              resetLabel="Clear Filters"
+            />
           </div>
         ) : (
           <div className="divide-y divide-black/[0.04] dark:divide-white/[0.06]">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Users,
   CheckCircle2,
@@ -38,15 +38,18 @@ import {
   AreaChart,
   Area
 } from 'recharts';
-import api from '../api';
+import api, { getErrorMessage } from '../api';
 import { useAuth } from '../context/AuthContext';
 import { PlacementIQEmblem } from '../components/Logo';
+import { DashboardSkeleton } from '../components/LoadingSkeleton';
+import ErrorState from '../components/ErrorState';
 
 export default function DashboardPage({ onNavigate }) {
   const { user, role, showToast } = useAuth();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [fetchError, setFetchError] = useState(null);
 
   // Filters
   const [academicYear, setAcademicYear] = useState('All');
@@ -57,9 +60,10 @@ export default function DashboardPage({ onNavigate }) {
   // Chart Interactive View Modes
   const [deptChartMode, setDeptChartMode] = useState('volume'); // 'volume' | 'rate'
 
-  const fetchStats = async (isManual = false) => {
+  const fetchStats = useCallback(async (isManual = false) => {
     if (isManual) setRefreshing(true);
     else setLoading(true);
+    setFetchError(null);
 
     try {
       const params = {};
@@ -71,26 +75,32 @@ export default function DashboardPage({ onNavigate }) {
       const res = await api.get('/dashboard/stats', { params });
       setData(res.data);
       if (isManual) showToast('Campus metrics synchronized with live database', 'info');
-    } catch {
-      showToast('Failed to load dashboard metrics', 'error');
+    } catch (err) {
+      const msg = getErrorMessage(err, 'Failed to load dashboard metrics');
+      setFetchError(msg);
+      showToast(msg, 'error');
     } finally {
       setLoading(false);
       setRefreshing(false);
     }
-  };
+  }, [academicYear, department, companyId, graduationYear, showToast]);
 
   useEffect(() => {
     fetchStats();
-  }, [academicYear, department, companyId, graduationYear]);
+  }, [fetchStats]);
 
   if (loading && !data) {
+    return <DashboardSkeleton />;
+  }
+
+  if (fetchError && !data) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-        <PlacementIQEmblem size={52} className="animate-pulse drop-shadow-lg" />
-        <div className="flex items-center gap-2 text-xs text-[#86868b] dark:text-[#a1a1a6] font-medium">
-          <div className="w-4 h-4 border-2 border-[#0071e3] border-t-transparent rounded-full animate-spin" />
-          <span>Synchronizing campus intelligence matrix...</span>
-        </div>
+      <div className="apple-gloss-tile p-8 sm:p-12 rounded-[32px]">
+        <ErrorState
+          title="Dashboard Intelligence Unavailable"
+          message={fetchError}
+          onRetry={() => fetchStats()}
+        />
       </div>
     );
   }

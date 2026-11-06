@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   FileSpreadsheet,
   Upload,
@@ -14,6 +14,8 @@ import {
 } from 'lucide-react';
 import api from '../api';
 import { useAuth } from '../context/AuthContext';
+import { TableSkeleton } from '../components/LoadingSkeleton';
+import EmptyState from '../components/EmptyState';
 
 export default function ImportExportPage() {
   const { showToast } = useAuth();
@@ -393,13 +395,15 @@ export default function ImportExportPage() {
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-medium text-slate-700 dark:text-slate-300">
               {historyLoading ? (
-                <tr>
-                  <td colSpan="8" className="p-8 text-center text-slate-400">Loading audit history...</td>
-                </tr>
+                <TableSkeleton rows={4} columns={8} />
               ) : history.length === 0 ? (
-                <tr>
-                  <td colSpan="8" className="p-8 text-center text-slate-400 italic">No previous import jobs found.</td>
-                </tr>
+                <EmptyState
+                  asTableRow
+                  colSpan={8}
+                  icon={History}
+                  title="No Import Audits"
+                  description="No historical batch import jobs executed yet."
+                />
               ) : (
                 history.map((h) => (
                   <tr key={h.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40">

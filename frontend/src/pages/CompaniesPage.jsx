@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Building2,
   Search,
@@ -18,10 +18,13 @@ import {
   Image,
   Sparkles
 } from 'lucide-react';
-import api from '../api';
+import api, { getErrorMessage } from '../api';
 import { useAuth } from '../context/AuthContext';
 import ConfirmModal from '../components/ConfirmModal';
 import CompanyLogo, { POPULAR_COMPANY_PRESETS } from '../components/CompanyLogo';
+import { CardGridSkeleton } from '../components/LoadingSkeleton';
+import EmptyState from '../components/EmptyState';
+import ErrorState from '../components/ErrorState';
 
 export default function CompaniesPage() {
   const { role, showToast } = useAuth();
@@ -30,6 +33,7 @@ export default function CompaniesPage() {
 
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
 
   // Filters
   const [search, setSearch] = useState('');
@@ -86,8 +90,9 @@ export default function CompaniesPage() {
   };
   const [roleForm, setRoleForm] = useState(defaultRole);
 
-  const fetchCompanies = async () => {
+  const fetchCompanies = useCallback(async () => {
     setLoading(true);
+    setFetchError(null);
     try {
       const params = {};
       if (search.trim()) params.search = search.trim();
@@ -97,11 +102,13 @@ export default function CompaniesPage() {
       const res = await api.get('/companies', { params });
       setCompanies(res.data);
     } catch (err) {
-      showToast('Error loading companies', 'error');
+      const msg = getErrorMessage(err, 'Failed to load company records');
+      setFetchError(msg);
+      showToast(msg, 'error');
     } finally {
       setLoading(false);
     }
-  };
+  }, [search, statusFilter, industryFilter, showToast]);
 
   useEffect(() => {
     fetchCompanies();
@@ -294,11 +301,29 @@ export default function CompaniesPage() {
       {/* Companies List */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {loading ? (
-          <div className="col-span-full text-center py-12 text-slate-400">Loading companies...</div>
-        ) : companies.length === 0 ? (
-          <div className="col-span-full text-center py-12 text-slate-400 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800">
-            No company records found.
+          <div className="col-span-full">
+            <CardGridSkeleton count={4} />
           </div>
+        ) : fetchError ? (
+          <ErrorState
+            title="Unable to Load Companies"
+            message={fetchError}
+            onRetry={fetchCompanies}
+          />
+        ) : companies.length === 0 ? (
+          <EmptyState
+            icon={Building2}
+            title="No Companies Found"
+            description="No company profiles match your selected search query or industry filter."
+            onReset={() => {
+              setSearch('');
+              setStatusFilter('All');
+              setIndustryFilter('All');
+            }}
+            resetLabel="Clear Filters"
+            onAction={canEdit ? handleOpenAddCompany : undefined}
+            actionLabel="Register New Company"
+          />
         ) : (
           companies.map((comp) => {
             const isExpanded = expandedId === comp.id;

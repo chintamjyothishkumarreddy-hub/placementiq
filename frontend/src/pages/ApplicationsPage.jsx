@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   FileText,
   Search,
@@ -15,9 +15,12 @@ import {
   User,
   Users
 } from 'lucide-react';
-import api from '../api';
+import api, { getErrorMessage } from '../api';
 import { useAuth } from '../context/AuthContext';
 import CompanyLogo from '../components/CompanyLogo';
+import { TableSkeleton } from '../components/LoadingSkeleton';
+import EmptyState from '../components/EmptyState';
+import ErrorState from '../components/ErrorState';
 
 export default function ApplicationsPage() {
   const { role, showToast } = useAuth();
@@ -26,6 +29,7 @@ export default function ApplicationsPage() {
   const [applications, setApplications] = useState([]);
   const [drives, setDrives] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
 
   // Filters
   const [selectedDriveId, setSelectedDriveId] = useState('All');
@@ -47,8 +51,9 @@ export default function ApplicationsPage() {
   const [targetStageId, setTargetStageId] = useState('');
   const [appStatusUpdate, setAppStatusUpdate] = useState('');
 
-  const fetchApplications = async () => {
+  const fetchApplications = useCallback(async () => {
     setLoading(true);
+    setFetchError(null);
     try {
       const params = {};
       if (selectedDriveId !== 'All') params.drive_id = selectedDriveId;
@@ -61,11 +66,13 @@ export default function ApplicationsPage() {
       setApplications(appsRes.data);
       setDrives(drivesRes.data);
     } catch (err) {
-      showToast('Error loading application tracker', 'error');
+      const msg = getErrorMessage(err, 'Failed to retrieve applications pipeline');
+      setFetchError(msg);
+      showToast(msg, 'error');
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedDriveId, statusFilter, showToast]);
 
   useEffect(() => {
     fetchApplications();
@@ -187,17 +194,27 @@ export default function ApplicationsPage() {
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium text-slate-700 dark:text-slate-300">
               {loading ? (
-                <tr>
-                  <td colSpan="7" className="p-12 text-center text-slate-400">
-                    Loading application pipeline records...
-                  </td>
-                </tr>
+                <TableSkeleton rows={6} columns={7} />
+              ) : fetchError ? (
+                <ErrorState
+                  asTableRow
+                  colSpan={7}
+                  onRetry={fetchApplications}
+                  message={fetchError}
+                />
               ) : applications.length === 0 ? (
-                <tr>
-                  <td colSpan="7" className="p-12 text-center text-slate-400">
-                    No student applications matching the selected criteria.
-                  </td>
-                </tr>
+                <EmptyState
+                  asTableRow
+                  colSpan={7}
+                  icon={FileText}
+                  title="No Applications Found"
+                  description="No student applications matching the selected criteria."
+                  onReset={() => {
+                    setSelectedDriveId('All');
+                    setStatusFilter('All');
+                  }}
+                  resetLabel="Reset Filters"
+                />
               ) : (
                 applications.map((app) => (
                   <tr key={app.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Settings,
   Save,
@@ -11,7 +11,7 @@ import {
   Calendar,
   Layers
 } from 'lucide-react';
-import api from '../api';
+import api, { getErrorMessage } from '../api';
 import { useAuth } from '../context/AuthContext';
 import UserAvatar from '../components/UserAvatar';
 
@@ -34,7 +34,7 @@ export default function SettingsPage() {
     auto_recalculate_eligibility: true
   });
 
-  const fetchSettings = async () => {
+  const fetchSettings = useCallback(async () => {
     setLoading(true);
     try {
       const res = await api.get('/settings/as-dict');
@@ -44,15 +44,15 @@ export default function SettingsPage() {
         ...res.data
       }));
     } catch (err) {
-      showToast('Error loading system settings', 'error');
+      showToast(getErrorMessage(err, 'Error loading system settings'), 'error');
     } finally {
       setLoading(false);
     }
-  };
+  }, [showToast]);
 
   useEffect(() => {
     fetchSettings();
-  }, []);
+  }, [fetchSettings]);
 
   const handleSave = async (e) => {
     e.preventDefault();
