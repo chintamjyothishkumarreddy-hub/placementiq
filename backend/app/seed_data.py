@@ -90,7 +90,7 @@ def seed_database():
             {
                 "name": "Google India",
                 "industry": "Internet & Cloud",
-                "logo_url": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+                "logo_url": "/logos/google.svg",
                 "website": "https://careers.google.com",
                 "hr_name": "Arun Swaminathan",
                 "hr_email": "arun.s@google.com",
@@ -116,7 +116,7 @@ def seed_database():
             {
                 "name": "Microsoft India",
                 "industry": "Software & AI",
-                "logo_url": "https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg",
+                "logo_url": "/logos/microsoft.svg",
                 "website": "https://careers.microsoft.com",
                 "hr_name": "Pooja Reddy",
                 "hr_email": "pooja.r@microsoft.com",
@@ -142,7 +142,7 @@ def seed_database():
             {
                 "name": "Amazon",
                 "industry": "E-Commerce & Cloud",
-                "logo_url": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
+                "logo_url": "/logos/amazon.svg",
                 "website": "https://amazon.jobs",
                 "hr_name": "Karan Malhotra",
                 "hr_email": "karan.m@amazon.com",
@@ -168,7 +168,7 @@ def seed_database():
             {
                 "name": "Tata Consultancy Services (TCS)",
                 "industry": "IT Services & Consulting",
-                "logo_url": "https://upload.wikimedia.org/wikipedia/commons/b/b1/Tata_Consultancy_Services_Logo.svg",
+                "logo_url": "/logos/tcs.svg",
                 "website": "https://www.tcs.com",
                 "hr_name": "Siddharth Sen",
                 "hr_email": "siddharth.sen@tcs.com",
@@ -206,7 +206,7 @@ def seed_database():
             {
                 "name": "Infosys",
                 "industry": "IT Services",
-                "logo_url": "https://upload.wikimedia.org/wikipedia/commons/9/95/Infosys_logo.svg",
+                "logo_url": "/logos/infosys.svg",
                 "website": "https://www.infosys.com",
                 "hr_name": "Meenakshi Sundaram",
                 "hr_email": "m.sundaram@infosys.com",
@@ -244,7 +244,7 @@ def seed_database():
             {
                 "name": "Texas Instruments",
                 "industry": "Semiconductors & Electronics",
-                "logo_url": "https://upload.wikimedia.org/wikipedia/commons/0/04/Texas_Instruments_logo.svg",
+                "logo_url": "/logos/ti.svg",
                 "website": "https://www.ti.com",
                 "hr_name": "Girish Hegde",
                 "hr_email": "girish.h@ti.com",
@@ -270,7 +270,7 @@ def seed_database():
             {
                 "name": "L&T Technology Services",
                 "industry": "Engineering R&D",
-                "logo_url": "https://upload.wikimedia.org/wikipedia/commons/e/e5/L%26T.png",
+                "logo_url": "/logos/lnt.svg",
                 "website": "https://www.ltts.com",
                 "hr_name": "Ritu Saxena",
                 "hr_email": "ritu.saxena@ltts.com",
@@ -296,7 +296,7 @@ def seed_database():
             {
                 "name": "Deloitte USI",
                 "industry": "Consulting & Technology",
-                "logo_url": "https://upload.wikimedia.org/wikipedia/commons/5/56/Deloitte.svg",
+                "logo_url": "/logos/deloitte.svg",
                 "website": "https://www2.deloitte.com",
                 "hr_name": "Farhan Akhtar",
                 "hr_email": "farhan.a@deloitte.com",
@@ -322,7 +322,7 @@ def seed_database():
             {
                 "name": "Mahindra & Mahindra",
                 "industry": "Automotive & Manufacturing",
-                "logo_url": "https://upload.wikimedia.org/wikipedia/commons/1/15/Mahindra_%26_Mahindra_Logo.svg",
+                "logo_url": "/logos/mahindra.svg",
                 "website": "https://www.mahindra.com",
                 "hr_name": "Venkatesh Prasad",
                 "hr_email": "prasad.v@mahindra.com",
@@ -348,7 +348,7 @@ def seed_database():
             {
                 "name": "Larsen & Toubro (L&T Construction)",
                 "industry": "Infrastructure & Construction",
-                "logo_url": "https://upload.wikimedia.org/wikipedia/commons/e/e5/L%26T.png",
+                "logo_url": "/logos/lnt.svg",
                 "website": "https://www.lntecc.com",
                 "hr_name": "Kishore Kumar",
                 "hr_email": "kishore.k@lntecc.com",

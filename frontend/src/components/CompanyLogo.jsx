@@ -2,25 +2,43 @@ import React, { useState, useEffect } from 'react';
 import { Building2 } from 'lucide-react';
 
 /**
- * Curated High-Definition Brand Vectors for Top Campus Recruiters
- * Ensures 100% reliable, zero-latency rendering even offline.
+ * Local verified high-definition vector assets for top campus recruiters.
+ * Completely immune to external 403 Forbidden / CORS / hotlinking blocks.
+ */
+export const LOCAL_BRAND_ASSETS = {
+  google: '/logos/google.svg',
+  microsoft: '/logos/microsoft.svg',
+  amazon: '/logos/amazon.svg',
+  tcs: '/logos/tcs.svg',
+  infosys: '/logos/infosys.svg',
+  ti: '/logos/ti.svg',
+  deloitte: '/logos/deloitte.svg',
+  lnt: '/logos/lnt.svg',
+  mahindra: '/logos/mahindra.svg'
+};
+
+/**
+ * Curated Brand Vectors for Campus Recruiters
+ * Google uses the full official 6-letter colored wordmark (never a single "G").
  */
 export const CURATED_BRAND_LOGOS = {
   google: {
     name: 'Google',
-    render: (size = 32) => (
-      <svg width={size} height={size} viewBox="0 0 48 48" className="shrink-0">
-        <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C12.955 4 4 12.955 4 24s8.955 20 20 20s20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z" />
-        <path fill="#FF3D00" d="m6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C16.318 4 9.656 8.337 6.306 14.691z" />
-        <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z" />
-        <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002l6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z" />
+    render: () => (
+      <svg viewBox="0 0 272 92" className="w-full h-full object-contain pointer-events-none select-none">
+        <path fill="#EA4335" d="M115.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18C71.25 34.32 81.24 25 93.5 25s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44S80.99 39.2 80.99 47.18c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z" />
+        <path fill="#FBBC05" d="M163.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18c0-12.85 9.99-22.18 22.25-22.18s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44s-12.51 5.46-12.51 13.44c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z" />
+        <path fill="#4285F4" d="M209.75 26.34v39.82c0 16.38-9.66 23.07-21.08 23.07-10.75 0-17.22-7.19-19.66-13.07l8.48-3.53c1.51 3.61 5.21 7.87 11.17 7.87 7.31 0 11.84-4.51 11.84-13v-3.19h-.34c-2.18 2.69-6.38 5.04-11.68 5.04-11.09 0-21.25-9.66-21.25-22.09 0-12.52 10.16-22.26 21.25-22.26 5.29 0 9.49 2.35 11.68 4.96h.34v-3.61h9.25zm-8.56 20.92c0-7.81-5.21-13.52-11.84-13.52-6.72 0-12.35 5.71-12.35 13.52 0 7.73 5.63 13.36 12.35 13.36 6.63 0 11.84-5.63 11.84-13.36z" />
+        <path fill="#34A853" d="M225 3v65h-9.5V3h9.5z" />
+        <path fill="#EA4335" d="M262.02 54.48l7.56 5.04c-2.44 3.61-8.32 9.83-18.48 9.83-12.6 0-22.01-9.74-22.01-22.18 0-13.19 9.49-22.18 20.92-22.18 11.51 0 17.14 9.16 18.98 14.11l1.01 2.52-29.65 12.28c2.27 4.45 5.8 6.72 10.75 6.72 4.96 0 8.4-2.44 10.92-6.14zm-23.27-7.98l19.82-8.23c-1.09-2.77-4.37-4.7-8.23-4.7-4.95 0-11.84 4.37-11.59 12.93z" />
+        <path fill="#4285F4" d="M35.29 41.41V32H67c.31 1.64.47 3.58.47 5.68 0 7.06-1.93 15.79-8.15 22.01-6.05 6.3-13.78 9.66-24.02 9.66C16.32 69.35.36 53.89.36 34.91.36 15.93 16.32.47 35.3.47c10.5 0 17.98 4.12 23.6 9.49l-6.64 6.64c-4.03-3.78-9.49-6.72-16.97-6.72-13.86 0-24.7 11.17-24.7 25.03 0 13.86 10.84 25.03 24.7 25.03 8.99 0 14.11-3.61 17.39-6.89 2.66-2.66 4.41-6.46 5.1-11.65l-22.49.01z" />
       </svg>
     )
   },
   microsoft: {
     name: 'Microsoft',
-    render: (size = 32) => (
-      <svg width={size} height={size} viewBox="0 0 48 48" className="shrink-0">
+    render: () => (
+      <svg viewBox="0 0 48 48" className="w-full h-full object-contain pointer-events-none p-1">
         <path fill="#f25022" d="M4 4h18v18H4z" />
         <path fill="#7fba00" d="M26 4h18v18H26z" />
         <path fill="#00a4ef" d="M4 26h18v18H4z" />
@@ -30,221 +48,181 @@ export const CURATED_BRAND_LOGOS = {
   },
   amazon: {
     name: 'Amazon',
-    render: (size = 32) => (
-      <svg width={size} height={size} viewBox="0 0 48 48" className="shrink-0">
-        <rect width="48" height="48" rx="10" fill="#232F3E" />
-        <text x="24" y="24" textAnchor="middle" fill="#FFFFFF" fontSize="16" fontWeight="bold" fontFamily="system-ui, sans-serif">a</text>
-        <path d="M12 32c6 5 18 5 24 0" fill="none" stroke="#FF9900" strokeWidth="3" strokeLinecap="round" />
-        <path d="M36 30l2 2l-3 1z" fill="#FF9900" />
-      </svg>
+    render: () => (
+      <div className="w-full h-full flex items-center justify-center bg-[#232F3E] rounded-xl p-1.5">
+        <svg viewBox="0 0 48 48" className="w-full h-full">
+          <text x="24" y="24" textAnchor="middle" fill="#FFFFFF" fontSize="16" fontWeight="bold" fontFamily="system-ui, sans-serif">a</text>
+          <path d="M12 32c6 5 18 5 24 0" fill="none" stroke="#FF9900" strokeWidth="3" strokeLinecap="round" />
+          <path d="M36 30l2 2l-3 1z" fill="#FF9900" />
+        </svg>
+      </div>
     )
   },
   tcs: {
     name: 'TCS',
-    render: (size = 32) => (
-      <svg width={size} height={size} viewBox="0 0 48 48" className="shrink-0">
-        <defs>
-          <linearGradient id="tcsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#00529b" />
-            <stop offset="100%" stopColor="#e31837" />
-          </linearGradient>
-        </defs>
-        <rect width="48" height="48" rx="10" fill="url(#tcsGrad)" />
-        <text x="24" y="30" textAnchor="middle" fill="#FFFFFF" fontSize="14" fontWeight="900" fontFamily="system-ui, sans-serif" letterSpacing="1">TCS</text>
-      </svg>
+    render: () => (
+      <div className="w-full h-full flex flex-col items-center justify-center bg-[#0b1b3d] rounded-xl p-1 text-center select-none">
+        <span className="text-white font-black text-xs tracking-wider leading-none">TCS</span>
+        <span className="text-[#38bdf8] font-bold text-[6px] tracking-tight mt-0.5 leading-none">TATA</span>
+      </div>
     )
   },
   infosys: {
     name: 'Infosys',
-    render: (size = 32) => (
-      <svg width={size} height={size} viewBox="0 0 48 48" className="shrink-0">
-        <rect width="48" height="48" rx="10" fill="#007cc3" />
-        <text x="24" y="31" textAnchor="middle" fill="#FFFFFF" fontSize="12" fontWeight="bold" fontFamily="system-ui, sans-serif" letterSpacing="0.5">Infosys</text>
-      </svg>
+    render: () => (
+      <div className="w-full h-full flex items-center justify-center bg-[#007cc3] rounded-xl p-1 select-none">
+        <span className="text-white font-black text-[11px] tracking-tight">Infosys</span>
+      </div>
     )
   },
   ti: {
     name: 'Texas Instruments',
-    render: (size = 32) => (
-      <svg width={size} height={size} viewBox="0 0 48 48" className="shrink-0">
-        <rect width="48" height="48" rx="10" fill="#CC0000" />
-        <text x="24" y="31" textAnchor="middle" fill="#FFFFFF" fontSize="16" fontWeight="900" fontFamily="system-ui, sans-serif" letterSpacing="1">TI</text>
-      </svg>
+    render: () => (
+      <div className="w-full h-full flex flex-col items-center justify-center bg-[#CC0000] rounded-xl p-1 text-center select-none">
+        <span className="text-white font-black text-sm tracking-widest leading-none">TI</span>
+        <span className="text-white/80 font-bold text-[6px] tracking-tight mt-0.5 leading-none">TEXAS</span>
+      </div>
     )
   },
   deloitte: {
     name: 'Deloitte',
-    render: (size = 32) => (
-      <svg width={size} height={size} viewBox="0 0 48 48" className="shrink-0">
-        <rect width="48" height="48" rx="10" fill="#000000" />
-        <text x="21" y="30" textAnchor="middle" fill="#FFFFFF" fontSize="14" fontWeight="800" fontFamily="system-ui, sans-serif">D</text>
-        <circle cx="34" cy="28" r="3" fill="#86BC25" />
-      </svg>
+    render: () => (
+      <div className="w-full h-full flex items-center justify-center bg-black rounded-xl p-1 select-none">
+        <span className="text-white font-bold text-xs tracking-tight">Deloitte</span>
+        <span className="w-1.5 h-1.5 rounded-full bg-[#86BC25] ml-0.5 mt-1" />
+      </div>
     )
   },
   lnt: {
     name: 'Larsen & Toubro',
-    render: (size = 32) => (
-      <svg width={size} height={size} viewBox="0 0 48 48" className="shrink-0">
-        <rect width="48" height="48" rx="10" fill="#004b87" />
-        <text x="24" y="30" textAnchor="middle" fill="#FFFFFF" fontSize="13" fontWeight="900" fontFamily="system-ui, sans-serif">L&T</text>
-      </svg>
+    render: () => (
+      <div className="w-full h-full flex flex-col items-center justify-center bg-[#004b87] rounded-xl p-1 text-center select-none">
+        <span className="text-white font-black text-xs tracking-wider border border-white/50 rounded-full px-1.5 py-0.5 leading-none">L&amp;T</span>
+      </div>
     )
   },
   mahindra: {
     name: 'Mahindra',
-    render: (size = 32) => (
-      <svg width={size} height={size} viewBox="0 0 48 48" className="shrink-0">
-        <rect width="48" height="48" rx="10" fill="#D91624" />
-        <text x="24" y="31" textAnchor="middle" fill="#FFFFFF" fontSize="15" fontWeight="900" fontFamily="system-ui, sans-serif">M</text>
-      </svg>
+    render: () => (
+      <div className="w-full h-full flex items-center justify-center bg-white rounded-xl p-1 select-none">
+        <span className="text-[#D91624] font-black text-xs tracking-wider uppercase">Mahindra</span>
+      </div>
     )
   },
   accenture: {
     name: 'Accenture',
-    render: (size = 32) => (
-      <svg width={size} height={size} viewBox="0 0 48 48" className="shrink-0">
-        <rect width="48" height="48" rx="10" fill="#000000" />
-        <text x="20" y="32" textAnchor="middle" fill="#FFFFFF" fontSize="16" fontWeight="bold" fontFamily="system-ui, sans-serif">&gt;</text>
-        <circle cx="33" cy="20" r="3" fill="#A100FF" />
-      </svg>
+    render: () => (
+      <div className="w-full h-full flex items-center justify-center bg-black rounded-xl p-1 select-none">
+        <span className="text-white font-bold text-sm tracking-tight">&gt;</span>
+        <span className="text-white font-bold text-[10px] ml-0.5">accenture</span>
+      </div>
     )
   },
   cisco: {
     name: 'Cisco',
-    render: (size = 32) => (
-      <svg width={size} height={size} viewBox="0 0 48 48" className="shrink-0">
-        <rect width="48" height="48" rx="10" fill="#005073" />
-        <g fill="#00bceb">
-          <rect x="12" y="24" width="3" height="8" rx="1" />
-          <rect x="18" y="18" width="3" height="14" rx="1" />
-          <rect x="24" y="14" width="3" height="18" rx="1" />
-          <rect x="30" y="18" width="3" height="14" rx="1" />
-          <rect x="36" y="24" width="3" height="8" rx="1" />
-        </g>
-      </svg>
+    render: () => (
+      <div className="w-full h-full flex items-center justify-center bg-[#005073] rounded-xl p-1 text-white font-black text-xs select-none">
+        CISCO
+      </div>
     )
   },
   ibm: {
     name: 'IBM',
-    render: (size = 32) => (
-      <svg width={size} height={size} viewBox="0 0 48 48" className="shrink-0">
-        <rect width="48" height="48" rx="10" fill="#1F70C1" />
-        <text x="24" y="30" textAnchor="middle" fill="#FFFFFF" fontSize="14" fontWeight="900" fontFamily="monospace" letterSpacing="1">IBM</text>
-      </svg>
+    render: () => (
+      <div className="w-full h-full flex items-center justify-center bg-[#1F70C1] rounded-xl p-1 text-white font-black font-mono text-sm tracking-wider select-none">
+        IBM
+      </div>
     )
   },
   intel: {
     name: 'Intel',
-    render: (size = 32) => (
-      <svg width={size} height={size} viewBox="0 0 48 48" className="shrink-0">
-        <rect width="48" height="48" rx="10" fill="#0068B5" />
-        <text x="24" y="30" textAnchor="middle" fill="#FFFFFF" fontSize="14" fontWeight="800" fontFamily="system-ui, sans-serif">intel</text>
-      </svg>
+    render: () => (
+      <div className="w-full h-full flex items-center justify-center bg-[#0068B5] rounded-xl p-1 text-white font-extrabold text-xs select-none">
+        intel
+      </div>
     )
   },
   wipro: {
     name: 'Wipro',
-    render: (size = 32) => (
-      <svg width={size} height={size} viewBox="0 0 48 48" className="shrink-0">
-        <rect width="48" height="48" rx="10" fill="#FFFFFF" />
-        <circle cx="18" cy="24" r="5" fill="#f8971d" />
-        <circle cx="24" cy="24" r="5" fill="#178844" />
-        <circle cx="30" cy="24" r="5" fill="#0072bc" />
-      </svg>
+    render: () => (
+      <div className="w-full h-full flex items-center justify-center bg-white rounded-xl p-1 select-none">
+        <span className="text-[#0072bc] font-bold text-xs">wipro</span>
+      </div>
     )
   },
   oracle: {
     name: 'Oracle',
-    render: (size = 32) => (
-      <svg width={size} height={size} viewBox="0 0 48 48" className="shrink-0">
-        <rect width="48" height="48" rx="10" fill="#F80000" />
-        <ellipse cx="24" cy="24" rx="12" ry="7" fill="none" stroke="#FFFFFF" strokeWidth="4" />
-      </svg>
+    render: () => (
+      <div className="w-full h-full flex items-center justify-center bg-[#F80000] rounded-xl p-1 select-none">
+        <span className="text-white font-black text-xs tracking-wider">ORACLE</span>
+      </div>
     )
   }
 };
 
 /**
  * Curated Quick Presets for Adding/Registering Popular Campus Recruiters
+ * Uses local fast-loading vector assets.
  */
 export const POPULAR_COMPANY_PRESETS = [
   {
     name: 'Google India',
     industry: 'Internet & Cloud',
     website: 'https://careers.google.com',
-    logo_url: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg'
+    logo_url: '/logos/google.svg'
   },
   {
     name: 'Microsoft India',
     industry: 'Software & AI',
     website: 'https://careers.microsoft.com',
-    logo_url: 'https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg'
+    logo_url: '/logos/microsoft.svg'
   },
   {
     name: 'Amazon',
     industry: 'E-Commerce & Cloud',
     website: 'https://amazon.jobs',
-    logo_url: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg'
+    logo_url: '/logos/amazon.svg'
   },
   {
     name: 'Tata Consultancy Services (TCS)',
     industry: 'IT Services & Consulting',
     website: 'https://www.tcs.com',
-    logo_url: 'https://upload.wikimedia.org/wikipedia/commons/b/b1/Tata_Consultancy_Services_Logo.svg'
+    logo_url: '/logos/tcs.svg'
   },
   {
     name: 'Infosys',
     industry: 'IT Services',
     website: 'https://www.infosys.com',
-    logo_url: 'https://upload.wikimedia.org/wikipedia/commons/9/95/Infosys_logo.svg'
+    logo_url: '/logos/infosys.svg'
   },
   {
     name: 'Deloitte USI',
     industry: 'Consulting & Technology',
     website: 'https://www2.deloitte.com',
-    logo_url: 'https://upload.wikimedia.org/wikipedia/commons/5/56/Deloitte.svg'
+    logo_url: '/logos/deloitte.svg'
   },
   {
     name: 'Texas Instruments',
     industry: 'Semiconductors & Electronics',
     website: 'https://www.ti.com',
-    logo_url: 'https://upload.wikimedia.org/wikipedia/commons/0/04/Texas_Instruments_logo.svg'
+    logo_url: '/logos/ti.svg'
   },
   {
     name: 'L&T Technology Services',
     industry: 'Engineering R&D',
     website: 'https://www.ltts.com',
-    logo_url: 'https://upload.wikimedia.org/wikipedia/commons/e/e5/L%26T.png'
+    logo_url: '/logos/lnt.svg'
   },
   {
-    name: 'Accenture',
-    industry: 'IT & Consulting',
-    website: 'https://www.accenture.com',
-    logo_url: 'https://upload.wikimedia.org/wikipedia/commons/c/cd/Accenture.svg'
-  },
-  {
-    name: 'Wipro',
-    industry: 'IT Services',
-    website: 'https://www.wipro.com',
-    logo_url: 'https://upload.wikimedia.org/wikipedia/commons/a/a0/Wipro_Primary_Logo_Color_RGB.svg'
-  },
-  {
-    name: 'Cisco Systems',
-    industry: 'Networking & Cybersecurity',
-    website: 'https://www.cisco.com',
-    logo_url: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Cisco_logo_blue_2016.svg'
-  },
-  {
-    name: 'IBM',
-    industry: 'Cloud & Cognitive Software',
-    website: 'https://www.ibm.com',
-    logo_url: 'https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg'
+    name: 'Mahindra & Mahindra',
+    industry: 'Automotive & Manufacturing',
+    website: 'https://www.mahindra.com',
+    logo_url: '/logos/mahindra.svg'
   }
 ];
 
 /**
- * Palette gradients for beautiful initial badges
+ * Palette gradients for initial badges
  */
 const INITIAL_GRADIENTS = [
   'linear-gradient(135deg, #0071e3 0%, #4f46e5 100%)',
@@ -259,21 +237,15 @@ const INITIAL_GRADIENTS = [
 
 /**
  * Extracts compact, professional monogram initials for a company
- * e.g. "Tata Consultancy Services (TCS)" -> "TCS"
- * "Google India" -> "G"
- * "Texas Instruments" -> "TI"
- * "L&T Construction" -> "L&T"
  */
 export function getCompanyInitials(name = '') {
   if (!name) return 'CO';
   
-  // Check for acronyms in parentheses e.g. (TCS), (L&T)
   const parenMatch = name.match(/\(([^)]+)\)/);
   if (parenMatch && parenMatch[1] && parenMatch[1].length <= 4) {
     return parenMatch[1].trim();
   }
 
-  // Common acronym checks
   const clean = name.replace(/India|Private|Limited|Ltd|Corporation|Corp|Pvt/gi, '').trim();
   const words = clean.split(/[\s\-&]+/).filter(Boolean);
   
@@ -328,11 +300,7 @@ function getFaviconUrl(website = '') {
 
 /**
  * CompanyLogo Component
- * Renders official brand logo with multi-stage graceful fallback:
- * 1. Custom/Stored Logo URL (`company.logo_url` or `logoUrl`)
- * 2. Curated crisp Vector SVG if recruiter is recognized
- * 3. Domain favicon if website is present
- * 4. High-contrast typography Monogram tile
+ * Renders official brand logo with priority on full official logos (never a single "G" for Google)
  */
 export default function CompanyLogo({
   company,
@@ -344,32 +312,42 @@ export default function CompanyLogo({
   rounded = 'rounded-2xl',
   showInitialFallback = true
 }) {
-  // Normalize inputs
   const compName = (typeof company === 'object' ? company?.name : company) || name || '';
-  const initialUrl = (typeof company === 'object' ? (company?.logo_url || company?.logoUrl) : null) || logoUrl || null;
+  let initialUrl = (typeof company === 'object' ? (company?.logo_url || company?.logoUrl) : null) || logoUrl || null;
   const compWebsite = (typeof company === 'object' ? company?.website : null) || website || '';
+
+  const curatedKey = findCuratedBrand(compName, compWebsite);
+  const curatedBrand = curatedKey ? CURATED_BRAND_LOGOS[curatedKey] : null;
+
+  // Prefer verified local assets over broken external Wikimedia links
+  if ((!initialUrl || initialUrl.includes('wikimedia.org')) && curatedKey && LOCAL_BRAND_ASSETS[curatedKey]) {
+    initialUrl = LOCAL_BRAND_ASSETS[curatedKey];
+  }
 
   const [currentSrc, setCurrentSrc] = useState(initialUrl);
   const [loadFailed, setLoadFailed] = useState(false);
   const [attemptedFavicon, setAttemptedFavicon] = useState(false);
 
-  // Sync state if initialUrl changes
   useEffect(() => {
-    setCurrentSrc(initialUrl);
+    let resolved = initialUrl;
+    if ((!resolved || resolved.includes('wikimedia.org')) && curatedKey && LOCAL_BRAND_ASSETS[curatedKey]) {
+      resolved = LOCAL_BRAND_ASSETS[curatedKey];
+    }
+    setCurrentSrc(resolved);
     setLoadFailed(false);
     setAttemptedFavicon(false);
-  }, [initialUrl, compName]);
+  }, [initialUrl, compName, curatedKey]);
 
-  const curatedKey = findCuratedBrand(compName, compWebsite);
-  const curatedBrand = curatedKey ? CURATED_BRAND_LOGOS[curatedKey] : null;
-
-  // Compute monogram and gradient index
   const initials = getCompanyInitials(compName);
   const charSum = compName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
   const gradient = INITIAL_GRADIENTS[charSum % INITIAL_GRADIENTS.length];
 
   const handleImageError = () => {
-    // If the primary image failed and we haven't tried the domain favicon yet
+    // If the image failed and we have a curated brand, use the curated brand vector directly
+    if (curatedBrand) {
+      setLoadFailed(true);
+      return;
+    }
     const favicon = getFaviconUrl(compWebsite);
     if (favicon && currentSrc !== favicon && !attemptedFavicon) {
       setAttemptedFavicon(true);
@@ -386,12 +364,12 @@ export default function CompanyLogo({
     minHeight: `${size}px`
   };
 
-  // 1. Try rendering primary/favicon image if URL is present and has not failed
+  // 1. Render image URL (e.g. /logos/google.svg, /logos/microsoft.svg, or custom URL)
   if (currentSrc && !loadFailed) {
     return (
       <div
         style={containerStyle}
-        className={`${rounded} bg-white dark:bg-slate-800/90 border border-black/[0.08] dark:border-white/[0.12] p-1.5 flex items-center justify-center overflow-hidden shadow-xs shrink-0 select-none transition-transform hover:scale-105 ${className}`}
+        className={`${rounded} bg-white dark:bg-slate-900 border border-black/[0.08] dark:border-white/[0.12] p-1.5 flex items-center justify-center overflow-hidden shadow-xs shrink-0 select-none transition-transform hover:scale-105 ${className}`}
       >
         <img
           src={currentSrc}
@@ -404,7 +382,7 @@ export default function CompanyLogo({
     );
   }
 
-  // 2. If no image URL or image failed, but company matches a curated brand
+  // 2. If no image URL or image failed, render curated brand vector (e.g. full Google wordmark)
   if (curatedBrand) {
     return (
       <div
@@ -412,7 +390,7 @@ export default function CompanyLogo({
         className={`${rounded} bg-white dark:bg-slate-900 border border-black/[0.08] dark:border-white/[0.12] p-1.5 flex items-center justify-center overflow-hidden shadow-xs shrink-0 select-none transition-transform hover:scale-105 ${className}`}
         title={curatedBrand.name}
       >
-        {curatedBrand.render(Math.round(size * 0.72))}
+        {curatedBrand.render()}
       </div>
     );
   }
@@ -423,7 +401,7 @@ export default function CompanyLogo({
     return (
       <div
         style={containerStyle}
-        className={`${rounded} bg-white dark:bg-slate-800/90 border border-black/[0.08] dark:border-white/[0.12] p-1.5 flex items-center justify-center overflow-hidden shadow-xs shrink-0 select-none transition-transform hover:scale-105 ${className}`}
+        className={`${rounded} bg-white dark:bg-slate-900 border border-black/[0.08] dark:border-white/[0.12] p-1.5 flex items-center justify-center overflow-hidden shadow-xs shrink-0 select-none transition-transform hover:scale-105 ${className}`}
       >
         <img
           src={favicon}
@@ -436,7 +414,7 @@ export default function CompanyLogo({
     );
   }
 
-  // 4. Fallback Monogram Badge with Vibrant Gradient
+  // 4. Fallback Monogram Badge with Vibrant Gradient for unknown brands
   if (showInitialFallback) {
     const fontSize = size >= 56 ? 'text-lg font-black' : size >= 44 ? 'text-sm font-bold' : 'text-xs font-bold';
     return (
@@ -450,7 +428,6 @@ export default function CompanyLogo({
     );
   }
 
-  // 5. Minimal generic icon fallback
   return (
     <div
       style={containerStyle}

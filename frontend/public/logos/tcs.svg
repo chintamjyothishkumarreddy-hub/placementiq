@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 70" width="260" height="70">
+  <defs>
+    <linearGradient id="tcsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#004b91"/>
+      <stop offset="100%" stopColor="#e31837"/>
+    </linearGradient>
+  </defs>
+  <rect width="260" height="70" rx="10" fill="#0b1b3d"/>
+  <text x="130" y="38" fill="#FFFFFF" fontSize="26" fontWeight="900" fontFamily="system-ui, -apple-system, sans-serif" textAnchor="middle" letterSpacing="3">TCS</text>
+  <text x="130" y="55" fill="#38bdf8" fontSize="8.5" fontWeight="700" fontFamily="system-ui, -apple-system, sans-serif" textAnchor="middle" letterSpacing="1.5">TATA CONSULTANCY SERVICES</text>
+</svg>

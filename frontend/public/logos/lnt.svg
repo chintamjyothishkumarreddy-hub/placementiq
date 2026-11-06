@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 70" width="200" height="70">
+  <rect width="200" height="70" rx="10" fill="#004b87"/>
+  <circle cx="50" cy="35" r="23" fill="none" stroke="#FFFFFF" strokeWidth="2.5"/>
+  <text x="50" y="43" fill="#FFFFFF" fontSize="17" fontWeight="900" fontFamily="system-ui, sans-serif" textAnchor="middle" letterSpacing="1">L&amp;T</text>
+  <text x="88" y="32" fill="#FFFFFF" fontSize="11" fontWeight="800" fontFamily="system-ui, sans-serif" letterSpacing="1.2">LARSEN &amp; TOUBRO</text>
+  <text x="88" y="48" fill="#93c5fd" fontSize="9" fontWeight="600" fontFamily="system-ui, sans-serif" letterSpacing="0.8">TECHNOLOGY SERVICES</text>
+</svg>

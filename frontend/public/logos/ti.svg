@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 70" width="240" height="70">
+  <rect width="240" height="70" rx="10" fill="#CC0000"/>
+  <path d="M26 20h24v7h-8.5v23h-7V27H26z" fill="#FFFFFF"/>
+  <path d="M57 20h7v30h-7z" fill="#FFFFFF"/>
+  <text x="76" y="36" fill="#FFFFFF" fontSize="13" fontWeight="900" fontFamily="system-ui, sans-serif" letterSpacing="1.5">TEXAS</text>
+  <text x="76" y="52" fill="#FFFFFF" fontSize="10.5" fontWeight="700" fontFamily="system-ui, sans-serif" letterSpacing="1">INSTRUMENTS</text>
+</svg>
