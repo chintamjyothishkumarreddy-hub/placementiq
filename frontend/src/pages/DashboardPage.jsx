@@ -827,9 +827,11 @@ export default function DashboardPage({ onNavigate }) {
                         <div className="flex items-center gap-3 min-w-0 flex-1">
                           <CompanyLogo
                             name={item.company}
+                            logoUrl={item.logo_url}
+                            website={item.website}
                             variant="wide"
-                            width={82}
-                            height={34}
+                            width={92}
+                            height={38}
                             rounded="rounded-lg"
                             className="shadow-2xs shrink-0"
                           />

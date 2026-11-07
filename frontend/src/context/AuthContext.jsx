@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import api from '../api';
 
 const AuthContext = createContext(null);
@@ -15,11 +15,28 @@ export const AuthProvider = ({ children }) => {
   });
   const [toast, setToast] = useState(null);
   const [profileOpen, setProfileOpen] = useState(false);
+  const isInitialMount = useRef(true);
 
   const openProfile = () => setProfileOpen(true);
   const closeProfile = () => setProfileOpen(false);
 
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      if (darkMode) {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+        localStorage.setItem('placementiq_theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        localStorage.setItem('placementiq_theme', 'light');
+      }
+      return;
+    }
+
+    // Add theme-transition class during toggle for silky-smooth color/background blending
+    document.documentElement.classList.add('theme-transition');
     if (darkMode) {
       document.documentElement.classList.add('dark');
       document.documentElement.classList.remove('light');
@@ -29,6 +46,12 @@ export const AuthProvider = ({ children }) => {
       document.documentElement.classList.add('light');
       localStorage.setItem('placementiq_theme', 'light');
     }
+
+    const timer = setTimeout(() => {
+      document.documentElement.classList.remove('theme-transition');
+    }, 450);
+
+    return () => clearTimeout(timer);
   }, [darkMode]);
 
   const toggleDarkMode = () => setDarkMode(!darkMode);

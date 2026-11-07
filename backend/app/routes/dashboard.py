@@ -128,7 +128,13 @@ def get_dashboard_stats(
         if o.status in ["Offered", "Accepted"]:
             cname = o.company.name if o.company else "Unknown"
             if cname not in comp_selections:
-                comp_selections[cname] = {"company": cname, "selections": 0, "salaries": []}
+                comp_selections[cname] = {
+                    "company": cname,
+                    "logo_url": o.company.logo_url if o.company else None,
+                    "website": o.company.website if o.company else None,
+                    "selections": 0,
+                    "salaries": []
+                }
             comp_selections[cname]["selections"] += 1
             if o.ctc_lpa:
                 comp_selections[cname]["salaries"].append(o.ctc_lpa)
@@ -138,6 +144,8 @@ def get_dashboard_stats(
         avg_pkg = round(float(np.mean(cdata["salaries"])), 2) if cdata["salaries"] else 0.0
         company_stats.append({
             "company": cname,
+            "logo_url": cdata.get("logo_url"),
+            "website": cdata.get("website"),
             "selections": cdata["selections"],
             "avg_ctc": avg_pkg
         })

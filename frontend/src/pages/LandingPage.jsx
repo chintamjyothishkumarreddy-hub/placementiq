@@ -202,10 +202,21 @@ export default function LandingPage({ onNavigate }) {
             {/* Dark Mode Toggle */}
             <button
               onClick={toggleDarkMode}
-              className="liquid-pill p-2 text-[#1d1d1f] dark:text-[#f5f5f7] hover:scale-105 transition-all cursor-pointer"
+              className="liquid-pill p-2 text-[#1d1d1f] dark:text-[#f5f5f7] hover:scale-105 active:scale-95 transition-all cursor-pointer relative overflow-hidden"
               title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
             >
-              {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-[#86868b]" />}
+              <div className="relative w-4 h-4">
+                <Sun
+                  className={`w-4 h-4 text-amber-400 absolute inset-0 transition-all duration-500 transform ${
+                    darkMode ? 'rotate-0 scale-100 opacity-100' : 'rotate-90 scale-0 opacity-0'
+                  }`}
+                />
+                <Moon
+                  className={`w-4 h-4 text-[#86868b] dark:text-[#f5f5f7] absolute inset-0 transition-all duration-500 transform ${
+                    darkMode ? '-rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'
+                  }`}
+                />
+              </div>
             </button>
 
             {isAuthenticated ? (
@@ -239,9 +250,21 @@ export default function LandingPage({ onNavigate }) {
           <div className="flex items-center gap-2 lg:hidden">
             <button
               onClick={toggleDarkMode}
-              className="liquid-pill p-2 text-[#1d1d1f] dark:text-[#f5f5f7]"
+              className="liquid-pill p-2 text-[#1d1d1f] dark:text-[#f5f5f7] active:scale-95 transition-all"
+              aria-label="Toggle theme"
             >
-              {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-[#86868b]" />}
+              <div className="relative w-4 h-4">
+                <Sun
+                  className={`w-4 h-4 text-amber-400 absolute inset-0 transition-all duration-500 transform ${
+                    darkMode ? 'rotate-0 scale-100 opacity-100' : 'rotate-90 scale-0 opacity-0'
+                  }`}
+                />
+                <Moon
+                  className={`w-4 h-4 text-[#86868b] dark:text-[#f5f5f7] absolute inset-0 transition-all duration-500 transform ${
+                    darkMode ? '-rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'
+                  }`}
+                />
+              </div>
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

@@ -14,7 +14,13 @@ export const LOCAL_BRAND_ASSETS = {
   ti: '/logos/ti.svg',
   deloitte: '/logos/deloitte.svg',
   lnt: '/logos/lnt.svg',
-  mahindra: '/logos/mahindra.svg'
+  mahindra: '/logos/mahindra.svg',
+  accenture: '/logos/accenture.svg',
+  cisco: '/logos/cisco.svg',
+  ibm: '/logos/ibm.svg',
+  intel: '/logos/intel.svg',
+  wipro: '/logos/wipro.svg',
+  oracle: '/logos/oracle.svg'
 };
 
 /**
@@ -331,8 +337,8 @@ function CompanyLogo({
   const curatedKey = findCuratedBrand(compName, compWebsite);
   const curatedBrand = curatedKey ? CURATED_BRAND_LOGOS[curatedKey] : null;
 
-  // Prefer verified local assets over broken external Wikimedia links
-  if ((!initialUrl || initialUrl.includes('wikimedia.org')) && curatedKey && LOCAL_BRAND_ASSETS[curatedKey]) {
+  // For known campus recruiters, ALWAYS prioritize the official local vector asset
+  if (curatedKey && LOCAL_BRAND_ASSETS[curatedKey]) {
     initialUrl = LOCAL_BRAND_ASSETS[curatedKey];
   }
 
@@ -342,7 +348,7 @@ function CompanyLogo({
 
   useEffect(() => {
     let resolved = initialUrl;
-    if ((!resolved || resolved.includes('wikimedia.org')) && curatedKey && LOCAL_BRAND_ASSETS[curatedKey]) {
+    if (curatedKey && LOCAL_BRAND_ASSETS[curatedKey]) {
       resolved = LOCAL_BRAND_ASSETS[curatedKey];
     }
     setCurrentSrc(resolved);
@@ -383,7 +389,8 @@ function CompanyLogo({
 
   // Base brand badge styling: ALWAYS pure crisp white background with subtle border and shadow
   // to ensure brand colors & dark text (Amazon, Deloitte, Microsoft) pop with 100% contrast in both light & dark modes
-  const badgeClasses = `${resolvedRounded} bg-white text-slate-900 border border-slate-200/90 dark:border-white/20 p-1.5 flex items-center justify-center overflow-hidden shadow-xs shrink-0 select-none transition-transform hover:scale-105 ${className}`;
+  const badgePadding = isWide ? 'px-2 py-1' : 'p-1.5';
+  const badgeClasses = `${resolvedRounded} bg-white text-slate-900 border border-slate-200/90 dark:border-white/20 ${badgePadding} flex items-center justify-center overflow-hidden shadow-xs shrink-0 select-none transition-transform hover:scale-105 ${className}`;
 
   // 1. Render image URL (e.g. /logos/google.svg, /logos/microsoft.svg, or custom URL)
   if (currentSrc && !loadFailed) {

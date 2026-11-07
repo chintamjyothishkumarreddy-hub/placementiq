@@ -82,11 +82,22 @@ export default function Navbar({ activeTab, onToggleSidebar, onNavigate }) {
         {/* Dark Mode Toggle */}
         <button
           onClick={toggleDarkMode}
-          className="p-2 min-h-[40px] min-w-[40px] flex items-center justify-center rounded-xl text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
+          className="p-2 min-h-[40px] min-w-[40px] flex items-center justify-center rounded-xl text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-300 cursor-pointer relative overflow-hidden group active:scale-95"
           title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
           aria-label="Toggle theme"
         >
-          {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-[#86868b]" />}
+          <div className="relative w-4 h-4">
+            <Sun
+              className={`w-4 h-4 text-amber-400 absolute inset-0 transition-all duration-500 transform ${
+                darkMode ? 'rotate-0 scale-100 opacity-100' : 'rotate-90 scale-0 opacity-0'
+              }`}
+            />
+            <Moon
+              className={`w-4 h-4 text-[#86868b] group-hover:text-[#1d1d1f] absolute inset-0 transition-all duration-500 transform ${
+                darkMode ? '-rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'
+              }`}
+            />
+          </div>
         </button>
 
         {/* User Info & Profile Trigger */}
