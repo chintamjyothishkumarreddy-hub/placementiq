@@ -48,7 +48,7 @@ def seed_database():
                 username="admin",
                 email="admin@placementiq.edu",
                 hashed_password=get_password_hash("admin123"),
-                full_name="Dr. Rajesh Raman (Admin)",
+                full_name="Admin",
                 role="admin",
                 is_active=True
             ),
@@ -56,7 +56,7 @@ def seed_database():
                 username="officer",
                 email="officer@placementiq.edu",
                 hashed_password=get_password_hash("officer123"),
-                full_name="Prof. Sunita Deshmukh (Placement Officer)",
+                full_name="Placement Officer",
                 role="placement_officer",
                 is_active=True
             ),

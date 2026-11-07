@@ -179,7 +179,7 @@ export default function SignupPage({ onNavigate }) {
                         if (errorMsg) setErrorMsg('');
                       }}
                       required
-                      placeholder="e.g. Dr. Rajesh Kumar"
+                      placeholder="e.g. Alex Morgan"
                       className="w-full pl-10 pr-4 py-2.5 bg-white/60 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl text-sm focus:outline-hidden focus:border-[#0071e3] transition-colors"
                     />
                   </div>
@@ -202,7 +202,7 @@ export default function SignupPage({ onNavigate }) {
                       }}
                       required
                       autoComplete="username"
-                      placeholder="e.g. rajesh_k"
+                      placeholder="e.g. alex_m"
                       className="w-full pl-10 pr-4 py-2.5 bg-white/60 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl text-sm focus:outline-hidden focus:border-[#0071e3] transition-colors"
                     />
                   </div>
