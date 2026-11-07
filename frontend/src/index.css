@@ -48,19 +48,26 @@
     color: var(--text-primary);
   }
 
-  /* Fluid Theme Transition for all surfaces, text, borders, shadows & SVGs */
-  html.theme-transition,
-  html.theme-transition *,
-  html.theme-transition *::before,
-  html.theme-transition *::after {
-    transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-                fill 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-                stroke 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-                box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                backdrop-filter 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
-    transition-delay: 0s !important;
+  /* Hardware-accelerated View Transition cross-fade (Pure GPU snapshot blend) */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.22s;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Snappy surface transitions without layout thrashing (no universal selector, no backdrop-filter) */
+  body,
+  header,
+  nav,
+  aside,
+  main,
+  .apple-gloss-tile,
+  .apple-bento-card,
+  .apple-card,
+  .liquid-pill {
+    transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                color 0.15s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   body {
@@ -73,7 +80,6 @@
     overflow-x: hidden;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     font-variant-numeric: tabular-nums;
-    transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   /* macOS Sonoma Thin Transparent Scrollbars */

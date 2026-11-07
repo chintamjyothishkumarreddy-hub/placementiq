@@ -88,12 +88,12 @@ export default function Navbar({ activeTab, onToggleSidebar, onNavigate }) {
         >
           <div className="relative w-4 h-4">
             <Sun
-              className={`w-4 h-4 text-amber-400 absolute inset-0 transition-all duration-500 transform ${
+              className={`w-4 h-4 text-amber-400 absolute inset-0 transition-all duration-300 transform ${
                 darkMode ? 'rotate-0 scale-100 opacity-100' : 'rotate-90 scale-0 opacity-0'
               }`}
             />
             <Moon
-              className={`w-4 h-4 text-[#86868b] group-hover:text-[#1d1d1f] absolute inset-0 transition-all duration-500 transform ${
+              className={`w-4 h-4 text-[#86868b] group-hover:text-[#1d1d1f] absolute inset-0 transition-all duration-300 transform ${
                 darkMode ? '-rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'
               }`}
             />
