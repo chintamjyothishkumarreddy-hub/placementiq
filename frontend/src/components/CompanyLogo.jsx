@@ -38,83 +38,92 @@ export const CURATED_BRAND_LOGOS = {
   microsoft: {
     name: 'Microsoft',
     render: () => (
-      <svg viewBox="0 0 48 48" className="w-full h-full object-contain pointer-events-none p-1">
-        <path fill="#f25022" d="M4 4h18v18H4z" />
-        <path fill="#7fba00" d="M26 4h18v18H26z" />
-        <path fill="#00a4ef" d="M4 26h18v18H4z" />
-        <path fill="#ffb900" d="M26 26h18v18H26z" />
+      <svg viewBox="0 0 170 48" className="w-full h-full object-contain pointer-events-none p-0.5 select-none">
+        <rect x="6" y="9" width="13.5" height="13.5" fill="#F25022"/>
+        <rect x="22.5" y="9" width="13.5" height="13.5" fill="#7FBA00"/>
+        <rect x="6" y="25.5" width="13.5" height="13.5" fill="#00A4EF"/>
+        <rect x="22.5" y="25.5" width="13.5" height="13.5" fill="#FFB900"/>
+        <text x="44" y="32" fill="#5E5E5E" fontSize="21" fontWeight="600" fontFamily="Segoe UI, -apple-system, system-ui, sans-serif" letterSpacing="-0.3">Microsoft</text>
       </svg>
     )
   },
   amazon: {
     name: 'Amazon',
     render: () => (
-      <div className="w-full h-full flex items-center justify-center bg-[#232F3E] rounded-xl p-1.5">
-        <svg viewBox="0 0 48 48" className="w-full h-full">
-          <text x="24" y="24" textAnchor="middle" fill="#FFFFFF" fontSize="16" fontWeight="bold" fontFamily="system-ui, sans-serif">a</text>
-          <path d="M12 32c6 5 18 5 24 0" fill="none" stroke="#FF9900" strokeWidth="3" strokeLinecap="round" />
-          <path d="M36 30l2 2l-3 1z" fill="#FF9900" />
-        </svg>
-      </div>
+      <svg viewBox="0 0 160 52" className="w-full h-full object-contain pointer-events-none p-0.5 select-none">
+        <text x="80" y="30" fill="#111111" fontSize="24" fontWeight="bold" fontFamily="Arial, Helvetica, sans-serif" textAnchor="middle" letterSpacing="-0.5">amazon</text>
+        <path d="M 45 36 C 65 47, 95 47, 115 36" fill="none" stroke="#FF9900" strokeWidth="2.8" strokeLinecap="round"/>
+        <path d="M 113 33 L 119 37 L 115 41 Z" fill="#FF9900"/>
+      </svg>
     )
   },
   tcs: {
     name: 'TCS',
     render: () => (
-      <div className="w-full h-full flex flex-col items-center justify-center bg-[#0b1b3d] rounded-xl p-1 text-center select-none">
-        <span className="text-white font-black text-xs tracking-wider leading-none">TCS</span>
-        <span className="text-[#38bdf8] font-bold text-[6px] tracking-tight mt-0.5 leading-none">TATA</span>
-      </div>
+      <svg viewBox="0 0 190 56" className="w-full h-full object-contain pointer-events-none select-none">
+        <rect width="190" height="56" rx="10" fill="#0b1b3d"/>
+        <text x="95" y="33" fill="#FFFFFF" fontSize="24" fontWeight="900" fontFamily="system-ui, -apple-system, sans-serif" textAnchor="middle" letterSpacing="3">TCS</text>
+        <text x="95" y="48" fill="#38bdf8" fontSize="8" fontWeight="700" fontFamily="system-ui, -apple-system, sans-serif" textAnchor="middle" letterSpacing="1.2">TATA CONSULTANCY SERVICES</text>
+      </svg>
     )
   },
   infosys: {
     name: 'Infosys',
     render: () => (
-      <div className="w-full h-full flex items-center justify-center bg-[#007cc3] rounded-xl p-1 select-none">
-        <span className="text-white font-black text-[11px] tracking-tight">Infosys</span>
-      </div>
+      <svg viewBox="0 0 150 48" className="w-full h-full object-contain pointer-events-none select-none">
+        <text x="75" y="33" fill="#007CC3" fontSize="28" fontWeight="900" fontFamily="Arial, Helvetica, sans-serif" textAnchor="middle" letterSpacing="-0.5">Infosys</text>
+      </svg>
     )
   },
   ti: {
     name: 'Texas Instruments',
     render: () => (
-      <div className="w-full h-full flex flex-col items-center justify-center bg-[#CC0000] rounded-xl p-1 text-center select-none">
-        <span className="text-white font-black text-sm tracking-widest leading-none">TI</span>
-        <span className="text-white/80 font-bold text-[6px] tracking-tight mt-0.5 leading-none">TEXAS</span>
-      </div>
+      <svg viewBox="0 0 180 52" className="w-full h-full object-contain pointer-events-none select-none">
+        <rect width="180" height="52" rx="10" fill="#CC0000"/>
+        <path d="M18 15h19v5.5h-6.5v16h-6v-16H18z" fill="#FFFFFF"/>
+        <path d="M42 15h6v21.5h-6z" fill="#FFFFFF"/>
+        <text x="58" y="28" fill="#FFFFFF" fontSize="10.5" fontWeight="900" fontFamily="system-ui, sans-serif" letterSpacing="1">TEXAS</text>
+        <text x="58" y="41" fill="#FFFFFF" fontSize="9" fontWeight="700" fontFamily="system-ui, sans-serif" letterSpacing="0.5">INSTRUMENTS</text>
+      </svg>
     )
   },
   deloitte: {
     name: 'Deloitte',
     render: () => (
-      <div className="w-full h-full flex items-center justify-center bg-black rounded-xl p-1 select-none">
-        <span className="text-white font-bold text-xs tracking-tight">Deloitte</span>
-        <span className="w-1.5 h-1.5 rounded-full bg-[#86BC25] ml-0.5 mt-1" />
-      </div>
+      <svg viewBox="0 0 170 48" className="w-full h-full object-contain pointer-events-none p-0.5 select-none">
+        <text x="4" y="35" fill="#000000" fontSize="36" fontWeight="900" fontFamily="Arial, Helvetica, sans-serif" letterSpacing="-1">Deloitte</text>
+        <circle cx="152" cy="33" r="5.5" fill="#86BC25"/>
+      </svg>
     )
   },
   lnt: {
     name: 'Larsen & Toubro',
     render: () => (
-      <div className="w-full h-full flex flex-col items-center justify-center bg-[#004b87] rounded-xl p-1 text-center select-none">
-        <span className="text-white font-black text-xs tracking-wider border border-white/50 rounded-full px-1.5 py-0.5 leading-none">L&amp;T</span>
-      </div>
+      <svg viewBox="0 0 170 52" className="w-full h-full object-contain pointer-events-none select-none">
+        <rect width="170" height="52" rx="10" fill="#004b87"/>
+        <circle cx="32" cy="26" r="17" fill="none" stroke="#FFFFFF" strokeWidth="2.5"/>
+        <text x="32" y="32" fill="#FFFFFF" fontSize="13" fontWeight="900" fontFamily="system-ui, sans-serif" textAnchor="middle" letterSpacing="1">L&amp;T</text>
+        <text x="60" y="25" fill="#FFFFFF" fontSize="10" fontWeight="800" fontFamily="system-ui, sans-serif" letterSpacing="0.8">LARSEN &amp; TOUBRO</text>
+        <text x="60" y="39" fill="#93c5fd" fontSize="8" fontWeight="700" fontFamily="system-ui, sans-serif" letterSpacing="0.5">TECH SERVICES</text>
+      </svg>
     )
   },
   mahindra: {
     name: 'Mahindra',
     render: () => (
-      <div className="w-full h-full flex items-center justify-center bg-white rounded-xl p-1 select-none">
-        <span className="text-[#D91624] font-black text-xs tracking-wider uppercase">Mahindra</span>
-      </div>
+      <svg viewBox="0 0 170 50" className="w-full h-full object-contain pointer-events-none select-none">
+        <path d="M18 35L29 14L40 35L33 35L29 24L25 35Z" fill="#D91624"/>
+        <path d="M33 35L44 14L55 35L48 35L44 24L40 35Z" fill="#D91624"/>
+        <text x="64" y="32" fill="#D91624" fontSize="20" fontWeight="900" fontFamily="Arial, Helvetica, sans-serif" letterSpacing="1">Mahindra</text>
+      </svg>
     )
   },
   accenture: {
     name: 'Accenture',
     render: () => (
-      <div className="w-full h-full flex items-center justify-center bg-black rounded-xl p-1 select-none">
-        <span className="text-white font-bold text-sm tracking-tight">&gt;</span>
-        <span className="text-white font-bold text-[10px] ml-0.5">accenture</span>
+      <div className="w-full h-full flex items-center justify-center bg-white rounded-xl p-1 select-none">
+        <span className="text-[#A100FF] font-black text-base tracking-tight">&gt;</span>
+        <span className="text-black font-extrabold text-xs ml-0.5 tracking-tight">accenture</span>
       </div>
     )
   },
@@ -308,8 +317,11 @@ function CompanyLogo({
   logoUrl,
   website,
   size = 48,
+  width,
+  height,
+  variant = 'square',
   className = '',
-  rounded = 'rounded-2xl',
+  rounded,
   showInitialFallback = true
 }) {
   const compName = (typeof company === 'object' ? company?.name : company) || name || '';
@@ -357,19 +369,29 @@ function CompanyLogo({
     }
   };
 
+  const isWide = variant === 'wide';
+  const effectiveWidth = width || (isWide ? Math.max(size * 2.2, 110) : size);
+  const effectiveHeight = height || (isWide ? Math.max(size * 0.9, 44) : size);
+  const resolvedRounded = rounded || (isWide ? 'rounded-xl' : 'rounded-2xl');
+
   const containerStyle = {
-    width: `${size}px`,
-    height: `${size}px`,
-    minWidth: `${size}px`,
-    minHeight: `${size}px`
+    width: typeof effectiveWidth === 'number' ? `${effectiveWidth}px` : effectiveWidth,
+    height: typeof effectiveHeight === 'number' ? `${effectiveHeight}px` : effectiveHeight,
+    minWidth: typeof effectiveWidth === 'number' ? `${effectiveWidth}px` : effectiveWidth,
+    minHeight: typeof effectiveHeight === 'number' ? `${effectiveHeight}px` : effectiveHeight
   };
+
+  // Base brand badge styling: ALWAYS pure crisp white background with subtle border and shadow
+  // to ensure brand colors & dark text (Amazon, Deloitte, Microsoft) pop with 100% contrast in both light & dark modes
+  const badgeClasses = `${resolvedRounded} bg-white text-slate-900 border border-slate-200/90 dark:border-white/20 p-1.5 flex items-center justify-center overflow-hidden shadow-xs shrink-0 select-none transition-transform hover:scale-105 ${className}`;
 
   // 1. Render image URL (e.g. /logos/google.svg, /logos/microsoft.svg, or custom URL)
   if (currentSrc && !loadFailed) {
     return (
       <div
         style={containerStyle}
-        className={`${rounded} bg-white dark:bg-slate-900 border border-black/[0.08] dark:border-white/[0.12] p-1.5 flex items-center justify-center overflow-hidden shadow-xs shrink-0 select-none transition-transform hover:scale-105 ${className}`}
+        className={badgeClasses}
+        title={compName}
       >
         <img
           src={currentSrc}
@@ -387,7 +409,7 @@ function CompanyLogo({
     return (
       <div
         style={containerStyle}
-        className={`${rounded} bg-white dark:bg-slate-900 border border-black/[0.08] dark:border-white/[0.12] p-1.5 flex items-center justify-center overflow-hidden shadow-xs shrink-0 select-none transition-transform hover:scale-105 ${className}`}
+        className={badgeClasses}
         title={curatedBrand.name}
       >
         {curatedBrand.render()}
@@ -401,7 +423,8 @@ function CompanyLogo({
     return (
       <div
         style={containerStyle}
-        className={`${rounded} bg-white dark:bg-slate-900 border border-black/[0.08] dark:border-white/[0.12] p-1.5 flex items-center justify-center overflow-hidden shadow-xs shrink-0 select-none transition-transform hover:scale-105 ${className}`}
+        className={badgeClasses}
+        title={compName}
       >
         <img
           src={favicon}
@@ -420,7 +443,7 @@ function CompanyLogo({
     return (
       <div
         style={{ ...containerStyle, background: gradient }}
-        className={`${rounded} flex items-center justify-center text-white ${fontSize} shadow-xs border border-white/20 shrink-0 select-none transition-transform hover:scale-105 ${className}`}
+        className={`${resolvedRounded} flex items-center justify-center text-white ${fontSize} shadow-xs border border-white/20 shrink-0 select-none transition-transform hover:scale-105 ${className}`}
         title={compName}
       >
         <span className="tracking-tight drop-shadow-xs">{initials}</span>
@@ -431,7 +454,7 @@ function CompanyLogo({
   return (
     <div
       style={containerStyle}
-      className={`${rounded} bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-500 shrink-0 select-none ${className}`}
+      className={`${resolvedRounded} bg-white text-slate-500 border border-slate-200/90 dark:border-white/20 flex items-center justify-center shrink-0 select-none ${className}`}
     >
       <Building2 className="w-1/2 h-1/2" />
     </div>

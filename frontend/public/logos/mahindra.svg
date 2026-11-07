@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 70" width="220" height="70">
-  <path d="M25 48L40 20L55 48L46 48L40 34L34 48Z" fill="#D91624"/>
-  <path d="M46 48L61 20L76 48L67 48L61 34L55 48Z" fill="#D91624"/>
-  <text x="88" y="42" fill="#D91624" fontSize="22" fontWeight="900" fontFamily="system-ui, sans-serif" letterSpacing="1.5">mahindra</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 50" width="170" height="50">
+  <path d="M18 35L29 14L40 35L33 35L29 24L25 35Z" fill="#D91624"/>
+  <path d="M33 35L44 14L55 35L48 35L44 24L40 35Z" fill="#D91624"/>
+  <text x="64" y="32" fill="#D91624" fontSize="20" fontWeight="900" fontFamily="Arial, Helvetica, sans-serif" letterSpacing="1">Mahindra</text>
 </svg>

@@ -337,8 +337,10 @@ export default function CompaniesPage() {
                     <div className="flex items-center gap-3.5 min-w-0">
                       <CompanyLogo
                         company={comp}
-                        size={52}
-                        className="shadow-xs"
+                        variant="wide"
+                        width={112}
+                        height={46}
+                        className="shadow-xs shrink-0"
                       />
                       <div className="min-w-0">
                         <h3 className="text-base font-bold text-slate-900 dark:text-white leading-tight truncate">

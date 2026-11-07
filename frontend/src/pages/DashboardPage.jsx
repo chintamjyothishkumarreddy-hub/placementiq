@@ -43,6 +43,7 @@ import { useAuth } from '../context/AuthContext';
 import { PlacementIQEmblem } from '../components/Logo';
 import { DashboardSkeleton } from '../components/LoadingSkeleton';
 import ErrorState from '../components/ErrorState';
+import CompanyLogo from '../components/CompanyLogo';
 
 export default function DashboardPage({ onNavigate }) {
   const { user, role, showToast } = useAuth();
@@ -59,6 +60,7 @@ export default function DashboardPage({ onNavigate }) {
 
   // Chart Interactive View Modes
   const [deptChartMode, setDeptChartMode] = useState('volume'); // 'volume' | 'rate'
+  const [companyViewMode, setCompanyViewMode] = useState('roster'); // 'roster' | 'chart'
 
   const fetchStats = useCallback(async (isManual = false) => {
     if (isManual) setRefreshing(true);
@@ -761,7 +763,7 @@ export default function DashboardPage({ onNavigate }) {
 
         {/* Chart 3: Top Hiring Enterprise Partners */}
         <div className="apple-bento-card p-6 rounded-[28px]">
-          <div className="flex items-center justify-between mb-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
             <div>
               <h3 className="text-base font-semibold text-[#1d1d1f] dark:text-[#f5f5f7] tracking-tight">
                 Top Hiring Partners & Intake
@@ -770,36 +772,122 @@ export default function DashboardPage({ onNavigate }) {
                 Number of student selections by enterprise recruiter
               </p>
             </div>
-            <button
-              onClick={() => onNavigate && onNavigate('companies')}
-              className="text-xs font-medium text-[#0071e3] dark:text-[#2997ff] hover:underline flex items-center gap-1 cursor-pointer"
-            >
-              <span>View All</span>
-              <ChevronRight className="w-3.5 h-3.5" />
-            </button>
+
+            <div className="flex items-center gap-2">
+              <div className="inline-flex p-1 rounded-xl bg-black/5 dark:bg-white/10 shrink-0 text-xs">
+                <button
+                  onClick={() => setCompanyViewMode('roster')}
+                  className={`px-2.5 py-1 rounded-lg font-medium transition-all cursor-pointer ${
+                    companyViewMode === 'roster'
+                      ? 'bg-white dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-[#f5f5f7] shadow-xs font-semibold'
+                      : 'text-[#86868b]'
+                  }`}
+                >
+                  Logos &amp; Intake
+                </button>
+                <button
+                  onClick={() => setCompanyViewMode('chart')}
+                  className={`px-2.5 py-1 rounded-lg font-medium transition-all cursor-pointer ${
+                    companyViewMode === 'chart'
+                      ? 'bg-white dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-[#f5f5f7] shadow-xs font-semibold'
+                      : 'text-[#86868b]'
+                  }`}
+                >
+                  Bar Chart
+                </button>
+              </div>
+
+              <button
+                onClick={() => onNavigate && onNavigate('companies')}
+                className="text-xs font-medium text-[#0071e3] dark:text-[#2997ff] hover:underline flex items-center gap-0.5 cursor-pointer"
+                title="View Full Recruiter Directory"
+              >
+                <span>View All</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
 
           <div className="h-72 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                layout="vertical"
-                data={charts?.company_selections || []}
-                margin={{ top: 5, right: 20, left: 35, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" opacity={0.08} />
-                <XAxis type="number" tick={{ fontSize: 11, fill: '#86868b' }} axisLine={false} tickLine={false} />
-                <YAxis
-                  type="category"
-                  dataKey="company"
-                  tick={{ fontSize: 11, fill: '#86868b' }}
-                  width={100}
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <Tooltip content={<CustomGlassTooltip />} />
-                <Bar dataKey="selections" name="Selections" fill="#0071e3" radius={[0, 8, 8, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+            {companyViewMode === 'roster' ? (
+              <div className="h-full overflow-y-auto space-y-2.5 pr-1">
+                {(charts?.company_selections || []).length === 0 ? (
+                  <div className="h-full flex items-center justify-center text-xs text-slate-400">
+                    No recruiter intake records for the selected filters.
+                  </div>
+                ) : (
+                  (charts?.company_selections || []).map((item, idx) => {
+                    const maxSel = Math.max(...(charts?.company_selections || []).map((x) => x.selections || 1), 1);
+                    const pct = Math.round((item.selections / maxSel) * 100);
+                    return (
+                      <div
+                        key={idx}
+                        className="p-2 sm:p-2.5 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] hover:bg-black/[0.04] dark:hover:bg-white/[0.06] border border-black/[0.04] dark:border-white/[0.06] flex items-center justify-between gap-3 transition-colors"
+                      >
+                        <div className="flex items-center gap-3 min-w-0 flex-1">
+                          <CompanyLogo
+                            name={item.company}
+                            variant="wide"
+                            width={82}
+                            height={34}
+                            rounded="rounded-lg"
+                            className="shadow-2xs shrink-0"
+                          />
+                          <div className="min-w-0 flex-1">
+                            <div className="text-xs font-bold text-slate-900 dark:text-white truncate">
+                              {item.company}
+                            </div>
+                            <div className="flex items-center gap-2 mt-1">
+                              <div className="h-1.5 flex-1 max-w-[120px] bg-black/10 dark:bg-white/10 rounded-full overflow-hidden">
+                                <div
+                                  className="h-full bg-[#0071e3] rounded-full transition-all duration-500"
+                                  style={{ width: `${pct}%` }}
+                                />
+                              </div>
+                              {item.avg_ctc > 0 && (
+                                <span className="text-[10px] text-slate-400 font-mono">
+                                  ₹{item.avg_ctc} LPA avg
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="text-right shrink-0">
+                          <div className="text-xs font-extrabold text-[#0071e3] dark:text-[#2997ff]">
+                            {item.selections}
+                          </div>
+                          <div className="text-[9px] uppercase tracking-wider text-slate-400 font-semibold">
+                            Offers
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            ) : (
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  layout="vertical"
+                  data={charts?.company_selections || []}
+                  margin={{ top: 5, right: 20, left: 35, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" opacity={0.08} />
+                  <XAxis type="number" tick={{ fontSize: 11, fill: '#86868b' }} axisLine={false} tickLine={false} />
+                  <YAxis
+                    type="category"
+                    dataKey="company"
+                    tick={{ fontSize: 11, fill: '#86868b' }}
+                    width={100}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <Tooltip content={<CustomGlassTooltip />} />
+                  <Bar dataKey="selections" name="Selections" fill="#0071e3" radius={[0, 8, 8, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            )}
           </div>
         </div>
 
